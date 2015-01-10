@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex
+    xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+                        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+ <sitemap>
+  <loc>https://www.kirkg.us/categories/ghost.xml</loc>
+  <lastmod>2015-01-10</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://www.kirkg.us/categories/nikola.xml</loc>
+  <lastmod>2015-01-10</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://www.kirkg.us/galleries/rss.xml</loc>
+  <lastmod>2015-01-10</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://www.kirkg.us/rss.xml</loc>
+  <lastmod>2015-01-10</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://www.kirkg.us/sitemap.xml</loc>
+  <lastmod>2015-01-10</lastmod>
+ </sitemap>
+</sitemapindex>

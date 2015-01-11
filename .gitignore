@@ -61,3 +61,5 @@ include
 config.py
 .vagrant
 pyvenv.cfg
+output
+cache

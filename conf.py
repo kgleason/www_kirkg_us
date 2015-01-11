@@ -116,9 +116,22 @@ NAVIGATION_LINKS = {
         ("/rss.xml", "RSS feed"),
     ),
 }
+# NAVIGATION_LINKS = {
+#     DEFAULT_LANG: (
+#         ('/index.html', 'Home', 'icon-home'),
+#         ('/archive.html', 'Archives', 'icon-folder-open-alt'),
+#         ('/categories/index.html', 'Tags', 'icon-tags'),
+#         ('/rss.xml', 'RSS', 'icon-rss'),
+#         ('https://www.kirkg.us', 'About me', 'icon-user'),
+#         ('https://twitter.com/kirk_gleason', 'Twitter', 'icon-twitter'),
+#         ('https://github.com/kgleason', 'Github', 'icon-github'),
+#     )
+# }
 
 # Name of the theme to use.
 THEME = "monospace"
+#THEME = "bootstrap3"
+#THEME = "zen"
 
 # Below this point, everything is optional
 

@@ -23,7 +23,7 @@ me a lot. I don't even really know how to check the logs for it. I followed the 
 Ubuntu 14.04 installation at [Digital Ocean](https://www.digitalocean.com/?refcode=18b80ab28634). I haven't done a great job at keeping track, but I know that it hasn't
 made it a month without a crash -- and this is a site that no one actually ever visits.
 
-## Telsa was the man ....
+## Tesla was the man ....
 
 Listening to a podcast one day (either [Linux Action Show](http://www.jupiterbroadcasting.com/show/linuxactionshow/) or [Linux Unplugged](http://www.jupiterbroadcasting.com/show/linuxun/))
 I heard one of the guys in the mumble room mention that they use [Nikola](http://www.getnikola.com) for the [Ubuntu Mate](http://www.ubuntu-mate.org) site. As he was

@@ -63,3 +63,4 @@ config.py
 pyvenv.cfg
 output
 cache
+GhostData.json

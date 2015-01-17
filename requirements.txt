@@ -1,4 +1,5 @@
 CommonMark==0.5.4
+Jinja2==2.7.3
 Logbook==0.8.1
 MacFSEvents==0.4
 Mako==1.0.0

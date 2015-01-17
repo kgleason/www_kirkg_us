@@ -18,7 +18,7 @@ import time
 
 # Data about this site
 BLOG_AUTHOR = "Kirk Gleason"  # (translatable)
-BLOG_TITLE = "Kirk's Blog"  # (translatable)
+BLOG_TITLE = "kirkg.us"  # (translatable)
 # This is the main URL for your site. It will be used
 # in a prominent link
 SITE_URL = "https://www.kirkg.us/"
@@ -109,29 +109,28 @@ TRANSLATIONS_PATTERN = "{path}.{lang}.{ext}"
 #          may present issues if the menu is too large.
 #          (in bootstrap3, the navbar can grow too large and cover contents.)
 
-NAVIGATION_LINKS = {
-    DEFAULT_LANG: (
-        ("/archive.html", "Archive"),
-        ("/categories/index.html", "Tags"),
-        ("/rss.xml", "RSS feed"),
-    ),
-}
 # NAVIGATION_LINKS = {
 #     DEFAULT_LANG: (
-#         ('/index.html', 'Home', 'icon-home'),
-#         ('/archive.html', 'Archives', 'icon-folder-open-alt'),
-#         ('/categories/index.html', 'Tags', 'icon-tags'),
-#         ('/rss.xml', 'RSS', 'icon-rss'),
-#         ('https://www.kirkg.us', 'About me', 'icon-user'),
-#         ('https://twitter.com/kirk_gleason', 'Twitter', 'icon-twitter'),
-#         ('https://github.com/kgleason', 'Github', 'icon-github'),
-#     )
+#         ("/archive.html", "Archive"),
+#         ("/categories/index.html", "Tags"),
+#         ("/rss.xml", "RSS feed"),
+#     ),
 # }
+NAVIGATION_LINKS = {
+    DEFAULT_LANG: (
+        ('/index.html', 'Home', 'icon-home'),
+        ('/archive.html', 'Archives', 'icon-folder-open-alt'),
+        ('/categories/index.html', 'Tags', 'icon-tags'),
+        ('/rss.xml', 'RSS', 'icon-rss'),
+        ('https://www.kirkg.us', 'About me', 'icon-user'),
+        ('https://twitter.com/kirk_gleason', 'Twitter', 'icon-twitter'),
+        ('https://github.com/kgleason', 'Github', 'icon-github'),
+    )
+}
 
 # Name of the theme to use.
-THEME = "monospace"
-#THEME = "bootstrap3"
-#THEME = "zen"
+THEME = "zen-jinja"
+
 
 # Below this point, everything is optional
 
@@ -452,7 +451,9 @@ REDIRECTIONS = []
 # "assets/css/code.css" this is ignored.
 # Can be any of autumn borland bw colorful default emacs friendly fruity manni
 # monokai murphy native pastie perldoc rrt tango trac vim vs
-# CODE_COLOR_SCHEME = 'default'
+
+#CODE_COLOR_SCHEME = 'native'
+CODE_COLOR_SCHEME = 'fruity'
 
 # If you use 'site-reveal' theme you can select several subthemes
 # THEME_REVEAL_CONFIG_SUBTHEME = 'sky'

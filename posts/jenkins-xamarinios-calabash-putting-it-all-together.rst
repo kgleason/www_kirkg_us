@@ -18,6 +18,8 @@ on the branch where the tests were being developed.
 It took a little more than I was expecting to getting it running, so it is
 going to become the 2nd article in my impromptu series about Jenkins and Xamarin.
 
+.. TEASER_END
+
 Jenkins in this case, is running on a Mac Mini running the most recent version
 of OS X (10.9.2) as a slave:
 

@@ -334,13 +334,13 @@ REDIRECTIONS = []
 # You may also want to use github_deploy (see below).
 # You can define multiple presets and specify them as arguments
 # to `nikola deploy`.  If no arguments are specified, a preset
-# named `default` will be executed.  You canuse as many presets
+# named `default` will be executed.  You can use as many presets
 # in a `nikola deploy` command as you like.
-# DEPLOY_COMMANDS = {
-#     'default': [
-#         "rsync -rav --delete output/ joe@my.site:/srv/www/site",
-#     ]
-# }
+DEPLOY_COMMANDS = {
+    'default': [
+        "rsync -azOr --delete --no-perms output/ www.kirkg.us:/srv/www/www.kirkg.us/public_html/",
+    ]
+}
 
 # For user.github.io/organization.github.io pages, the DEPLOY branch
 # MUST be 'master', and 'gh-pages' for other repositories.

@@ -8,8 +8,6 @@
 .. type: text
 -->
 
-# Giving up the Ghost
-
 A while back, I dropped [Wordpress](http://www.wordpress.org) as my blogging platform in favor of [Ghost](http://www.ghost.org). At the time I was looking for something simpler
 to manage than Wordpress, and something new to play with. Ghost seemed like a pretty good candidate -- it is still kind of the new hotness. Node.js seemed like a potential
 interesting new thing to learn. So I went for it.

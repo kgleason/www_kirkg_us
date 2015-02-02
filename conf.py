@@ -27,7 +27,7 @@ SITE_URL = "https://www.kirkg.us/"
 # BASE_URL = "https://www.kirkg.us/"
 BLOG_EMAIL = "kirk@kirkg.us"
 BLOG_DESCRIPTION = "Where I stage all of my runaway golfcart marathons"  # (translatable)
-
+WRITE_TAG_CLOUD = True
 # Nikola is multilingual!
 #
 # Currently supported languages are:
@@ -338,7 +338,7 @@ REDIRECTIONS = []
 # in a `nikola deploy` command as you like.
 DEPLOY_COMMANDS = {
     'default': [
-        "rsync -azOr --delete --no-perms output/ www.kirkg.us:/srv/www/www.kirkg.us/public_html/",
+        "rsync -zOr --delete --no-perms output/ www.kirkg.us:/srv/www/www.kirkg.us/public_html/",
     ]
 }
 

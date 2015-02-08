@@ -14,6 +14,8 @@ Pancakes, flu shots, and now some French thing? You may be asking yourself what 
 
 I would hazard a guess that most of the people reading this have probably not heard of this book. I read this book during one of my final semesters of being a graduate student in French Literature. It was after I had received my Masters, during my coursework for the PhD. It may have been the semester that I decided to stop pursuing my PhD.
 
+<!-- TEASER_END -->
+
 Le Grand Meaulnes was written by a French author named Alain-Fournier. It was published in 1913 (for those who want to know, the 20th Century was my favorite period in French literature). The book has been translated into English a couple of times. While modern translations, tend to not translate the title; one of the older ones translated it as The Wanderer. It should be (but maybe not) somewhat apparent that Le Grand Meaulnes does not translate to The Wanderer — it translates the The Big Meaulnes, which doesn’t mean anything.
 
 In any case, when I first read this book it spoke to me. To summarize (very grotesquely) the book, it was essentially about a boy who was trying to figure out how to become a man (not in some sexual sense) while still remaining a child. He had a tendency to meander as he progressed down the path. For those that know me, I hope that it is apparent why this book spoke to me.

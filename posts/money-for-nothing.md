@@ -14,6 +14,8 @@ The american dream isn’t it? Getting something for nothing at all. It seems so
 
 However, before I get there, I need to ask you, my dedicated reader, how do you define the word “something” when you hear the phrase “something for nothing?” Working under the assumption that I am not as abnormal as everyone makes me out to be, then I am probably safe in saying that when you think of all of this, you probably think of something large — a car, or say a million dollars. I know that that is what it used to mean to me.
 
+<!-- TEASER_END -->
+
 The realization that I have come to is that something doesn’t have to be something. I can get something for nothing simply by looking at the way I live. We buy a lot of stuff. Lots. And a lot of this stuff is just stuff that I never really thought too much about. Taco seasoning is a great example …
 
 Obviously, if you are going to make tacos, and if your tacos are going to have some sort of ground meat in them, then you will likely want some sort of taco seasoning. But what are you really paying for when you shell out $1 for that little envelope of seasoning. Maltodextrin? Salt? Corn Starch? If you look at an average list of ingredients on taco seasoning, there are probably only 2 ingredients out of the top 6 in your pantry: chili powder and salt. All of those silly ingredients don’t make that taco seasoning more valuable — just the opposite.

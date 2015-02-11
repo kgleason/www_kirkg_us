@@ -130,7 +130,7 @@ NAVIGATION_LINKS = {
 
 # Name of the theme to use.
 THEME = "zen-jinja"
-
+#THEME = "reveal"
 
 # Below this point, everything is optional
 
@@ -458,12 +458,13 @@ CODE_COLOR_SCHEME = 'fruity'
 # If you use 'site-reveal' theme you can select several subthemes
 # THEME_REVEAL_CONFIG_SUBTHEME = 'sky'
 # You can also use: beige/serif/simple/night/default
+THEME_REVEAL_CONFIG_SUBTHEME = 'serif'
 
 # Again, if you use 'site-reveal' theme you can select several transitions
 # between the slides
 # THEME_REVEAL_CONFIG_TRANSITION = 'cube'
 # You can also use: page/concave/linear/none/default
-
+THEME_REVEAL_CONFIG_TRANSITION = 'cube'
 # FAVICONS contains (name, file, size) tuples.
 # Used for create favicon link like this:
 # <link rel="name" href="file" sizes="size"/>
@@ -494,14 +495,14 @@ RSS_READ_MORE_LINK = '<p><a href="{link}">{read_more}…</a> ({min_remaining_rea
 
 # A HTML fragment describing the license, for the sidebar.
 # (translatable)
-LICENSE = ""
+#LICENSE = ""
 # I recommend using the Creative Commons' wizard:
 # http://creativecommons.org/choose/
-# LICENSE = """
-# <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/2.5/ar/">
-# <img alt="Creative Commons License BY-NC-SA"
-# style="border-width:0; margin-bottom:12px;"
-# src="http://i.creativecommons.org/l/by-nc-sa/2.5/ar/88x31.png"></a>"""
+LICENSE = """
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/2.5/ar/">
+<img alt="Creative Commons License BY-NC-SA"
+style="border-width:0; margin-bottom:12px;"
+src="http://i.creativecommons.org/l/by-nc-sa/2.5/ar/88x31.png"></a>"""
 
 # A small copyright notice for the page footer (in HTML).
 # (translatable)
@@ -534,7 +535,8 @@ CONTENT_FOOTER_FORMATS = {
 # systems.  The following comment systems are supported by Nikola:
 #   disqus, facebook, googleplus, intensedebate, isso, livefyre, muut
 # You can leave this option blank to disable comments.
-COMMENT_SYSTEM = ""
+COMMENT_SYSTEM = "isso"
+
 # And you also need to add your COMMENT_SYSTEM_ID which
 # depends on what comment system you use. The default is
 # "nikolademo" which is a test account for Disqus. More information
@@ -639,7 +641,7 @@ COMMENT_SYSTEM_ID = ""
 # done in the code, hope you don't mind ;-)
 # Note: most Nikola-specific extensions are done via the Nikola plugin system,
 #       with the MarkdownExtension class and should not be added here.
-# MARKDOWN_EXTENSIONS = ['fenced_code', 'codehilite']
+MARKDOWN_EXTENSIONS = ['fenced_code', 'codehilite']
 
 # Social buttons. This is sample code for AddThis (which was the default for a
 # long time). Insert anything you want here, or even make it empty.
@@ -689,25 +691,25 @@ COMMENT_SYSTEM_ID = ""
 # Or a DuckDuckGo search: https://duckduckgo.com/search_box.html
 # Default is no search form.
 # (translatable)
-# SEARCH_FORM = ""
+#SEARCH_FORM = "<iframe src="http://duckduckgo.com/search.html?site=www.kirkg.us&prefill=Search DuckDuckGo" style="overflow:hidden;margin:0;padding:0;width:408px;height:40px;" frameborder="0"></iframe>"
 #
 # This search form works for any site and looks good in the "site" theme where
 # it appears on the navigation bar:
 #
-# SEARCH_FORM = """
-# <!-- Custom search -->
-# <form method="get" id="search" action="//duckduckgo.com/"
-#  class="navbar-form pull-left">
-# <input type="hidden" name="sites" value="%s"/>
-# <input type="hidden" name="k8" value="#444444"/>
-# <input type="hidden" name="k9" value="#D51920"/>
-# <input type="hidden" name="kt" value="h"/>
-# <input type="text" name="q" maxlength="255"
-#  placeholder="Search&hellip;" class="span2" style="margin-top: 4px;"/>
-# <input type="submit" value="DuckDuckGo Search" style="visibility: hidden;" />
-# </form>
-# <!-- End of custom search -->
-# """ % SITE_URL
+SEARCH_FORM = """
+<!-- Custom search -->
+<form method="get" id="search" action="//duckduckgo.com/"
+ class="navbar-form pull-left">
+<input type="hidden" name="sites" value="%s"/>
+<input type="hidden" name="k8" value="#444444"/>
+<input type="hidden" name="k9" value="#D51920"/>
+<input type="hidden" name="kt" value="h"/>
+<input type="text" name="q" maxlength="255"
+ placeholder="Search&hellip;" class="span2" style="margin-top: 4px;"/>
+<input type="submit" value="DuckDuckGo Search" style="visibility: hidden;" />
+</form>
+<!-- End of custom search -->
+""" % SITE_URL
 #
 # If you prefer a Google search form, here's an example that should just work:
 # SEARCH_FORM = """

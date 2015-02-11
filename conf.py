@@ -324,7 +324,7 @@ COMPILERS = {
 # relative URL.
 #
 # If you don't need any of these, just set to []
-REDIRECTIONS = []
+REDIRECTIONS = [("iosdemo/index.html","/posts/using-quicktime-to-remote-demo-ios-applications.html")]
 
 # Presets of commands to execute to deploy. Can be anything, for
 # example, you may use rsync:

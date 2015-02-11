@@ -45,8 +45,7 @@ and app or something. That's generally enough to get it going.
 
 |
 
-.. youtube:: http://www.youtube.com/watch?v=f9T6nFMWqH0
-    :align: center
+.. youtube:: f9T6nFMWqH0
 
 |
 

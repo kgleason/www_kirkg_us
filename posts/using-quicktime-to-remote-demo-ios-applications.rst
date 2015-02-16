@@ -31,7 +31,7 @@ Hit that upside down carat ...
 
 |
 
-.. image:: ../images/QuickTime_VideoSource.png
+.. image:: ../../images/QuickTime_VideoSource.png
     :align: center
 
 |

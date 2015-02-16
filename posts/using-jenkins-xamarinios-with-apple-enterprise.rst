@@ -246,7 +246,7 @@ The production build job looks almost identical to the Staging, Demo, & Training
 jobs. The primary difference is that it is a Matrix job in Jenkins. The Matrix
 variables look like this:
 
-.. image:: ../images/Screen_Shot_2014_03_11_at_9_51_39_PM.png
+.. image:: ../../images/Screen_Shot_2014_03_11_at_9_51_39_PM.png
 
 The effect here is that when this job is called, we restrict the builds to the
 OS X Build Server (no point in trying to build in Windows or Linux). It creates

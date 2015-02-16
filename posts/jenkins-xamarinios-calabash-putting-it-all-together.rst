@@ -23,7 +23,7 @@ going to become the 2nd article in my impromptu series about Jenkins and Xamarin
 Jenkins in this case, is running on a Mac Mini running the most recent version
 of OS X (10.9.2) as a slave:
 
-.. image:: ../images/JenkinsSlaveConfig.png
+.. image:: ../../images/JenkinsSlaveConfig.png
 
 I like this configuration because it makes it easier for me to test -- if I can
 get it to run via SSH, then I can get it to run in Jenkins. In this case I think
@@ -200,7 +200,7 @@ turns out that there is. I modified the last step to
 and then used a post-build **Send build artifacts over SSH** to copy that html
 file and all of the screen shots over to an apache server that indexes the reports:
 
-.. image:: ../images/Screen_Shot_2014_03_23_at_2_09_04_PM.png
+.. image:: ../../images/Screen_Shot_2014_03_23_at_2_09_04_PM.png
 
 Pretty cool right? Clicking on one of those folders takes you right into the
 report for that specific build.

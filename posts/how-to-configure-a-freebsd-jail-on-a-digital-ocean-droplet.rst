@@ -16,9 +16,9 @@ outside of that jail.
 
 There are a host of reasons why you might want to run your services in jails, but
 the primary reason is that it allows you to run disparate services without having
-to worry about a flaw in one server allowing access to another service. For example,
+to worry about a flaw in one service allowing access to another service. For example,
 jails would allow you to run a mail server and a web server on the same Droplet
-without having to be overly concerned that an vulnerability in your web site could
+without having to be overly concerned that a vulnerability in your web site could
 expose the data in your mail server.
 
 Over the course of this article, you will take a newly minted FreeBSD Droplet, do

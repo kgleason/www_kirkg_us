@@ -8,7 +8,7 @@
 .. type: text
 
 One of the great things about FreeBSD is its long standing support for jails_.
-A jail is a way to run a process or set of process in an environment that is
+A jail is a way to run a process or set of processes in an environment that is
 isolated from the host system. Processes created inside a jail cannot access files
 outside of that jail.
 
@@ -17,7 +17,7 @@ outside of that jail.
 There are a host of reasons why you might want to run your services in jails, but
 the primary reason is that it allows you to run disparate services without having
 to worry about a flaw in one service allowing access to another service. For example,
-jails would allow you to run a mail server and a web server on the same Droplet
+jails will allow you to run a mail server and a web server on the same Droplet
 without having to be overly concerned that a vulnerability in your web site could
 expose the data in your mail server.
 
@@ -34,6 +34,8 @@ as well as making some changes to the configuration of some of the default servi
 
 .. TEASER_END
 
+|
+
 The default editor and shell prompt
 =====================================
 
@@ -47,6 +49,15 @@ A better editor
 -----------------
 
 The following command will install a version of *vim* that does not require X11.
+
+|
+
+.. code-block:: bash
+
+    sudo pkg install vim-lite
+
+|
+
 Since it is the first time that the *pkg* command has been run, it is going to
 do some initial setup & checks. If you've run *pkg* before, then your output may
 look different.
@@ -168,10 +179,10 @@ to
 
 |
 
-You may not have noticed, but some of your keys may not work as expect -- Delete
+You may not have noticed, but some of your keys may not work as expected -- the delete
 is a great example. If you add the following chunk of code to the end of the file,
 that problem will be fixed. This code will check the terminal type that is connected
-and, if the terminal type is one that is expect, it will fix the whacky key bindings:
+and, if the terminal type is one that is expected, it will fix the whacky key bindings:
 
 |
 
@@ -277,6 +288,16 @@ as simple as possible:
 
 |
 
+.. code-block:: bash
+
+    sudo pkg install openntpd
+
+|
+
+OpenNTPd should install easily:
+
+|
+
 .. code-block:: text
 
     > sudo pkg install openntpd
@@ -321,6 +342,8 @@ please see */usr/local/etc/ntpd.org*.
 
 .. _ntp.org: http://www.ntp.org
 
+|
+
 Adding a jail
 ==============
 
@@ -350,16 +373,23 @@ all subsequent jails. Set up the base jail:
 |
 
 The -p flag should cause ezjail to include the FreeBSD ports tee in the base jail.
+The initial installation of the base jail may take a few minutes.
 
 Setting up the network
 ------------------------
 
-Before the jail can be started, you'll need to do some network configuration.
+You could go ahead and create your jail right off, but the networking will not
+work out of the box. Take a minute and do some basic network configuration before
+creating your first jail.
 
 Virtual Interface
 ++++++++++++++++++++
 
-Add the following to */etc/rc.conf*:
+In order to keep all of the jails behind a single public IP address, you'll
+need to set up a new network interface. This new interface will be a clone
+of the loopback interface which will have an IP address assigned to it. You can
+you any RFC 1918 address space. In this tutorial, 172.16.1.1 will be used.
+Add the following to */etc/rc.conf* to get the new interface set up:
 
 |
 
@@ -381,7 +411,9 @@ Add the following to */etc/rc.conf*:
 
 |
 
-To get the interface set up without a reboot, you can use the following commands:
+With those entries in */etc/rc.conf* the interfaces will all be created and
+configured at boot time. To get the interface set up without a reboot, you can
+use the following commands:
 
 |
 
@@ -409,7 +441,7 @@ NAT for packet forwarding
 +++++++++++++++++++++++++++
 
 Now that you have an interface to use with your jails, you'll need to get some
-packet forwarding set up. Edit /etc/pf.conf (which will be empty by default)
+packet forwarding set up. Edit */etc/pf.conf* (which will be empty by default)
 according to the following
 
 |
@@ -426,10 +458,10 @@ according to the following
 
 |
 
-The first 3 lines define a couple of useful variables. The *nat* line instructs
-PF to mask outbound traffic from the jails (all of them) behind the IP address
-of the external interface. In short, all of your outbound jail traffic will come
-from the IP address of your droplet.
+The first 3 lines define a couple of useful variables -- called macros in PF parlance.
+The *nat* line instructs PF to mask outbound traffic from the jails (all of them)
+behind the IP address of the external interface. In short, all of your outbound
+jail traffic will come from the IP address of your droplet.
 
 With that in place, you can start PF:
 
@@ -446,9 +478,20 @@ well:
 
 |
 
+.. code-block:: bash
+
+    sudo pfctl -nvf /etc/pf.conf
+
+|
+
+That command will cause PF to parse the rules in */etc/pf.conf*, and print them
+back out to the console. If there are syntax errors, they will be called out.
+
+|
+
 .. code-block:: text
 
-    freebsd@bsdsrv01:~ % sudo pfctl -nvf /etc/pf.conf
+    freebsd@hostname:~ % sudo pfctl -nvf /etc/pf.conf
     ext_if = "vtnet0"
     int_if = "lo1"
     jail_net = "lo1:network"
@@ -456,9 +499,8 @@ well:
 
 |
 
-Your output should look very similar to what is above. If not, the *pf* should tell
-you what line has the error. Once you are getting output that inidicates no errors
-you can turn on the NAT:
+Your output should look very similar to what is above. Once you are getting output
+that inidicates no errors you can turn on the NAT:
 
 |
 
@@ -511,7 +553,7 @@ have seen when you first connected to your Droplet.
 
 .. code-block:: text
 
-    freebsd@bsdsrv01:~ % sudo ezjail-admin console WEBSERVER
+    freebsd@hostname:~ % sudo ezjail-admin console WEBSERVER
     FreeBSD 10.1-RELEASE (GENERIC) #0 r274401: Tue Nov 11 21:02:49 UTC 2014
 
     Welcome to FreeBSD!
@@ -544,17 +586,30 @@ test connectivity, you can use telnet:
 
 |
 
-.. code-block:: text
+.. code-block:: bash
 
-    root@WEBSERVER:~ # telnet www.digitalocean.com 80
-    Trying 104.16.25.4...
-    Connected to www.digitalocean.com.
-    Escape character is '^]'.
+    telnet www.digitaloean.com 80
 
 |
 
-What that command did was to open up a very basic connection to a webserver at
-Digital Ocean. Pressing Control-] closes the connection, and *quit* exits telnet.
+That command will open up a very basic connection to a webserver at Digital Ocean.
+You can get out of it pressing Control-] to close the connection, followed by
+*quit* to close telnet.
+
+|
+
+.. code-block:: text
+
+    root@WEBSERVER:~ # telnet www.digitalocean.com 80
+    Trying 104.16.24.4...
+    Connected to www.digitalocean.com.
+    Escape character is '^]'.
+    ^]
+    telnet> quit
+    Connection closed.
+    root@WEBSERVER:~ #
+
+|
 
 Installing a webserver
 -------------------------
@@ -571,8 +626,9 @@ webserver. You should be inside of your jail for this (remember that you can use
 
 |
 
-Since *pkg* has not yet been run in your jail, you'll be prompted to install it
-and let it configure itself. The you will be prompted about installing the webserver:
+Since *pkg* has not yet been run in your jail, it will prompt you to allow it to
+install and let it configure itself. Then you will be prompted about installing
+the webserver:
 
 |
 
@@ -718,10 +774,47 @@ traffic that is not destined for a jail except for SSH.
 
 |
 
+As always, test your config changes:
+
+|
+
+.. code-block:: bash
+
+    sudo pfctl -nf /etc/pf.conf
+
+|
+
+If there is output, then fix the indicated errors, and keep running that same
+command until the command runs with no output. When you are ready, reload the
+firewall rules:
+
+|
+
+.. code-block:: bash
+
+    sudo pfctl -f /etc/pf.conf
+
+|
+
+After that command, you may get disconnected from the server. You should be able
+to reconnect without issue.
+
+|
+
 Tweaking the jail
 -------------------
 
-If you run the *date* command in your jail, you'll notice that the TimeZone
+Jump back into your jail:
+
+|
+
+.. code-block:: bash
+
+    sudo ezjail-admin console WEBSERVER
+
+|
+
+If you run the *date* command in your jail, you'll notice that the time zone
 might be different from the host's timezone. You can fix that by running:
 
 |
@@ -729,6 +822,7 @@ might be different from the host's timezone. You can fix that by running:
 .. code-block:: bash
 
     tzsetup
+
 |
 
 from within the jail. It is the same process as you already went through earlier
@@ -751,12 +845,14 @@ While you are in the jail, you should probably add the following lines to
 
 As you can see, they are basic commands for keeping your jail in order.
 
-Next Steps
-============
+Moving Forward
+================
 
-With the first jail out of the way, you can continue to add more and more.  The
-high level steps would be along these lines:
+With the first jail out of the way, you can continue to add jails as you need them.
+The high level steps would be along these lines:
 
-#. Create a new lo1 alias with a unique IP address and netmask of 255.255.255.255
+#. Create a new lo1 alias with a unique IP address in */etc/rc.conf*
 #. Define the jail in */etc/pf.conf*, including the IP, ports to be redirected, and the redirect rules.
 #. Create the jail
+
+Welcome to the world of FreeBSD Jails.

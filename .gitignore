@@ -65,3 +65,4 @@ pyvenv.cfg
 output
 cache
 GhostData.json
+pip-selfcheck.json

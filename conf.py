@@ -234,8 +234,8 @@ PAGES = (
 # 'html' assumes the file is html and just copies it
 COMPILERS = {
     "rest": ('.rst', '.txt'),
-    "commonmark": ('.md', '.mdown', '.markdown'),
-    #"markdown": ('.md', '.mdown', '.markdown'),
+    #"commonmark": ('.md', '.mdown', '.markdown'),
+    "markdown": ('.md', '.mdown', '.markdown'),
     "textile": ('.textile',),
     "txt2tags": ('.t2t',),
     "bbcode": ('.bb',),

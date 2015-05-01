@@ -1,7 +1,7 @@
 .. title: How to configure a FreeBSD Jail on a Digital Ocean Droplet
 .. slug: how-to-configure-a-freebsd-jail-on-a-digital-ocean-droplet
 .. date: 2015-02-21 20:55:57 UTC-05:00
-.. tags: digital-ocean,freebsd,pf,jails,nginx,technology
+.. tags: digital-ocean,FreeBSD,pf,jails,nginx,technology
 .. category: How-To
 .. link:
 .. description:

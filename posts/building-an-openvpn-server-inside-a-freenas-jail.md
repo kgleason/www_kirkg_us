@@ -9,25 +9,20 @@
 .. type: text
 -->
 
-I'm writing this post to help out a friend. If you have an up to date FreeNAS server (9.3 stable at the time of this writing), then this guide should walk you through building a jail and installing an OpenVPN server inside of it.
+If you have an up to date FreeNAS server (9.3 stable at the time of this writing), then this guide should walk you through building a jail and installing an OpenVPN server inside of it. The beauty of this system is that it is all being done inside a jail, so the odds of making a mistake that could take down your entire NAS is slim. If something goes awry, you can just delete the jail, and start over again.
 
-The beauty of this system is that it is all being done inside a jail, so the odds of making a mistake that could take down your entire NAS as slim. If something goes awry, you can just delete the jail, and start over again.
-
-At the end, you will end up with an certificate based OpenVPN server. Each user will need to have their own certificate. For the time being, it'll be certificate only. Perhaps in a future article, we'll revist the config to add in a username and password challenge, to effect two factor authentication.
-
-Without further ado, let's get started
+After you finish, you will end up with an certificate based OpenVPN server. Each user will need to have their own certificate to go along with their username and password. In essence, we'll be implementing a two factor authenticated VPN.
 
 <!-- TEASER_END -->
 
-You'll need to start out by logging into your FreeNAS and clicking on the Jails tab. Click the Add Jail button to get started creating a new jail. Name your jail something obvious, like "OpenVPN_1". And click `Add` to get started. If you have already set up FreeNAS, then it should create you a standard jail and assign an IP address based from the pool that you assigned to your jails when you first set up FreeNAS. Depending upon your FreeNAS specs, the jail could take a few minutes to be made. Be paitent.
+You'll need to start out by logging into your FreeNAS and clicking on the Jails tab. Click the `Add Jail` button to get started creating a new jail. Name your jail something obvious, like "OpenVPN_1". And click `Add` to get started. If you have already set up FreeNAS, then it should create a standard jail automatically and assign an IP address based from the jails pool. Depending upon your FreeNAS specs, the jail could take a few minutes to be made. Be paitent.
 
-Once the jail is created, you have a decision to make. If your plan is for this jail to be nothing more than an OpenVPN server (and it should be), then you won't need to add any additional storage to the jail. If you want to do other things with this jail, then you might consider adding more, in particular if you want the jail to interact with the files that you are storing on the NAS. We are going to assume that you won't be needing access to the files, and therefore won't be adding any additional storage.
-
-With that out of the way, you should open up your favorite terminal and ssh into your FreeNAS. Yes the FreeNAS, not the newly created jail. Once you are in, and assuming that you only have 1 jail with the word 'openvpn' in it, you should be able to run this command to get into the jail:
+With that out of the way, you should open up your favorite terminal and ssh into your FreeNAS. Yes the FreeNAS, not the newly created jail. Once you are in, and assuming that you only have a single jail with the word 'openvpn' in it, you should be able to run this command to get into the jail:
 
 
 	:::shell
-    sudo jexec `jls | grep -i openvpn | awk '{ print $1 }' ` csh
+    sudo jexec `jls | grep -i openvpn | awk '{ print $1 }'` csh
+
 
 If, for whatever reason that command did not work, then run `jls` to get a list of your jails. Note the ID of the jail that you want to use, and enter this command to get in:
 
@@ -36,9 +31,9 @@ If, for whatever reason that command did not work, then run `jls` to get a list 
     sudo jexec ID csh
 
 
-Replacing ID with the ID of the jail that you want to use.
+replacing ID with the ID of the jail that you want to use.
 
-You should now have a root shell inside the jail, so now you can get to it. Run `pkg install openvpn`. This command will start out by checking if your version of pkg_ng is up to date. If it is not, then it ask you if it is OK for it to update itself:
+You should now have a root shell inside the jail, so now you can get to it. Run `pkg install openvpn`. This command will start out by checking if your version of pkgng is up to date. If it is not, then it ask you if it is OK for it to update itself:
 
 
     Installed packages to be UPGRADED:
@@ -66,9 +61,9 @@ Say Yes. Then it will prompt you about installing the OpenVPN package:
     Proceed with this action? [y/N]: 
 
 
-Once again, you should say yes. The packages should install pretty quickly. Once it is finished, type run the `rehash` command so that you have access to the newly installed binaries.
+Once again, you should say yes. The packages should install pretty quickly. Once it is finished, run the `rehash` command so that you have access to the newly installed binaries.
 
-When you have your shell back, let's make a directory to store all of the OpenVPN bits, and bring in a couple of tools that we are going to need.
+When you have your shell back, make a directory to store all of the OpenVPN bits, and bring in a couple of tools that we are going to need.
 
 
     :::shell
@@ -108,7 +103,9 @@ For the most part, you can leave most of this file as is. If you go all the way 
 
 The comments right above that part say to not leave any of the fields blank, but it is really not that big of a deal. Save your vars.
 
-If you haven't noticed, the default shell for root in FreeBSD is csh. In order to perform the next few steps, we'll need some Bourne shell functionality. If you really want to install bash, you can, but it is overkill for what you are going to do with this. The following commands are going to use `sh` (the Bourne shell). It should also work with `bash`, if that's the kind of person you are.
+##Setting up your certificates
+
+If you haven't noticed, the default shell for root in FreeBSD is csh. In order to perform the next few steps, we'll need some Bourne shell functionality. If you really want to install bash, you can, but it is overkill for what you are about to do. The following commands are going to use `sh` (the Bourne shell). It should also work with `bash`, if that's the kind of person you are.
 
 Note that the 2nd command has a space between the period (.) and the vars. In the classic Bourne shell, this is how you source a file. The space is important.
 
@@ -134,20 +131,20 @@ Note that the 2nd command has a space between the period (.) and the vars. In th
 
 It will prompt you for a challenge password and an optional company name. We recommend that you leave these blank. When you are prompted to sign the certificate, you should say yes. When you are asked to commit the new cert, you should once again say yes.
 
-Building the Diffie-Hellman keys may take a few minutes, depending upon your hardware. The openvpn command will execute quickly.
+Building the Diffie-Hellman keys may take a few minutes, depending upon your hardware. The `openvpn` command will execute quickly.
 
-The last step in they key building process is to generate the certs for your client to connect. If you are going to have multiple users, you will want to run this command for each client that you plan to have connect.
+The last step in the key building process is to generate the certs for your client to connect. If you are going to have multiple users, you will want to run this command for each client that you plan to have connect.
 
 
 	:::shell
     ./build-key <client-name>
 
 
-Your client-name should be something descriptive. It is purely for human readability purposes. You can press enter for all of the questions that are asked. When prompted to sign the certificate and commit the certificte, you should once again say yes.
+Your client-name should be something descriptive. It is purely for human readability purposes. You can press enter for all of the questions that are asked. When prompted to sign the certificate and commit the certificate, you should once again say yes.
 
 ##Protect your keys
 
-The clean all command that we ran up there will wipe out all of your keys. Right now it's now big deal -- just generate new ones. However once you've handed a key out to your clients, then the deletion of the keys will prevent your client from connecting.
+The `clean-all` command that we ran up there will wipe out all of your keys. Right now it's not big deal -- just generate new ones. However once you've handed a key out to your clients, then the deletion of the keys will prevent your client from connecting.
 
 For right now, you can protect your keys from accidental deletion with:
 
@@ -159,9 +156,9 @@ For right now, you can protect your keys from accidental deletion with:
 
 ##The Server config file
 
-With the client key business out of the way, it's time to configure the server. The good folks at [OpenVPN](http://www.openvpn.net) make some pretty great [sample configs](https://openvpn.net/index.php/open-source/documentation/howto.html#examples) available to us. Makes sense to start with them. Copy the text for the server.conf and paste it into `/openvpn/server.conf` inside your jail.
+With the client key business out of the way, it's time to configure the server. The good people at [OpenVPN](http://www.openvpn.net) make some pretty great [sample configs](https://openvpn.net/index.php/open-source/documentation/howto.html#examples) available to us, so it makes sense to start with them. Copy the text for the server.conf and paste it into `/openvpn/server.conf` inside your jail.
 
-There is very little that will need tweaking in that file. Read through the comments, and adjust as you see fit, but I'd advise against making too many changes. Here is what I would recommend changing.
+There is very little that will need tweaking in that file. Read through the comments, and adjust as you see fit, but you'll do well to avoid making too many changes. Here are some sections to consider.
 
 ###Local IP
 
@@ -169,7 +166,7 @@ There is very little that will need tweaking in that file. Read through the comm
     # listen on? (optional)
     local 10.0.0.248
 
-The `local` config line should reflect the IP address of your jail, In all likelihood, this will be an RFC-1918 private IP address. This is OK.
+The `local` config line should reflect the IP address of your jail. In all likelihood, this will be an RFC-1918 private IP address. This is OK.
 
 ###Tracking client IPs
 
@@ -182,7 +179,7 @@ The `local` config line should reflect the IP address of your jail, In all likel
 	ifconfig-pool-persist /openvpn/ipp.txt
 
 
-Pretty self explanatory. The default directory may not exist. Probably best to keep everything self-contained.
+This one is pretty self explanatory. Since the default directory may not exist, it's probably best to keep everything contained within `/openvpn`.
 
 ###Certificate location
 
@@ -218,7 +215,7 @@ If you've followed the steps up to this point, you will just need to swapout the
 	push "route 10.0.0.0 255.255.255.0"
 
 
-For this section, you need to know a little bit about your internal network. The IP address in the `push` line should be a representation of your local network. If you don't know what to put here, then from within your jail, run the `ifconfig` command and get your IP address and subnet mask. With those values in hand, visit [www.subnet-calculator.com](http://www.subnet-calculator.com), and enter your IP address into the IP address field. Adjust the subnet mask dropdown to reflect your subnet mask. Using the values on that site, construct the `push` config line as follows:
+For this section, you need to know a little bit about your internal network. The IP address in the `push` line should be a representation of your local network. If you don't know what to put here, then from within your jail, run the `ifconfig` command and get your IP address and subnet mask. If you subnet mask is 255.255.255.0, then change the last octet of your IP address to a 0, and use that. Otherwise, jot down your IP address and subnet maslk. With those values in hand, visit [www.subnet-calculator.com](http://www.subnet-calculator.com), and enter your IP address into the IP address field. Adjust the subnet mask dropdown to reflect your subnet mask. Using the values on that site, construct the `push` config line as follows:
 
 
     push "route <Subnet ID> <Subnet Mask>"
@@ -234,7 +231,7 @@ For this section, you need to know a little bit about your internal network. The
 	tls-auth /openvpn/keys/ta.key 0 # This file is secret
 
 
-That one is pretty simple.
+That one is pretty simple. Point the `tls-auth` directive to your `ta.key`.
 
 
 ###Logging
@@ -246,6 +243,15 @@ That one is pretty simple.
 	status /openvpn/log/openvpn-status.log
 
 You'll need to `mkdir /openvpn/log` in order for this work. 
+
+
+###Two factor authenitcation
+
+
+    plugin /usr/local/lib/openvpn/plugins/openvpn-plugin-auth-pam.so login
+
+
+You won't find this line in the sample config, and you can consider it to be optional. If you add it in, then in addition to the required certificates, you will need to provide a username and password to connect to the VPN. If you opt for this (and you probably should), there is an line that you will need to add to the client config as well.
 
 ##Networking
 
@@ -304,13 +310,13 @@ With the server up and running, the last step is going to be to get a client to 
     * pkg install openvpn
   * Linux:
     * use your package manager to install `OpenVPN`
-      * Arch: sudo pacman -S openvpn
-      * Debian: sudo apt-get install openpvn
-      * RedHat: sudo yum install openvpn
+        * Arch: sudo pacman -S openvpn
+        * Debian: sudo apt-get install openpvn
+        * RedHat: sudo yum install openvpn
   * OS X (You'll have to do more that just install openvpn, but homebrew should tell you what to do to get the tun/tap driver installed in OS X)
     * brew install openvpn
 
-Once you have the `openvpn` binary installed, they shouuld all work the same way.
+Once you have the `openvpn` binary installed, your client platform of choice shouldn't be of great concern.
 
 ###Get the files
 
@@ -327,11 +333,11 @@ There are 4 files on the server that you will need on your client. The jail isn'
 
   * /openvpn/keys/ca.crt
   * /openvpn/keys/ta.key
-  * /openvpn/keys/<client-name>.crt
-  * /openvpn/keys/<client-name>.key
+  * /openvpn/keys/<client-name\>.crt
+  * /openvpn/keys/<client-name\>.key
 
 
-Replace the <client-name> up there with the client-name you used when you created the client cert.
+Replace the <client-name\> up there with the client-name you used when you created the client cert.
 
 ##The client config file
 
@@ -363,7 +369,7 @@ Not much to say. You can keep this commented out if you want.
 
 ###Where are the certs?
 
-If you have all of the certs in the same directory then you can define the cert locations like this:
+If you have all of the certs in the same directory as the client config file, then you can define the cert locations like this:
 
 
 	# SSL/TLS parms.
@@ -387,7 +393,19 @@ If they are in a different location, you can use full paths.
 	tls-auth ta.key 1
 
 
-This key needs to match between the client and the server.
+This key needs to be the same on the client and the server. The `1` parameter indicates that this is a client.
+
+###Two Factor Authenitcation
+
+
+	# Force username & password authenitcation
+    auth-user-pass
+
+    # Disable client-side password caching
+    auth-nocache
+
+
+These are the client-analogue lines to the optional config line in the server that will require a username and password to connect. If you added the optional line to the server config, then you will need to add this to the client config. If you add these lines to the client config without the server lines, then you will be prompted for a username and password that will then be ignored.
 
 ##Firing up the test
 
@@ -395,13 +413,17 @@ Save the config file, and fire up a test:
 
 
 	:::bash
-    sudo openvpn <client>.config
+    sudo openvpn <client>.ovpn
 
 
 You'll probably see some errors about adding a route. If your test client and your server are on the same network, then the route to that network already exists on the client. If you ignore that for now, you should still get a connection -- useless, but a connection nonetheless.
 
 ##Finishing up
 
-If you are satisfied, then you will want to do 2 things to wrap it all up. First, in the OpenVPN client config, you'll need to `remote` directive, replacing the internal IP with either your public IP, or a DNS hostname.
+If you are satisfied, then you will want to do 3 things to wrap it all up. 
+
+First, in the OpenVPN client config, you'll need to change the `remote` directive, replacing the internal IP with either your public IP, or a DNS hostname.
+
+Secondly, you'll want to run the `adduser` command within the jail to add a user.
 
 Lastly, you'll need to configure your router to pass traffic coming in on port 1194 to your new jail's IP. With that in place, you should be able to connect to your network from a remote location.

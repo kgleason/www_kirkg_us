@@ -152,7 +152,11 @@ For right now, you can protect your keys from accidental deletion with:
 	:::shell
     cp -r keys ../
     cd ..
+    exit
+		rehash
 
+
+The `exit` is to get us out of the Bourne shell, and back to `csh`, where things look more friendly. The `rehash` is just for good measure.
 
 ##The Server config file
 

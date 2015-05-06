@@ -26,7 +26,7 @@ SITE_URL = "https://www.kirkg.us/"
 # If not set, defaults to SITE_URL
 # BASE_URL = "https://www.kirkg.us/"
 BLOG_EMAIL = "kirk@kirkg.us"
-BLOG_DESCRIPTION = "Where I stage all of my runaway golfcart marathons"  # (translatable)
+BLOG_DESCRIPTION = "If you get confused, just listen to the music play"  # (translatable)
 WRITE_TAG_CLOUD = True
 # Nikola is multilingual!
 #
@@ -324,7 +324,7 @@ COMPILERS = {
 # relative URL.
 #
 # If you don't need any of these, just set to []
-REDIRECTIONS = [("iosdemo/index.html","/posts/using-quicktime-to-remote-demo-ios-applications.html")]
+REDIRECTIONS = [("iosdemo/index.html","/posts/using-quicktime-to-remote-demo-ios-applications/index.html")]
 
 # Presets of commands to execute to deploy. Can be anything, for
 # example, you may use rsync:
@@ -499,10 +499,10 @@ RSS_READ_MORE_LINK = '<p><a href="{link}">{read_more}…</a> ({min_remaining_rea
 # I recommend using the Creative Commons' wizard:
 # http://creativecommons.org/choose/
 LICENSE = """
-<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/2.5/ar/">
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/2.5/ar/">
 <img alt="Creative Commons License BY-NC-SA"
 style="border-width:0; margin-bottom:12px;"
-src="http://i.creativecommons.org/l/by-nc-sa/2.5/ar/88x31.png"></a>"""
+src="https://i.creativecommons.org/l/by-nc-sa/2.5/ar/88x31.png"></a>"""
 
 # A small copyright notice for the page footer (in HTML).
 # (translatable)

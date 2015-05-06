@@ -1,11 +1,11 @@
-<!-- 
+<!--
 .. title: Building an OpenVPN server inside a FreeNAS jail
 .. slug: building-an-openvpn-server-inside-a-freenas-jail
 .. date: 2015-04-30 18:23:36 UTC-05:00
 .. tags: Open Source, FreeNAS, FreeBSD, OpenVPN
-.. category: 
-.. link: 
-.. description: 
+.. category:
+.. link:
+.. description:
 .. type: text
 -->
 
@@ -58,7 +58,7 @@ Say Yes. Then it will prompt you about installing the OpenVPN package:
     The process will require 1 MiB more space.
     521 KiB to be downloaded.
 
-    Proceed with this action? [y/N]: 
+    Proceed with this action? [y/N]:
 
 
 Once again, you should say yes. The packages should install pretty quickly. Once it is finished, run the `rehash` command so that you have access to the newly installed binaries.
@@ -74,7 +74,7 @@ When you have your shell back, make a directory to store all of the OpenVPN bits
     cd easy-rsa
 
 
-A quick edit to the `vars` file will keep you from having to answer the same questions over and over again -- you will have to generate quite a few certificates, so this is a worthwhile step. 
+A quick edit to the `vars` file will keep you from having to answer the same questions over and over again -- you will have to generate quite a few certificates, so this is a worthwhile step.
 
 ##A quick word about editors in FreeBSD
 
@@ -96,7 +96,7 @@ For the most part, you can leave most of this file as is. If you go all the way 
 	export KEY_EMAIL=mail@mydomain.com
 	export KEY_CN=vpn.mydomain.com
 	#export KEY_NAME=changeme
-	export KEY_OU=IT       
+	export KEY_OU=IT
 	#export PKCS11_MODULE_PATH=changeme
 	export PKCS11_PIN=1234
 
@@ -120,9 +120,9 @@ Note that the 2nd command has a space between the period (.) and the vars. In th
     openvpn --genkey --secret keys/ta.key
 
 
- After you source vars, you will get a warning about `clean-all` ... don't fret. It is perfectly safe. When you run `./build-ca`, you should  be able to hit enter to accept all of the defaults. The `build-ca` step builds a certificate authority for your VPN to use. 
+ After you source vars, you will get a warning about `clean-all` ... don't fret. It is perfectly safe. When you run `./build-ca`, you should  be able to hit enter to accept all of the defaults. The `build-ca` step builds a certificate authority for your VPN to use.
 
- When you run the `./build-key-server` command, you will pass in the CN value that you defined in vars. This keeps things consistent. You can continue to press enter for the default until you get to 
+ When you run the `./build-key-server` command, you will pass in the CN value that you defined in vars. This keeps things consistent. You can continue to press enter for the default until you get to
 
 
     Please enter the following 'extra' attributes
@@ -242,7 +242,7 @@ That one is pretty simple. Point the `tls-auth` directive to your `ta.key`.
 	# and rewritten every minute.
 	status /openvpn/log/openvpn-status.log
 
-You'll need to `mkdir /openvpn/log` in order for this work. 
+You'll need to `mkdir /openvpn/log` in order for this work.
 
 
 ###Two factor authenitcation
@@ -275,7 +275,7 @@ In a nutshell, that ruleset does this:
 
 ##Automatic starting
 
-Presumably you will want everything to start automatically. All of that sort of thing is controlled with rc.conf in FreeBSD. Add these lines to the end of `/etc/rc.conf` 
+Presumably you will want everything to start automatically. All of that sort of thing is controlled with rc.conf in FreeBSD. Add these lines to the end of `/etc/rc.conf`
 
 
 	:::config
@@ -299,7 +299,7 @@ With that in place, you can go back to the FreeNAS UI and restart the jail if yo
     service openvpn start
 
 
- If, like me, you get an error about not being able to start openvpn, then make sure that the `/openvpn/logs` directory exists.
+ If, like me, you get an error about not being able to start openvpn, then make sure that the `/openvpn/log` directory exists.
 
 
 ##Configuring the client
@@ -420,7 +420,7 @@ You'll probably see some errors about adding a route. If your test client and yo
 
 ##Finishing up
 
-If you are satisfied, then you will want to do 3 things to wrap it all up. 
+If you are satisfied, then you will want to do 3 things to wrap it all up.
 
 First, in the OpenVPN client config, you'll need to change the `remote` directive, replacing the internal IP with either your public IP, or a DNS hostname.
 

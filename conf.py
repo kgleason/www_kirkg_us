@@ -338,7 +338,7 @@ REDIRECTIONS = [("iosdemo/index.html","/posts/using-quicktime-to-remote-demo-ios
 # in a `nikola deploy` command as you like.
 DEPLOY_COMMANDS = {
     'default': [
-        "rsync -zOr --delete --no-perms output/ www.kirkg.us:/srv/www/www.kirkg.us/public_html/",
+        "rsync -zOr --delete --no-perms output/ do.kirkg.us:/srv/www/www.kirkg.us/public_html/",
     ]
 }
 

@@ -339,6 +339,9 @@ REDIRECTIONS = [("iosdemo/index.html","/posts/using-quicktime-to-remote-demo-ios
 DEPLOY_COMMANDS = {
     'default': [
         "rsync -zOr --delete --no-perms output/ kirk@do.kirkg.us:/srv/www/www.kirkg.us/public_html/",
+    ],
+    'home': [
+    	"rsync -zOr --delete --no-perms output/ root@10.0.0.243:/usr/local/www/www.kirkg.us/html/"
     ]
 }
 

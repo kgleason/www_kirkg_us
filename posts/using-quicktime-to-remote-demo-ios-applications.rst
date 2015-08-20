@@ -1,7 +1,7 @@
 .. title: Using Quicktime to remote demo iOS applications
 .. slug: using-quicktime-to-remote-demo-ios-applications
 .. date: 2015-02-11 16:28:29 UTC-05:00
-.. tags: ios, quicktime, how-to, bloom, demo, remote
+.. tags: ios, quicktime, how-to, demo, remote
 .. link:
 .. description:
 .. type: text

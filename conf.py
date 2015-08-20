@@ -341,7 +341,8 @@ DEPLOY_COMMANDS = {
         "rsync -zOr --delete --no-perms output/ kirk@do.kirkg.us:/srv/www/www.kirkg.us/public_html/",
     ],
     'home': [
-    	"rsync -zOr --delete --no-perms output/ root@10.0.0.243:/usr/local/www/www.kirkg.us/html/"
+        "rsync -zOr --delete --no-perms output/ root@10.0.0.243:/usr/local/www/www.kirkg.us/html/",
+        "ssh root@10.0.0.243 'cp /usr/local/www/www.kirkg.us/keybase.txt /usr/local/www/www.kirkg.us/html/'"
     ]
 }
 

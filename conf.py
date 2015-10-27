@@ -324,7 +324,11 @@ COMPILERS = {
 # relative URL.
 #
 # If you don't need any of these, just set to []
-REDIRECTIONS = [("iosdemo/index.html","/posts/using-quicktime-to-remote-demo-ios-applications/index.html")]
+REDIRECTIONS = [
+    ("iosdemo/index.html","/posts/using-quicktime-to-remote-demo-ios-applications/index.html"),
+    ("CV/index.html","/stories/CV/index.html")
+    ]
+
 
 # Presets of commands to execute to deploy. Can be anything, for
 # example, you may use rsync:
@@ -494,8 +498,6 @@ INDEX_TEASERS = True
 
 # 'Read more...' for the index page, if INDEX_TEASERS is True (translatable)
 INDEX_READ_MORE_LINK = '<p class="more"><a href="{link}">{read_more}…</a></p>'
-# 'Read more...' for the RSS_FEED, if RSS_TEASERS is True (translatable)
-RSS_READ_MORE_LINK = '<p><a href="{link}">{read_more}…</a> ({min_remaining_read})</p>'
 
 # A HTML fragment describing the license, for the sidebar.
 # (translatable)

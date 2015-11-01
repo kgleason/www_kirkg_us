@@ -24,7 +24,7 @@ Interests
 ---------
 
 *   **Technology**: education about privacy, security, & technological choice; open source
-*   **Programming**: Python, Ruby, Node.JS, HTML
+*   **Programming**: Python, Perl, Ruby, Node.JS, HTML
 *   **Philosophy**: Descartes, Kant, Wittgenstein, St. Augustine, Sartre, Camus
 *   **Cooking**: Thai food, barbecue, grilling, Dutch Oven baking, Campfire cooking
 
@@ -39,6 +39,10 @@ Work Experience
     -   Manage a staff of 2 systems & network engineers, 5 full time programmers, 4 intern programmers, 1 systems administrator, 1 product project manager, & 3 database developers.
     -   IT Budgetary planning
     -   Software life cycle planning
+    -   Managed telephony servers directly
+    -   Managed email services directly
+    -   Implemented a multiple server split-horizon DNS configuration using BIND, and multiple views
+    -   Oversaw the successful migration from CommunigatePro (email server) to Zimbra
     -   During the spring & summer of 2011, I oversaw the development of a new product line: an iPad  application used in Medicare Advantage sales. Designed and oversaw implementation of the entire stack: software architecture & testing, database modeling, server & network infrastructure.
     -   During the summer of 2013, I oversaw the development of an additional new product line: a web application designed for accepting, processing, and submitting Medicare Advantage applications over the web, from the call center, or with an agent assisting.
     -   Successfully automated several previously manual processing, including multiple data integrations with several clients and many many third party systems.
@@ -54,6 +58,8 @@ Work Experience
 
     -   Responsible for day to day maintenance of server, network, & telephony infrastructure.
     -   Administered the call center PostgreSQL database, including ETL, data modeling, and reporting.
+    -   Managed multiple email servers.
+    -   Implemented a DNS configuration with multiple BIND & Windows DNS server.
     -   Programmed multiple applications for various lines of business, including a call center contact application (VB6) that included screen pops on inbound calls, and automated OB dialing as well as a Java application that grabbed recordings from the call center PBX, tagged the recordings with meta data from the call, and place the recording on a secure web server for clients to log into and retrieve.
     -   In 2003, instrumental in migrating the call center from an in-house text-based call center application that was built on a de-normalized data model to a WinForm based application that was build on a normalized PostgreSQL database. Worked closely with the predictive dialer vendor to fully integrate the new application.
     -   Spearheaded the complete replacement of the legacy antiquated PowerPC based Linux servers to newer Apple Xserve G4 Servers & Intel x86 based Linux servers.
@@ -91,6 +97,8 @@ Skills
 *   Jack of all trades, master of some. There are few computing challenges with which I have been presented that I have not been able to overcome.
 *   Familiar with NetBSD, OpenBSD
 *   Experience with OpenSSL, GnuPG, Apache, Nginx, PostgreSQL, MySQL, SQLite, bash, tcsh/csh, ssh, sftp, git, mercurial, Subversion, Jenkins
+*   Excellent working knowledge of SMTP, IMAP, POP3. Have worked with Postfix, Qmail, Dovecot IMAP, Courier IMAP.
+*   Excellent working knowledge of DNS, including BIND and Unbound. 
 
 References
 ----------

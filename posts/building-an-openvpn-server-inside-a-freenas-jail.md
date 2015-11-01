@@ -9,6 +9,8 @@
 .. type: text
 -->
 
+*Edit 11/1/2015: Updated the Diffie Helman bit length to 2048 so that newer installs will not break with more recent installations of easy-rsa.*
+
 If you have an up to date FreeNAS server (9.3 stable at the time of this writing), then this guide should walk you through building a jail and installing an OpenVPN server inside of it. The beauty of this system is that it is all being done inside a jail, so the odds of making a mistake that could take down your entire NAS is slim. If something goes awry, you can just delete the jail, and start over again.
 
 After you finish, you will end up with an certificate based OpenVPN server. Each user will need to have their own certificate to go along with their username and password. In essence, we'll be implementing a two factor authenticated VPN.
@@ -197,10 +199,10 @@ This one is pretty self explanatory. Since the default directory may not exist, 
 
 	# Diffie hellman parameters.
 	# Generate your own with:
-	#   openssl dhparam -out dh1024.pem 1024
+	#   openssl dhparam -out dh2048.pem 2048
 	# Substitute 2048 for 1024 if you are using
 	# 2048 bit keys.
-	dh /openvpn/keys/dh1024.pem
+	dh /openvpn/keys/dh2048.pem
 
 
 If you've followed the steps up to this point, you will just need to swapout the name of the server in the cert and key lines.  If you put your keys directory elsewhere, then adjust the paths as necessary.
@@ -431,3 +433,4 @@ First, in the OpenVPN client config, you'll need to change the `remote` directiv
 Secondly, you'll want to run the `adduser` command within the jail to add a user.
 
 Lastly, you'll need to configure your router to pass traffic coming in on port 1194 to your new jail's IP. With that in place, you should be able to connect to your network from a remote location.
+

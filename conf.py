@@ -347,6 +347,10 @@ DEPLOY_COMMANDS = {
     'home': [
         "rsync -zOr --delete --no-perms output/ root@10.0.0.243:/usr/local/www/www.kirkg.us/html/",
         "ssh root@10.0.0.243 'cp /usr/local/www/www.kirkg.us/keybase.txt /usr/local/www/www.kirkg.us/html/'"
+    ],
+    'jail': [
+        "rsync -zOr --delete --no-perms output/ kirk@192.241.179.180:/usr/jails/KIRKG-BLOG/usr/local/www/www.kirkg.us/html/",
+        "ssh kirk@192.241.179.180 'cp /usr/jails/KIRKG-BLOG/usr/local/www/www.kirkg.us/keybase.txt /usr/jails/KIRKG-BLOG/usr/local/www/www.kirkg.us/html/'",
     ]
 }
 

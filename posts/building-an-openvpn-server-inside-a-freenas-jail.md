@@ -9,6 +9,8 @@
 .. type: text
 -->
 
+*Edit 02/21/2016: Updated to included the most recent version of easy-rsa (3.0.1_1).*
+
 *Edit 11/1/2015: Updated the Diffie Helman bit length to 2048 so that newer installs will not break with more recent installations of easy-rsa.*
 
 If you have an up to date FreeNAS server (9.3 stable at the time of this writing), then this guide should walk you through building a jail and installing an OpenVPN server inside of it. The beauty of this system is that it is all being done inside a jail, so the odds of making a mistake that could take down your entire NAS is slim. If something goes awry, you can just delete the jail, and start over again.
@@ -49,18 +51,16 @@ You should now have a root shell inside the jail, so now you can get to it. Run 
 
 Say Yes. Then it will prompt you about installing the OpenVPN package:
 
-
     The following 3 package(s) will be affected (of 0 checked):
+	New packages to be INSTALLED:
+		openvpn: 2.3.10
+		easy-rsa: 3.0.1_1
+		lzo2: 2.09
 
-    New packages to be INSTALLED:
-	    openvpn: 2.3.6_3
-	    easy-rsa: 2.2.0.m
-	    lzo2: 2.09
+	The process will require 1 MiB more space.
+	544 KiB to be downloaded.
 
-    The process will require 1 MiB more space.
-    521 KiB to be downloaded.
-
-    Proceed with this action? [y/N]:
+	Proceed with this action? [y/N]:
 
 
 Once again, you should say yes. The packages should install pretty quickly. Once it is finished, run the `rehash` command so that you have access to the newly installed binaries.
@@ -80,69 +80,48 @@ A quick edit to the `vars` file will keep you from having to answer the same que
 
 ##A quick word about editors in FreeBSD
 
-At this point, I'm generally inclined to `pkg install vim-lite` because I prefer `vim` to `vi`, but you'll want to resist that temptation -- installing `vim-lite` will mess with the default gettext library, and will give you a headache. Attempting to install nano will do the same thing. Fixing that issue is beyond the scope of this tutorial.
+At this point, I'm generally inclined to `pkg install vim-lite` because I prefer `vim` to `vi`. If you want to, then go ahead and install it. Or you can install `nano`.
 
-Luckily, FreeBSD comes it a built in editor called `edit`. It's pretty intuitive, so if you don't want to deal with `vi`, I'd recommend that.
+However, if you don't want to install any extra packages, FreeBSD comes it a built in editor called `edit`. It's pretty intuitive.
 
 ##The vars file
 
-For the most part, you can leave most of this file as is. If you go all the way down to the end, you will find the pieces that will need to be changed:
+For the most part, you can leave most of this file as is. You can jump down to the "organizational fields" ection (around line 84). There you will find the pieces that will need to be changed:
 
 
 	:::shell
-	export KEY_COUNTRY="US"
-	export KEY_PROVINCE="IN"
-	export KEY_CITY="Bloomington"
-	export KEY_ORG="KirkG dot us"
-	export KEY_EMAIL="me@mydomain.com"
-	export KEY_EMAIL=mail@mydomain.com
-	export KEY_CN=vpn.mydomain.com
-	#export KEY_NAME=changeme
-	export KEY_OU=IT
-	#export PKCS11_MODULE_PATH=changeme
-	export PKCS11_PIN=1234
+	set_var EASYRSA_REQ_COUNTRY    "US"
+	set_var EASYRSA_REQ_PROVINCE   "IN"
+	set_var EASYRSA_REQ_CITY       "Bloomington"
+	set_var EASYRSA_REQ_ORG        "KirkG dot us"
+	set_var EASYRSA_REQ_EMAIL      "me@mydomain.me"
+	#set_var EASYRSA_REQ_OU         "My Organizational Unit"
 
 
-The comments right above that part say to not leave any of the fields blank, but it is really not that big of a deal. Save your vars.
+This will not set a default for the OU. Feel free to set one if you would like. Note that the values for which we want to set defaults need to be uncommented in order for them to have any effect. Save the file.
 
 ##Setting up your certificates
 
-If you haven't noticed, the default shell for root in FreeBSD is csh. In order to perform the next few steps, we'll need some Bourne shell functionality. If you really want to install bash, you can, but it is overkill for what you are about to do. The following commands are going to use `sh` (the Bourne shell). It should also work with `bash`, if that's the kind of person you are.
-
-Note that the 2nd command has a space between the period (.) and the vars. In the classic Bourne shell, this is how you source a file. The space is important.
-
+Execute the following commands to get the certificates set up.
 
 	:::shell
-    sh
-    . vars
-    ./clean-all
-    ./build-ca
-    ./build-key-server $KEY_CN
-    ./build-dh
+    ./easyrsa.real init-pki
+    ./easyrsa.real build-ca  #This prompts for a password
+    ./easyrsa.real gen-req server nopass
+    ./easyrsa.real sign-req server server #This also prompts for a required password
+    openssl dhparam -out dh2048.pem 2048
     openvpn --genkey --secret keys/ta.key
+    ./easyrsa.real gen-req client nopass
+    ./easyrsa.real sign-req client client #Enter the passphrase to unlock the signing key
 
 
- After you source vars, you will get a warning about `clean-all` ... don't fret. It is perfectly safe. When you run `./build-ca`, you should  be able to hit enter to accept all of the defaults. The `build-ca` step builds a certificate authority for your VPN to use.
-
- When you run the `./build-key-server` command, you will pass in the CN value that you defined in vars. This keeps things consistent. You can continue to press enter for the default until you get to
-
-
-    Please enter the following 'extra' attributes
-    to be sent with your certificate request
-
-
-It will prompt you for a challenge password and an optional company name. We recommend that you leave these blank. When you are prompted to sign the certificate, you should say yes. When you are asked to commit the new cert, you should once again say yes.
-
-Building the Diffie-Hellman keys may take a few minutes, depending upon your hardware. The `openvpn` command will execute quickly.
-
-The last step in the key building process is to generate the certs for your client to connect. If you are going to have multiple users, you will want to run this command for each client that you plan to have connect.
-
-
-	:::shell
-    ./build-key <client-name>
-
-
-Your client-name should be something descriptive. It is purely for human readability purposes. You can press enter for all of the questions that are asked. When prompted to sign the certificate and commit the certificate, you should once again say yes.
+############
+## Update me
+############
+This section needs to walk through all of the steps from above
+############
+## Update me
+############
 
 ##Protect your keys
 

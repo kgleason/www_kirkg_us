@@ -284,11 +284,11 @@ With that in place, you can go back to the FreeNAS UI and restart the jail if yo
     service openvpn start
 
 
- If, like me, you get an error about not being able to start openvpn, then make sure that the `/var/log/openvpn/` directory exists.
+If, like me, you get an error about not being able to start openvpn, then make sure that the `/var/log/openvpn/` directory exists.
 
- ##Configuring the client
+##Configuring the client
 
- With the server up and running, the last step is going to be to get a client to connect. There are many different clients that you can use, depending upon your platform. We are going to assume that you are using a unix command line client. There are a bunch of different ways that you can get this installed:
+With the server up and running, the last step is going to be to get a client to connect. There are many different clients that you can use, depending upon your platform. We are going to assume that you are using a unix command line client. There are a bunch of different ways that you can get this installed:
 
    * FreeBSD:
      * pkg install openvpn
@@ -300,11 +300,11 @@ With that in place, you can go back to the FreeNAS UI and restart the jail if yo
    * OS X (You'll have to do more that just install openvpn, but homebrew should tell you what to do to get the tun/tap driver installed in OS X)
      * brew install openvpn
 
- Once you have the `openvpn` binary installed, your client platform of choice shouldn't be of great concern.
+Once you have the `openvpn` binary installed, your client platform of choice shouldn't be of great concern.
 
  ###Get the files
 
- In order to keep everything clean, you'll need to create a directory to hold everything:
+In order to keep everything clean, you'll need to create a directory to hold everything:
 
 
  	:::shell
@@ -312,7 +312,7 @@ With that in place, you can go back to the FreeNAS UI and restart the jail if yo
      cd ~/.openvpn
 
 
- There are 4 files on the server that you will need on your client. The jail isn't running ssh, so you can get creative about how you get them back to your client. One option is to copy the contents of the files off of the server and paste them into the files on the client. Or you can start ssh with `service sshd onestart`. The files that you'll need from the server are:
+There are 4 files on the server that you will need on your client. The jail isn't running ssh, so you can get creative about how you get them back to your client. One option is to copy the contents of the files off of the server and paste them into the files on the client. Or you can start ssh with `service sshd onestart`. The files that you'll need from the server are:
 
 
    * /usr/local/etc/openvpn/pki/ca.crt
@@ -321,15 +321,15 @@ With that in place, you can go back to the FreeNAS UI and restart the jail if yo
    * /usr/local/etc/openvpn/pki/private/VPN_CLIENT_SHORTNAME.key
 
 
- Replace VPN_CLIENT_SHORTNAME up there with the client name that you've used up to this point.
+Replace VPN_CLIENT_SHORTNAME up there with the client name that you've used up to this point.
 
- ##The client config file
+##The client config file
 
- With all of the certs in place, it's time to create a client side config file. Go back to the [OpenVPN sample configs](https://openvpn.net/index.php/open-source/documentation/howto.html#examples) and grab the client config. Paste the contents into `~/.openvpn/VPN_SERVER_NAME.ovpn`.
+With all of the certs in place, it's time to create a client side config file. Go back to the [OpenVPN sample configs](https://openvpn.net/index.php/open-source/documentation/howto.html#examples) and grab the client config. Paste the contents into `~/.openvpn/VPN_SERVER_NAME.ovpn`.
 
- As with the server config, there isn't much to change.
+As with the server config, there isn't much to change.
 
- ###Remote endpoint
+###Remote endpoint
 
 
  	# The hostname/IP and port of the server.
@@ -338,9 +338,9 @@ With that in place, you can go back to the FreeNAS UI and restart the jail if yo
  	remote 10.0.0.248 1194
 
 
- For the initial test, you should be able to specify the local IP of the OpenVPN jail. We'll have to come back and change this later.
+For the initial test, you should be able to specify the local IP of the OpenVPN jail. We'll have to come back and change this later.
 
- ###Quiet down the wifi warnings
+###Quiet down the wifi warnings
 
 
  	# Wireless networks often produce a lot
@@ -349,11 +349,11 @@ With that in place, you can go back to the FreeNAS UI and restart the jail if yo
  	mute-replay-warnings
 
 
- Not much to say. You can keep this commented out if you want.
+Not much to say. You can keep this commented out if you want.
 
- ###Where are the certs?
+###Where are the certs?
 
- If you have all of the certs in the same directory as the client config file, then you can define the cert locations like this:
+If you have all of the certs in the same directory as the client config file, then you can define the cert locations like this:
 
 
  	# SSL/TLS parms.
@@ -367,9 +367,9 @@ With that in place, you can go back to the FreeNAS UI and restart the jail if yo
  	key VPN_CLIENT_SHORTNAME.key
 
 
- If they are in a different location, you can use full paths.
+If they are in a different location, you can use full paths.
 
- ###The TLS auth key
+###The TLS auth key
 
 
  	# If a tls-auth key is used on the server
@@ -377,9 +377,9 @@ With that in place, you can go back to the FreeNAS UI and restart the jail if yo
  	tls-auth ta.key 1
 
 
- This key needs to be the same on the client and the server. The `1` parameter indicates that this is a client.
+This key needs to be the same on the client and the server. The `1` parameter indicates that this is a client.
 
- ###Two Factor Authenitcation
+###Two Factor Authenitcation
 
 
  	# Force username & password authenitcation
@@ -389,15 +389,33 @@ With that in place, you can go back to the FreeNAS UI and restart the jail if yo
      auth-nocache
 
 
- These are the client-analogue lines to the optional config line in the server that will require a username and password to connect. If you added the optional line to the server config, then you will need to add this to the client config. If you add these lines to the client config without the server lines, then you will be prompted for a username and password that will then be ignored.
+These are the client-analogue lines to the optional config line in the server that will require a username and password to connect. If you added the optional line to the server config, then you will need to add this to the client config. If you add these lines to the client config without the server lines, then you will be prompted for a username and password that will then be ignored.
+If you added this to both configs, then you will need to add a user inside your jail.
 
- ##Firing up the test
+ 	:::shell
+ 	useradd
 
- Save the config file, and fire up a test:
+
+###Protecting your keys a bit
+The OpenVPN client will complain about the default permissions on the keys (assuming you have the same umask set as I do), and it is a good practice to at least make it hard for prying eyes to get to our keys. Assuming that you've saved your keys and certs in the same place I have, a quick chmod will put us in a better position.
+
+
+	:::shell
+	chmod 600 ~/.openvpn/*.key
+
+##Firing up the test
+
+Save the config file, and fire up a test:
 
 
  	:::bash
      sudo openvpn <client>.ovpn
 
 
- You'll probably see some errors about adding a route. If your test client and your server are on the same network, then the route to that network already exists on the client. If you ignore that for now, you should still get a connection -- useless, but a connection nonetheless.
+Depending upon the specific path that you followed, you may also see various prompts. For example, if you used the `auth-user-pass` option then you will be prompted for a username and password. If you skipped the `nopass` option when you created the client certificate (which is the recommended way), then you'll also be prompted for the passphrase to unlock the client key.
+
+You may see some errors about adding a route. If your test client and your server are on the same network, then the route to that network already exists on the client. If you ignore that for now, you should still get a connection -- useless, but a connection nonetheless.
+
+##Extra credit: Real 2 factor authentication
+What follows is completely optional. You can stop now and as long as you know how to forward a port from your firewall to your FreeNAS jail, then you have a functioning VPN server up and running. If you want to take it to the next step, then you can keep going to enable 2 factor authentication using your phone (or a tablet I suppose) and Authy.
+

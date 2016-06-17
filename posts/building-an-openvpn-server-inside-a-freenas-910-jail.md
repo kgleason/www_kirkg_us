@@ -2,7 +2,7 @@
 .. title: Building an OpenVPN server inside a FreeNAS 9.10 jail
 .. slug: building-an-openvpn-server-inside-a-freenas-910-jail
 .. date: 2016-06-12 11:27:48 UTC-05:00
-.. tags: Open Source, FreeNAS, FreeBSD, OpenVPN
+.. tags: Open Source, FreeNAS, FreeBSD, OpenVPN, EasyRSA3
 .. category: 
 .. link: 
 .. description: 
@@ -417,7 +417,4 @@ Depending upon the specific path that you followed, you may also see various pro
 You may see some errors about adding a route. If your test client and your server are on the same network, then the route to that network already exists on the client. If you ignore that for now, you should still get a connection -- useless, but a connection nonetheless.
 
 An alternate way to test would be to go to [Digital Ocean](https://m.do.co/c/18b80ab28634), spin up a quick Droplet, and set up the OpenVPN client. In order for this to work, you'll need to set up port forwarding on your router. Specifically, you'll need UDP port 1194 to passed in to your jail's IP address.
-
-##Extra credit: Real 2 factor authentication
-What follows is completely optional. You can stop now and as long as you know how to forward a port from your firewall to your FreeNAS jail, then you have a functioning VPN server up and running. If you want to take it to the next step, then you can keep going to enable 2 factor authentication using your phone (or a tablet I suppose) and Authy.
 

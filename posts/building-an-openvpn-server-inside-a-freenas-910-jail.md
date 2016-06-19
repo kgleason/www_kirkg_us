@@ -63,7 +63,7 @@ The output from these commands will vary, but in general, you'll want to say yes
 	pkg install vim-lite openvpn
 
 
-There should be 3 total packages that get installed.
+There should be 3 total packages that get installed. Be sure to `rehash` so that you can use the newly installed commands as expected.
 
 ##Configuring OpenVPN
 With the basic [OpenVPN](https://www.openvpn.org) installed, you'll want to get down to configuring it. This installation will be more FreeBSD-esque than my last one, and almost everything will live in `/usr/local/`
@@ -99,6 +99,7 @@ For our certificate innfrastructure, this is going to assume that you are lookin
 
 
 	:::shell
+	cd /usr/local/etc/openvpn/easy-rsa
 	/usr/local/etc/openvpn/easy-rsa/easyrsa init-pki
 	/usr/local/etc/openvpn/easy-rsa/easyrsa build-ca
 
@@ -147,7 +148,10 @@ With that, all of the PKI should be in place. Before we get started making confi
 
 
 	:::shell
-	cp /usr/local/etc/openvpn/easy-rsa/pki /usr/local/etc/openvpn
+	cp -R /usr/local/etc/openvpn/easy-rsa/pki /usr/local/etc/openvpn
+
+Be sure that the paths on the `cp` command don't end with `/`.
+
 
 ##The Server config file
 
@@ -184,7 +188,7 @@ This one is pretty self explanatory. Since the default directory may not exist, 
 	# (see "pkcs12" directive in man page).
 	ca /usr/local/etc/openvpn/pki/ca.crt
 	cert /usr/local/etc/openvpn/pki/issued/VPNSERVER.crt
-	key /usr/local/etc/openvpn/pki/VPNSERVER.key  # This file should be kept secret
+	key /usr/local/etc/openvpn/pki/private/VPNSERVER.key  # This file should be kept secret
 
 	# Diffie hellman parameters.
 	# Generate your own with:
@@ -294,7 +298,7 @@ With that in place, you can go back to the [FreeNAS](https://www.freenas.org) UI
     service openvpn start
 
 
-If, like me, you get an error about not being able to start openvpn, then make sure that the `/var/log/openvpn/` directory exists.
+If, like me, you get an error about not being able to start openvpn, then make sure that the `/var/log/openvpn/` directory exists. If that doesn't resolve it, see if `grep error /var/log/messages` returns anything helpful.
 
 ##Configuring the client
 
@@ -401,9 +405,6 @@ This key needs to be the same on the client and the server. The `1` parameter in
 
 These are the client-analogue lines to the optional config line in the server that will require a username and password to connect. If you added the optional line to the server config, then you will need to add this to the client config. If you add these lines to the client config without the server lines, then you will be prompted for a username and password that will then be ignored.
 If you added this to both configs, then you will need to add a user inside your jail.
-
- 	:::shell
- 	useradd
 
 
 ###Protecting your keys a bit

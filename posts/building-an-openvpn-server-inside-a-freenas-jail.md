@@ -3,13 +3,15 @@
 .. slug: building-an-openvpn-server-inside-a-freenas-jail
 .. date: 2015-04-30 18:23:36 UTC-05:00
 .. tags: Open Source, FreeNAS, FreeBSD, OpenVPN
-.. category:
+.. category: tutorials
 .. link:
 .. description:
 .. type: text
 -->
 
-*Edit 11/1/2015: Updated the Diffie Helman bit length to 2048 so that newer installs will not break with more recent installations of easy-rsa.*
+*Update 6/18/2016*: New version of [this tutorial](../building-an-openvpn-server-inside-a-freenas-910-jail) added. If you are using EasyRSA version 3, then you should use the new tutorial. If you are still on version 2, then this tutorial is probably the one you want.
+
+*Edit 11/1/2015:* Updated the Diffie Helman bit length to 2048 so that newer installs will not break with more recent installations of easy-rsa.
 
 If you have an up to date FreeNAS server (9.3 stable at the time of this writing), then this guide should walk you through building a jail and installing an OpenVPN server inside of it. The beauty of this system is that it is all being done inside a jail, so the odds of making a mistake that could take down your entire NAS is slim. If something goes awry, you can just delete the jail, and start over again.
 

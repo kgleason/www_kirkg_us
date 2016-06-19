@@ -1,7 +1,7 @@
 <!-- 
 .. title: Building an OpenVPN server inside a FreeNAS 9.10 jail
 .. slug: building-an-openvpn-server-inside-a-freenas-910-jail
-.. date: 2016-06-12 11:27:48 UTC-05:00
+.. date: 2016-06-18 21:59:00 UTC-05:00
 .. tags: Open Source, FreeNAS, FreeBSD, OpenVPN, EasyRSA
 .. category: tutorials
 .. link: 

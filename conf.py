@@ -217,6 +217,7 @@ PAGES = (
     ("stories/*.md", "stories", "story.tmpl"),
     ("stories/*.mdown", "stories", "story.tmpl"),
     ("stories/*.markdown", "stories", "story.tmpl"),
+    ("stories/*.html", "stories", "story.tmpl"),
 )
 
 # One or more folders containing files to be copied as-is into the output.
@@ -325,8 +326,8 @@ COMPILERS = {
 #
 # If you don't need any of these, just set to []
 REDIRECTIONS = [
-    ("iosdemo/index.html","/posts/using-quicktime-to-remote-demo-ios-applications/index.html"),
-    ("CV/index.html","/stories/CV/index.html")
+    ("CV/index.html","/stories/CV"),
+    ("luke/index.html", "/stories/luke"),
     ]
 
 

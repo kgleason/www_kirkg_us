@@ -343,15 +343,8 @@ REDIRECTIONS = [
 # in a `nikola deploy` command as you like.
 DEPLOY_COMMANDS = {
     'default': [
-        "rsync -zOr --delete --no-perms output/ kirk@do.kirkg.us:/srv/www/www.kirkg.us/public_html/",
-    ],
-    'home': [
-        "rsync -zOr --delete --no-perms output/ root@10.0.0.243:/usr/local/www/www.kirkg.us/html/",
-        "ssh root@10.0.0.243 'cp /usr/local/www/www.kirkg.us/keybase.txt /usr/local/www/www.kirkg.us/html/'"
-    ],
-    'jail': [
-        "rsync -zOr --delete --no-perms output/ kirk@192.241.179.180:/usr/jails/KIRKG-BLOG/usr/local/www/www.kirkg.us/html/",
-        "ssh kirk@192.241.179.180 'cp /usr/jails/KIRKG-BLOG/usr/local/www/www.kirkg.us/keybase.txt /usr/jails/KIRKG-BLOG/usr/local/www/www.kirkg.us/html/'",
+        "rsync -zOr --delete --no-perms output/ kirk@104.131.94.132:/usr/jails/KIRKWEB/usr/local/www/www.kirkg.us/html/",
+        "ssh kirk@104.131.94.132 'cp /usr/jails/KIRKWEB/usr/local/www/www.kirkg.us/html/images/keybase.txt /usr/jails/KIRKWEB/usr/local/www/www.kirkg.us/html/'",
     ]
 }
 

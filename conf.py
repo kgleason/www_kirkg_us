@@ -328,6 +328,7 @@ COMPILERS = {
 REDIRECTIONS = [
     ("CV/index.html","/stories/CV"),
     ("luke/index.html", "/stories/luke"),
+    ("running-journal/index.html", "/stories/running-journal")
     ]
 
 

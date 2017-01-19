@@ -42,4 +42,4 @@ Diet: No meat yesterday
 
 Training For: Adding distance
 
-Shoes: 2nd run in new shoes. Total 9 miles so far.
+Shoes: Blue and Yellow Brooks. 2nd run. Total 9 miles so far.

@@ -1,7 +1,7 @@
 <!--
 .. title: Running Journal: Mmm DD, YYYY
 .. slug: running-journal-mmm-DD-YYYY
-.. date: YYYY-MM-DD 08:53:32 UTC-05:00
+.. date: 2217-01-08 01:00:00 UTC-05:00
 .. tags: running-journal
 .. category:running-journal
 .. link:
@@ -36,3 +36,6 @@ Weight:
 Diet:
 
 Training For:
+
+##Delete me##
+Don't forget to update the dates in the meta data.

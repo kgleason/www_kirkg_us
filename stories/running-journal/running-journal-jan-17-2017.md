@@ -1,7 +1,7 @@
 <!--
-.. title: Running Journal
-.. slug:
-.. date: 2217-01-08 08:53:32 UTC-05:00
+.. title: Running Journal: Jan 17, 2017
+.. slug: running-journal-jan-17-2017
+.. date: 2017-01-17 08:53:32 UTC-05:00
 .. tags: running-journal
 .. category:running-journal
 .. link:

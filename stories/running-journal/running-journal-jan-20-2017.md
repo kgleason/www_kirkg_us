@@ -27,12 +27,12 @@ Intervals: 5 minute warm up, 4x 2100 yards w/ 175 yard recovery. 5 minute cooldo
 Mostly flat. Same as last time.
 
 ##How I felt##
-Hit a wall at 3 miles. I felt it. 
+Hit a wall at 3 miles. I felt it.
 
 ##Effort##
 According to fit bit: 39 minutes peak, 12 minutes cardio.
 
-The first 3 miles felt great. 
+The first 3 miles felt great.
 
 ##Notes##
 It was misty, and about 49 degrees outside. I should have skipped the mittens, the tights, and the long sleeved undershirt. By the end, I was way too hot.
@@ -43,3 +43,5 @@ Weight: 213 (ish)
 Diet: Ate a breakfast sandwich. Might consider eating more.
 
 Training For: Conditioning / adding distance.
+
+Shoes: Blue and Yellow Brooks. 3nd run. Total 14 miles so far.

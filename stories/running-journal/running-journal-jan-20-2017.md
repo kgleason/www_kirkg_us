@@ -37,6 +37,8 @@ The first 3 miles felt great.
 ##Notes##
 It was misty, and about 49 degrees outside. I should have skipped the mittens, the tights, and the long sleeved undershirt. By the end, I was way too hot.
 
+If the misting hadn't stopped, nipples probably would have been bleeding by the end. Sore all day long.
+
 ##Other Stuff (Optional)##
 Weight: 213 (ish)
 

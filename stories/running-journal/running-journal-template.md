@@ -37,5 +37,7 @@ Diet:
 
 Training For:
 
+Shoes:
+
 ##Delete me##
 Don't forget to update the dates in the meta data.

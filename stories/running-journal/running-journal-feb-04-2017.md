@@ -42,4 +42,4 @@ Diet: Way too much beer the day before.
 
 Training For: Endurance, adding distance.
 
-Shoes: Blue & yellow Brooke's
+Shoes: Blue & yellow Brooke's. 46.5 miles.

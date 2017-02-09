@@ -44,4 +44,4 @@ Diet: Ate healthy yesterday.
 
 Training For: Endurance / distance
 
-Shoes: Blue & Yellow Brooke's
+Shoes: Blue & Yellow Brooke's. 53 miles

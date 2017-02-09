@@ -20,7 +20,7 @@ Endurance
 9:58 / miles
 
 ##Route##
-(B-Line trail)[http://rndb.co/m8X1]
+[B-Line trail](http://rndb.co/m8X1)
 
 ##Terrain##
 Flat.  115 ft elevantion change.
@@ -40,4 +40,4 @@ Diet: Mostly fruit & veggies yesterday
 
 Training For: Endurance / distance
 
-Shoes: Blue & Yellow Brooke's.
+Shoes: Blue & Yellow Brooke's. 35.5 miles

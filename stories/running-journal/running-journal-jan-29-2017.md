@@ -20,7 +20,7 @@ Endurance
 average 10:25 / mile
 
 ##Route##
-(Around the neighborhood)[http://rndb.co/p8VI]
+[Around the neighborhood](http://rndb.co/p8VI)
 
 ##Terrain##
 Pretty flat: 132 feet total elevation change
@@ -42,4 +42,4 @@ Diet:
 Training For:
 Distance / endurance
 
-Shoes: Blue & Yellow Brooke's. 
+Shoes: Blue & Yellow Brooke's. 30 miles.

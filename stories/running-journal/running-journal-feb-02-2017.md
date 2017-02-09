@@ -43,4 +43,4 @@ Diet: nothing special
 
 Training For: Endurance / adding distance
 
-Shoes: Blue & Yellow Brookes. 
+Shoes: Blue & Yellow Brookes. 41 miles.

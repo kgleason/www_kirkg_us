@@ -1,7 +1,7 @@
 <!--
-.. title: Running Journal: Mmm DD, YYYY
-.. slug: running-journal-mmm-DD-YYYY
-.. date: 2217-01-08 01:00:00 UTC-05:00
+.. title: Running Journal: Mar 02, 2017
+.. slug: running-journal-mar-02-2017
+.. date: 2017-03-02 01:00:00 UTC-05:00
 .. tags: running-journal
 .. category:running-journal
 .. link:

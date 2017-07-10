@@ -338,7 +338,7 @@ Once you have the `openvpn` binary installed, your client platform of choice sho
 In order to keep everything clean, you'll need to create a directory to hold all the stuff:
 
 
- 	  :::shell
+    :::shell
     mkdir ~/.openvpn
     cd ~/.openvpn
 

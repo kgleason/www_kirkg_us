@@ -1,11 +1,11 @@
-<!-- 
+<!--
 .. title: Running an OpenVPN server in a FreeNAS 9.10 jail
 .. slug: running-an-openvpn-server-in-a-freenas-910-jail
 .. date: 2016-06-18 21:59:00 UTC-05:00
 .. tags: Open Source, FreeNAS, FreeBSD, OpenVPN, EasyRSA
 .. category: tutorials
-.. link: 
-.. description: 
+.. link:
+.. description:
 .. type: text
 -->
 
@@ -17,9 +17,9 @@ Since I wrote the previous article, a few things have changed. The most importan
 
 ###Fixing my jails
 
-I had some issues with standard jails after the upgrade to [FreeNAS](https://www.freenas.org) 9.10, so before I get into the meat of it, I'm going to outline what I did to get back to a funcitonal state. I haven't yet looked to see if there are any known bugs yet, but I will at some point. I honestly think that I probably screwed it up, since I tend to mess with the `warden` command a bit. 
+I had some issues with standard jails after the upgrade to [FreeNAS](https://www.freenas.org) 9.10, so before I get into the meat of it, I'm going to outline what I did to get back to a funcitonal state. I haven't yet looked to see if there are any known bugs yet, but I will at some point. I honestly think that I probably screwed it up, since I tend to mess with the `warden` command a bit.
 
-In attempting to add a new jail, I was getting an error message from [FreeNAS](https://www.freenas.org) about not being able to find the jail template. In order to successfully add the new jail, I created a custom jail template. In the [FreeNAS](https://www.freenas.org) UI, go to Jails -> Templates, and click the "Add Jail Template" button. 
+In attempting to add a new jail, I was getting an error message from [FreeNAS](https://www.freenas.org) about not being able to find the jail template. In order to successfully add the new jail, I created a custom jail template. In the [FreeNAS](https://www.freenas.org) UI, go to Jails -> Templates, and click the "Add Jail Template" button.
 
 ![FreeNAS Custom Jail](../../images/FreeNAS_JailTemplate.png)
 
@@ -28,9 +28,9 @@ The URL for the jail template is [http://download.freenas.org/jails/10/x64/freen
 Once I had a functioning template, I was able to create a jail. I did have to go into "Advanced" to specify the template, but otherwise, it is a pretty stock jail.
 
 ###FreeNAS 9.3
-Even though the previous article was written using [FreeNAS](https://www.freenas.org) 9.3, and using [FreeBSD](https://www.freebsd.org) 9.3 jails, I suspect that the breakage most people were experiencing from the previous article was due to the major version change of [EasyRSA](https://github.com/OpenVPN/easy-rsa) from 2 to 3. As such, I strongly suspect that what I have written below will still work on [FreeBSD](https://www.freebsd.org) 9.3 jails, but I haven't yet tested it. 
+Even though the previous article was written using [FreeNAS](https://www.freenas.org) 9.3, and using [FreeBSD](https://www.freebsd.org) 9.3 jails, I suspect that the breakage most people were experiencing from the previous article was due to the major version change of [EasyRSA](https://github.com/OpenVPN/easy-rsa) from 2 to 3. As such, I strongly suspect that what I have written below will still work on [FreeBSD](https://www.freebsd.org) 9.3 jails, but I haven't yet tested it.
 
-Short version of all of that is if you are using [EasyRSA](https://github.com/OpenVPN/easy-rsa) version 2, then refer to [the previous article](../building-an-openvpn-server-inside-a-freenas-jail). If you are using [EasyRSA](https://github.com/OpenVPN/easy-rsa) version 3, keep reading. 
+Short version of all of that is if you are using [EasyRSA](https://github.com/OpenVPN/easy-rsa) version 2, then refer to [the previous article](../building-an-openvpn-server-inside-a-freenas-jail). If you are using [EasyRSA](https://github.com/OpenVPN/easy-rsa) version 3, keep reading.
 
 ###Variables
 One of the things that I like about [OpenVPN](https://www.openvpn.org) is that each client gets it's own set of certificates, but that also means that naming of the certificates gets to be important. Since in this article, I am only setting up a single client, I'm going to use the variables name **VPNCLIENT** as the name of my client. Whenever you see the word **VPNCLIENT**, you should substitute in the actual name of your VPN client.
@@ -79,7 +79,7 @@ Easy RSA has changed quite a bit between EasyRSA 2 and EasyRSA 3, so the old ste
 
 	:::shell
 	cd /usr/local/etc/openvpn/easy-rsa
-	cp easyrsa-real easyrsa
+	cp easyrsa.real easyrsa
 	chmod 755 easyrsa
 
 
@@ -128,7 +128,7 @@ The next step is to have the CA sign the requests so that they are proper certs.
 	/usr/local/etc/openvpn/easy-rsa/easyrsa sign client VPNCLIENT
 
 
-During those commands you'll need to type the word `yes` to confirm the certificates, and then enter the passphrase for the CA that you set up a few steps ago. 
+During those commands you'll need to type the word `yes` to confirm the certificates, and then enter the passphrase for the CA that you set up a few steps ago.
 
 The last step of the PKI is to set up some Diffe-Hellman parameters (a.k.a. DHPArams). One command should do it.
 
@@ -326,7 +326,7 @@ In order to keep everything clean, you'll need to create a directory to hold all
      cd ~/.openvpn
 
 
-There are 4 files on the server that you will need on your client. The jail isn't running ssh, so you can get creative about how you get them back to your client. One option is to copy the contents of the files off of the server and paste them into the files on the client. Or you can start ssh with `service sshd onestart`, but that's really only going to be useful if you've already added in auser in your jail. 
+There are 4 files on the server that you will need on your client. The jail isn't running ssh, so you can get creative about how you get them back to your client. One option is to copy the contents of the files off of the server and paste them into the files on the client. Or you can start ssh with `service sshd onestart`, but that's really only going to be useful if you've already added in auser in your jail.
 
 The files that you'll need from the server are:
 
@@ -429,7 +429,7 @@ You may see some errors about adding a route. If your test client and your serve
 
 
 ## A better test
-A better way to test would be to go to [Digital Ocean](https://m.do.co/c/18b80ab28634), spin up a quick Droplet, and set up the [OpenVPN](https://www.openvpn.org) client. 
+A better way to test would be to go to [Digital Ocean](https://m.do.co/c/18b80ab28634), spin up a quick Droplet, and set up the [OpenVPN](https://www.openvpn.org) client.
 
 Assuming that you've followed all of the reocmmendations, in order to make this work you'll need to do the following things:
 

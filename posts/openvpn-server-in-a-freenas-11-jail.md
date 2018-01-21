@@ -304,7 +304,7 @@ Also, we'll create a special file for the openvpn daemon:
     openvpn_dir="/usr/local/etc/openvpn/"
 
 
-With that in place, you can go back to the [FreeNAS](https://www.freenas.org) UI and restart the jail if you want. Or you can run a couple of commands to turn everything on. If you opt to restart the jail, you need'nt execute these commands, and they would only need to be run one time, assuming that you made the changes to `rc.conf` outlined above.
+With that in place, you can go back to the [FreeNAS](http://amzn.to/2F1TmlP) UI and restart the jail if you want. Or you can run a couple of commands to turn everything on. If you opt to restart the jail, you need'nt execute these commands, and they would only need to be run one time, assuming that you made the changes to `rc.conf` outlined above.
 
 
     :::shell

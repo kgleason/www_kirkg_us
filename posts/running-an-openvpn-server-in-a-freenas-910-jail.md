@@ -9,17 +9,17 @@
 .. type: text
 -->
 
-A while back, I wrote a post about [building an OpenVPN server inside a FreeNAS jail](../building-an-openvpn-server-inside-a-freenas-jail) for a friend who has a small [FreeNAS](https://www.freenas.org) device, but doesn't have a firewall that will let him run an [OpenVPN](https://www.openvpn.org) server directly. Much to my surprise, this article seems to have gotten some traction, so I'm posting an update to it (leaving the old one in place for posterity's sake).
+A while back, I wrote a post about [building an OpenVPN server inside a FreeNAS jail](../building-an-openvpn-server-inside-a-freenas-jail) for a friend who has a small [FreeNAS](http://amzn.to/2F1TmlP) device, but doesn't have a firewall that will let him run an [OpenVPN](https://www.openvpn.org) server directly. Much to my surprise, this article seems to have gotten some traction, so I'm posting an update to it (leaving the old one in place for posterity's sake).
 
-Since I wrote the previous article, a few things have changed. The most important change that the diligent reader will need to be aware of is that I've upgraded my [FreeNAS](https://www.freenas.org) from the 9.3 train to the 9.10 train. The UI looks the same, but there is the added benefit of being able to use FreeBSD 10 as the jail template.
+Since I wrote the previous article, a few things have changed. The most important change that the diligent reader will need to be aware of is that I've upgraded my [FreeNAS](http://amzn.to/2F1TmlP) from the 9.3 train to the 9.10 train. The UI looks the same, but there is the added benefit of being able to use FreeBSD 10 as the jail template.
 
 <!-- TEASER_END -->
 
 ###Fixing my jails
 
-I had some issues with standard jails after the upgrade to [FreeNAS](https://www.freenas.org) 9.10, so before I get into the meat of it, I'm going to outline what I did to get back to a funcitonal state. I haven't yet looked to see if there are any known bugs yet, but I will at some point. I honestly think that I probably screwed it up, since I tend to mess with the `warden` command a bit.
+I had some issues with standard jails after the upgrade to [FreeNAS](http://amzn.to/2F1TmlP) 9.10, so before I get into the meat of it, I'm going to outline what I did to get back to a funcitonal state. I haven't yet looked to see if there are any known bugs yet, but I will at some point. I honestly think that I probably screwed it up, since I tend to mess with the `warden` command a bit.
 
-In attempting to add a new jail, I was getting an error message from [FreeNAS](https://www.freenas.org) about not being able to find the jail template. In order to successfully add the new jail, I created a custom jail template. In the [FreeNAS](https://www.freenas.org) UI, go to Jails -> Templates, and click the "Add Jail Template" button.
+In attempting to add a new jail, I was getting an error message from [FreeNAS](http://amzn.to/2F1TmlP) about not being able to find the jail template. In order to successfully add the new jail, I created a custom jail template. In the [FreeNAS](http://amzn.to/2F1TmlP) UI, go to Jails -> Templates, and click the "Add Jail Template" button.
 
 ![FreeNAS Custom Jail](../../images/FreeNAS_JailTemplate.png)
 
@@ -28,7 +28,7 @@ The URL for the jail template is [http://download.freenas.org/jails/10/x64/freen
 Once I had a functioning template, I was able to create a jail. I did have to go into "Advanced" to specify the template, but otherwise, it is a pretty stock jail.
 
 ###FreeNAS 9.3
-Even though the previous article was written using [FreeNAS](https://www.freenas.org) 9.3, and using [FreeBSD](https://www.freebsd.org) 9.3 jails, I suspect that the breakage most people were experiencing from the previous article was due to the major version change of [EasyRSA](https://github.com/OpenVPN/easy-rsa) from 2 to 3. As such, I strongly suspect that what I have written below will still work on [FreeBSD](https://www.freebsd.org) 9.3 jails, but I haven't yet tested it.
+Even though the previous article was written using [FreeNAS](http://amzn.to/2F1TmlP) 9.3, and using [FreeBSD](https://www.freebsd.org) 9.3 jails, I suspect that the breakage most people were experiencing from the previous article was due to the major version change of [EasyRSA](https://github.com/OpenVPN/easy-rsa) from 2 to 3. As such, I strongly suspect that what I have written below will still work on [FreeBSD](https://www.freebsd.org) 9.3 jails, but I haven't yet tested it.
 
 Short version of all of that is if you are using [EasyRSA](https://github.com/OpenVPN/easy-rsa) version 2, then refer to [the previous article](../building-an-openvpn-server-inside-a-freenas-jail). If you are using [EasyRSA](https://github.com/OpenVPN/easy-rsa) version 3, keep reading.
 
@@ -39,7 +39,7 @@ Additionally, I'm also going to be using the word **VPNSERVER** to signify my VP
 
 ##Installing OpenVPN
 
-For the most part the high level steps are going to be the same. We'll start out by getting into the jail from the [FreeNAS](https://www.freenas.org) shell:
+For the most part the high level steps are going to be the same. We'll start out by getting into the jail from the [FreeNAS](http://amzn.to/2F1TmlP) shell:
 
 
 	:::shell
@@ -289,7 +289,7 @@ Presumably you will want everything to start automatically. All of that sort of 
 	firewall_script="/usr/local/etc/ipfw.rules"
 
 
-With that in place, you can go back to the [FreeNAS](https://www.freenas.org) UI and restart the jail if you want. Or you can run a couple of commands to turn everything on. If you opt to restart the jail, you need'nt execute these commands, and they would only need to be run one time, assuming that you made the changes to `rc.conf` outlined above.
+With that in place, you can go back to the [FreeNAS](http://amzn.to/2F1TmlP) UI and restart the jail if you want. Or you can run a couple of commands to turn everything on. If you opt to restart the jail, you need'nt execute these commands, and they would only need to be run one time, assuming that you made the changes to `rc.conf` outlined above.
 
 
 	:::shell

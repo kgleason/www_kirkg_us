@@ -2,4 +2,4 @@
 
 export DJANGO_SETTINGS_MODULE=blogsite.settings.prod
 . .venv/bin/activate
-gunicorn -c gunicorn.conf.py -D
+gunicorn blogsite.wsgi:application -c gunicorn.conf.py -D

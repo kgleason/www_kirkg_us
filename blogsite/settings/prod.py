@@ -1,10 +1,12 @@
 from blogsite.settings.base import *
 import environ
 
-env = environ.env()
+env = environ.Env()
 environ.Env.read_env()
 
 DEBUG = False
+
+ALLOWED_HOSTS = ['kirkg.us', '.kirkg.us']
 
 DATABASES = {
     'default': {

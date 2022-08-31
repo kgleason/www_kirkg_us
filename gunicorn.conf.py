@@ -1,7 +1,6 @@
 # gunicorn.conf.py
 # Non logging stuff
-bind = "127.0.0.1:8000"
-bind = "[::1]:8000"
+bind = ["127.0.0.1:8000", "[::1]:8000"]
 workers = 3
 # Access log - records incoming HTTP requests
 accesslog = "/home/kirk/django/logs/gunicorn.access.log"

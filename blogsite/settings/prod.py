@@ -6,7 +6,7 @@ environ.Env.read_env()
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['kirkg.us', '.kirkg.us']
+ALLOWED_HOSTS = ['kirkg.us', '.kirkg.us', '127.0.0.1', '::1',  ]
 
 DATABASES = {
     'default': {
@@ -20,3 +20,5 @@ DATABASES = {
 }
 
 SECRET_KEY = env('SECRET_KEY')
+
+CSRF_TRUSTED_ORIGINS = ['https://kirkg.us', 'https://www.kirkg.us', 'http://127.0.0.1', 'http://[::1]', ]

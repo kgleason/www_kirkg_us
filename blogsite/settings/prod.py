@@ -22,3 +22,5 @@ DATABASES = {
 SECRET_KEY = env('SECRET_KEY')
 
 CSRF_TRUSTED_ORIGINS = ['https://kirkg.us', 'https://www.kirkg.us', 'http://127.0.0.1', 'http://[::1]', ]
+
+STATIC_ROOT = "/opt/django/static"

@@ -1,0 +1,22 @@
+#/etc/systemd/system/gunicorn.service
+[Unit]
+Description=gunicorn daemon
+Requires=gunicorn.socket
+After=network.target
+
+[Service]
+Type=notify
+# the specific user that our service will run as
+User=kirk
+Group=kirk
+Environment="DJANGO_SETTINGS_MODULE=blogsite.settings.prod"
+RuntimeDirectory=gunicorn
+WorkingDirectory=/home/kirk/django
+ExecStart=/home/kirk/django/.venv/bin/gunicorn blogsite.wsgi:application -c /home/kirk/django/gunicorn.conf.py
+ExecReload=/bin/kill -s HUP $MAINPID
+KillMode=mixed
+TimeoutStopSec=5
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

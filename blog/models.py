@@ -1,3 +1,4 @@
+from email.mime import image
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
@@ -30,3 +31,17 @@ class Post(models.Model):
     def was_published_recently(self):
         now = timezone.now()
         return now - datetime.timedelta(days=7) <= self.publish_date <= now
+
+class Media(models.Model):
+    id = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=50, null=False, blank=False, unique=True)
+    file = models.FileField(upload_to='files/')
+    image = models.ImageField(upload_to='images/')
+    posts = models.ForeignKey(Post, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = 'Media file'
+        verbose_name_plural = 'Media'

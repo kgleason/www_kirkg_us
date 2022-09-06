@@ -30,6 +30,7 @@ jobs:
           script: |
             cd django
             git pull origin django
+            pip install -r requirements.txt
             DJANGO_SETTINGS_MODULE=blogsite.settings.prod .venv/bin/python manage.py migrate
             DJANGO_SETTINGS_MODULE=blogsite.settings.prod .venv/bin/python manage.py collectstatic --no-input
             sudo systemctl restart gunicorn.service

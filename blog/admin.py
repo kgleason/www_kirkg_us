@@ -1,11 +1,10 @@
 from django.contrib import admin
-from markdownx.admin import MarkdownxModelAdmin
 from .models import Post, Media
 
 class MediaInlineAdmin(admin.StackedInline):
     model = Media
 
-class PostAdmin(MarkdownxModelAdmin):
+class PostAdmin(admin.ModelAdmin):
     list_display = ('title', 'slug', 'status', 'publish_date', )
     list_filter = ('status', )
     search_fields = ('title', 'md_content', )

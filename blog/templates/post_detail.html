@@ -1,13 +1,12 @@
 {% extends 'base.html' %} {% block content %}
-{% load markdownify %}
 
 <div class="container">
   <div class="row">
     <div class="col-md-8 card mb-4  mt-3 left  top">
       <div class="card-body">
         <h1>{% block title %} {{ object.title }} {% endblock title %}</h1>
-        <p class=" text-muted">{{ post.author }} | {{ post.created_on }}</p>
-        <p class="card-text ">{{ post.md_content | markdownify }}</p>
+        <p class=" text-muted">{{ post.author }} | {{ post.publish_date }}</p>
+        <p class="card-text ">{{ post.rendered_text | safe }}</p>
       </div>
     </div>
     {% block sidebar %} {% include 'sidebar.html' %} {% endblock sidebar %}

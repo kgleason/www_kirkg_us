@@ -2,7 +2,8 @@ from email.mime import image
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
-from markdownx.models import MarkdownxField
+from markdownfield.models import MarkdownField, RenderedMarkdownField
+from markdownfield.validators import VALIDATOR_STANDARD
 import datetime
 
 STATUS = (
@@ -19,8 +20,10 @@ class Post(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     publish_date = models.DateField(null=True)
     status = models.IntegerField(choices=STATUS)
-    md_content = MarkdownxField(null=True, blank=True)
-    summary_text = models.CharField(max_length=500)
+    md_content = MarkdownField(rendered_field='rendered_text', validator=VALIDATOR_STANDARD, null=True, blank=True)
+    summary_text = MarkdownField(rendered_field='rendered_summary', validator=VALIDATOR_STANDARD, null=True, blank=True)
+    rendered_text = RenderedMarkdownField(null=True)
+    rendered_summary = RenderedMarkdownField(null=True)
 
     class Meta:
         ordering = ['-publish_date']

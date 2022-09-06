@@ -51,9 +51,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'whitenoise.runserver_nostatic',
+    'markdownfield',
     'blog',
-    'markdownify',
-    'markdownx',
 ]
 
 MIDDLEWARE = [
@@ -169,43 +168,4 @@ if "CI" in os.environ:
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MARKDOWNIFY = {
-    "default": {
-        "MARKDOWN_EXTENSIONS": [
-            'markdown.extensions.fenced_code',
-            'markdown.extensions.extra',
-            'markdown.extensions.codehilite',
-        ],
-        "STRIP": False,
-        "WHITELIST_TAGS": [
-            'a',
-            'abbr',
-            'acronym',
-            'b',
-            'blockquote',
-            'em',
-            'i',
-            'li',
-            'ol',
-            'p',
-            'strong',
-            'ul',
-            'code',
-            'span',
-            'div', 'class',
-            'pre', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
-        ],
-        "WHITELIST_ATTRS": [
-            'href',
-            'src',
-            'alt',
-            'class',
-        ],
-        "WHITELIST_PROTOCOLS": [
-            'http',
-            'https',
-        ]
-    }
-}
-
-MARKDOWNX_MARKDOWN_EXTENTIONS = MARKDOWNIFY['default']['MARKDOWN_EXTENSIONS']
+SITE_URL = "https://www.kirkg.us"

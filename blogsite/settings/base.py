@@ -19,7 +19,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Specify directories for the media
 MEDIA_URL = '/media/'
-MEDIA_ROOT = Path.joinpath(BASE_DIR, "media")
+MEDIA_ROOT = Path.joinpath(BASE_DIR, "media/")
 
 
 IS_HEROKU = "DYNO" in os.environ
@@ -78,6 +78,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },

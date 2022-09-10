@@ -50,6 +50,7 @@ coverage.xml
 *.log
 *.pot
 **/staticfiles/
+**/staticfiles.json
 
 # Sphinx documentation
 docs/_build/

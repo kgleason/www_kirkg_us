@@ -6,12 +6,13 @@ from markdownfield.models import MarkdownField, RenderedMarkdownField
 from markdownfield.validators import VALIDATOR_STANDARD
 import datetime
 
-STATUS = (
-    (0,'Draft'),
-    (1,'Published')
-)
 # Create your models here.
 class Post(models.Model):
+    STATUS = (
+        (0,'Draft'),
+        (1,'Published')
+    )
+
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=200,unique=True)
     slug = models.SlugField(max_length=200, unique=True)

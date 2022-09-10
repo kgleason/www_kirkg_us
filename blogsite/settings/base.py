@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'whitenoise.runserver_nostatic',
     'markdownfield',
+    'bootstrap5',
     'blog',
 ]
 

@@ -67,3 +67,5 @@ cache
 GhostData.json
 pip-selfcheck.json
 lib64
+
+.idea/

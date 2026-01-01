@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html \ prefix="
+        og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+    " vocab="http://ogp.me/ns" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenVPN server in a FreeNAS 11 jail | kirkg.us</title>
+<link href="https://fonts.googleapis.com/css?family=Bitter:400,400i,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://www.kirkg.us/posts/openvpn-server-in-a-freenas-11-jail/">
+<!--[if lt IE 9]><script src="../../assets/js/html5shiv-printshiv.min.js"></script><![endif]--><meta name="author" content="Kirk Gleason">
+<link rel="prev" href="../running-an-openvpn-server-in-a-freenas-910-jail/" title="Running an OpenVPN server in a FreeNAS 9.10 jail" type="text/html">
+<meta property="og:site_name" content="kirkg.us">
+<meta property="og:title" content="OpenVPN server in a FreeNAS 11 jail">
+<meta property="og:url" content="https://www.kirkg.us/posts/openvpn-server-in-a-freenas-11-jail/">
+<meta property="og:description" content="FreeNAS 11 was recently released, so I'm going to continue my series on running OpenVPN servers from FreeNAS jails. In theory these instructions could be followed on any old FreeBSD 11 jail, but FreeN">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2017-07-08T13:02:49-05:00">
+<meta property="article:tag" content="EasyRSA">
+<meta property="article:tag" content="FreeBSD">
+<meta property="article:tag" content="FreeNAS">
+<meta property="article:tag" content="Open Source">
+<meta property="article:tag" content="OpenVPN">
+<link rel="stylesheet" href="https://latest.cactus.chat/style.css" type="text/css">
+</head>
+<body>
+
+	<a href="#page-content" class="sr-only sr-only-focusable">
+		Skip to main content
+	</a>
+
+	
+
+    <section id="header"><a href="../../">
+			<div class="logo">
+					<div id="nologoimage">
+						kirkg.us
+					</div>
+    		</div>
+			</a>
+    </section><section id="socialNav"><!-- Navigation Menu - on top on small screens, down the left on larger --><div class="navlinks">
+			<a href="../../">
+				<div id="titleauth">
+    					kirkg.us<br> by Kirk Gleason
+				</div>
+			</a>
+
+            <!-- Navigation links (hidden by default) -->
+			<div id="navmenuitems">
+				            <a href="../../index.html" title="Home">
+                <span class="menuitemtext">Home</span>
+                <span class="menuitemicon"><i class="fa fa-home"></i></span>
+            </a>
+            <a href="../../archive.html" title="Archives">
+                <span class="menuitemtext">Archives</span>
+                <span class="menuitemicon"><i class="fa fa-folder-open"></i></span>
+            </a>
+            <a href="../../categories/index.html" title="Tags">
+                <span class="menuitemtext">Tags</span>
+                <span class="menuitemicon"><i class="fa fa-tags"></i></span>
+            </a>
+            <a href="../../rss.xml" title="RSS">
+                <span class="menuitemtext">RSS</span>
+                <span class="menuitemicon"><i class="fa fa-rss"></i></span>
+            </a>
+            <a href="../" title="About me">
+                <span class="menuitemtext">About me</span>
+                <span class="menuitemicon"><i class="fa fa-user"></i></span>
+            </a>
+            <a href="https://www.linkedin.com/in/kirk-gleason/" title="LinkedIn">
+                <span class="menuitemtext">LinkedIn</span>
+                <span class="menuitemicon"><i class="fab fa-linkedin"></i></span>
+            </a>
+            <a href="https://github.com/kgleason" title="Github">
+                <span class="menuitemtext">Github</span>
+                <span class="menuitemicon"><i class="fab fa-github"></i></span>
+            </a>
+            <a href="https://www.gitlab.com/kgleason" title="GitLab">
+                <span class="menuitemtext">GitLab</span>
+                <span class="menuitemicon"><i class="fab fa-gitlab"></i></span>
+            </a>
+    
+    
+
+			</div>
+
+            <!-- "Hamburger menu" / "Bar icon" to toggle the navigation links -->
+			<a href="javascript:void(0);" id="hamburger" class="icon" onclick="toggleNav()">
+				<i class="fa fa-bars">
+				</i>
+			</a>
+		</div>
+
+	</section><section class="page-content"><div class="content" rel="main">
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">OpenVPN server in a FreeNAS 11 jail</a></h1>
+
+        <div class="metadata">
+            <p class="dateline"><a href="." rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2017-07-08T13:02:49-05:00" itemprop="datePublished" title="2017-07-08 13:02">2017-07-08 13:02</time></a></p>
+
+                <p class="commentline"><i class="far fa-comment"></i>        <a href="#disqus_thread" data-disqus-identifier="cache/posts/openvpn-server-in-a-freenas-11-jail.html">Comments</a>
+
+
+                    </p>
+<p class="sourceline"><a href="index.md" class="sourcelink"><i class="fa fa-file-code"></i> Source</a></p>
+
+            
+                <div class="tags">
+<h3 class="metadata-title">
+<i class="fa fa-tags"></i> Tags:</h3>
+        <ul itemprop="keywords" class="tags-ul">
+<li><a class="tag p-category" href="../../categories/easyrsa/" rel="tag">EasyRSA</a></li>
+            <li><a class="tag p-category" href="../../categories/freebsd/" rel="tag">FreeBSD</a></li>
+            <li><a class="tag p-category" href="../../categories/freenas/" rel="tag">FreeNAS</a></li>
+            <li><a class="tag p-category" href="../../categories/open-source/" rel="tag">Open Source</a></li>
+            <li><a class="tag p-category" href="../../categories/openvpn/" rel="tag">OpenVPN</a></li>
+        </ul>
+</div>
+
+        </div>
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <p>FreeNAS 11 <a href="http://www.freenas.org/blog/freenas-11-0/">was recently released</a>, so I'm going to continue my series on <a href="../building-an-openvpn-server-inside-a-freenas-jail">running</a> OpenVPN <a href="../running-an-openvpn-server-in-a-freenas-910-jail">servers</a> from FreeNAS jails. In theory these instructions could be followed on any old <a href="https://www.freebsd.org">FreeBSD</a> 11 jail, but FreeNAS provides a friendly UI, so why not use it?</p>
+<p>For giggles, I'm taking screenshots for this with the new FreeNAS UI. So far it's nice. You should definitely try it.</p>
+<h3>Update the Jail config</h3>
+<p>The first thing I had to do was to fix the jails config. I did this by going to Jails -&gt; Configuration (in the left hand nav menu). Under advanced mode, there is an option for "Collection URL". The value that was in there by default (http://download.freenas.org/latest/RELEASE/x64/jails) didn't work for me, but I managed to figure out that it should probably be something more like this one <a href="http://download.freenas.org/jails/11/x64/">http://download.freenas.org/jails/11/x64/</a>.</p>
+<!-- TEASER_END -->
+
+<p><img alt="Updated jails config" src="../../images/FreeNAS11_Updated_Jails_Config.png"></p>
+<h3>Creating the jail</h3>
+<p>With that out of the way, I was able to create the new jail. In the nav, Jails -&gt; Instances. On that screen, there is a big green + sign where the magic happens. Feel free to name your jail however you want, but I'd recommend that you name it something that indicates what it is. I've named mine "openvpn_11".</p>
+<p><img alt="Creating a new jail" src="../../images/FreeNAS11_NewJail.png"></p>
+<p>Unfortunately, I had problems with the that I created from the new UI. Namely, it didn't seem to have properly created a network interface inside the jail, so while it would start, it wouldn't get an IP address. So I deleted the jail, and went back to the classic UI. Created the jail anew, and everything worked as expected.</p>
+<h3>Entering the jail</h3>
+<p>The steps for entering the jail are the same as in previous versions. Essentially, get the list of jails, find your jail, and enter into to using a shell. It is assumed that you have used ssh to connect to your FreeNAS and have become root for the following steps.</p>
+<div class="code"><pre class="code literal-block">jexec<span class="w"> </span><span class="sb">`</span>jls<span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">'/openvpn_11/ { print $1 }'</span><span class="sb">`</span><span class="w"> </span>tcsh
+</pre></div>
+
+<p>Once that command has been executed, your shell prompt should change to reflect that you've entered the jail.</p>
+<h3>Install some updates, and some packages</h3>
+<p>To start out, let's make sure we are all up to date, and then install some packages:</p>
+<div class="code"><pre class="code literal-block">pkg<span class="w"> </span>update
+pkg<span class="w"> </span>upgrade
+pkg<span class="w"> </span>install<span class="w"> </span>vim-lite<span class="w"> </span>openvpn
+</pre></div>
+
+<p>For me, the final command installed 5 packages, but the number may vary. After a quick <code>rehash</code>, all of the new commands should be available for use.</p>
+<h3>Configuring OpenVPN</h3>
+<p>I order to make this simpler on myself, I'm going to set some shell variables so that I can simply use the variable in subsequent commands. You don't have to use these, but you'll need to remember to substitute in the paths.</p>
+<div class="code"><pre class="code literal-block">setenv<span class="w"> </span>OVPATH<span class="w"> </span>/usr/local/etc/openvpn
+setenv<span class="w"> </span>OVRSA<span class="w"> </span>/usr/local/etc/openvpn/easy-rsa
+setenv<span class="w"> </span>VPNSERVER<span class="w"> </span>home.kirkg.us
+setenv<span class="w"> </span>VPNCLIENT<span class="w"> </span>kirk.kirkg.us
+</pre></div>
+
+<p>With these set, we'll get started setting up the PKI for OpenVPN.</p>
+<div class="code"><pre class="code literal-block">mkdir<span class="w"> </span>-p<span class="w"> </span><span class="nv">$OVPATH</span>
+cp<span class="w"> </span>-r<span class="w"> </span>/usr/local/share/easy-rsa<span class="w"> </span><span class="nv">$OVRSA</span>
+<span class="nb">cd</span><span class="w"> </span><span class="nv">$OVRSA</span>
+cp<span class="w"> </span>easyrsa.real<span class="w"> </span>easyrsa
+chmod<span class="w"> </span><span class="m">755</span><span class="w"> </span>easyrsa
+</pre></div>
+
+<p>Those commans will create the required directories, and get the EasyRSA stuff in place, and create us a working directory.</p>
+<p>At this point, we have a choice about configuring EasyRSA. We can answer the same questions over and over again, or we can edit the <code>vars</code> file to set some sane defaults, which will allow us to accept the defaults as we go through the script. Odds are that you'll only need to change the stuff about your location:</p>
+<div class="code"><pre class="code literal-block">set_var<span class="w"> </span>EASYRSA_REQ_COUNTRY<span class="w">    </span><span class="s2">"US"</span>
+set_var<span class="w"> </span>EASYRSA_REQ_PROVINCE<span class="w">   </span><span class="s2">"Indiana"</span>
+set_var<span class="w"> </span>EASYRSA_REQ_CITY<span class="w">       </span><span class="s2">"Bloomington"</span>
+set_var<span class="w"> </span>EASYRSA_REQ_ORG<span class="w">        </span><span class="s2">"KirkG dot us"</span>
+set_var<span class="w"> </span>EASYRSA_REQ_EMAIL<span class="w">      </span><span class="s2">"kirk@kirkg.us"</span>
+set_var<span class="w"> </span>EASYRSA_REQ_OU<span class="w">         </span><span class="s2">"IT"</span>
+</pre></div>
+
+<p>Uncomment and adjust any values that you would like to change from the defaults.</p>
+<h3>Building the PKI</h3>
+<p>For our certificate infrastructure, this is going to assume that you are looking for a basic installation, where your CA and OpenVPN server are the same host. We will generate all of the certificates right up front. Getting the PKI set up is pretty simple:</p>
+<div class="code"><pre class="code literal-block"><span class="nb">cd</span><span class="w"> </span><span class="nv">$OVRSA</span>
+./easyrsa<span class="w"> </span>init-pki
+./easyrsa<span class="w"> </span>build-ca
+</pre></div>
+
+<p>You'll be prompted for a passphrase for the PEM. This will be the CA passphrase. Be sure to remember what you choose, since you will need this passphrase every time you generate a new client certificate. If you forget this, then you will need to rebuild your CA, and all of your existing client certificates will immediately be useless.</p>
+<p>Now we'll generate our server &amp; client certificates</p>
+<div class="code"><pre class="code literal-block"><span class="nb">cd</span><span class="w"> </span><span class="nv">$OVRSA</span>
+./easyrsa<span class="w"> </span>gen-req<span class="w"> </span><span class="nv">$VPNSERVER</span><span class="w"> </span>nopass
+./easyrsa<span class="w"> </span>gen-req<span class="w"> </span><span class="nv">$VPNCLIENT</span>
+</pre></div>
+
+<p>Both of those commands will prompt for a PEM passphrase. You can use the <code>nopass</code> option for the client if you really want to skip protecting the cert with a passphrase, but it isn't recommended. If you skip the <code>nopass</code> option on the server, OpenVPN won't start correctly, since there won't be a way to enter the password for the cert.</p>
+<p>Next, we need to sign the certs with our newly minted CA.</p>
+<div class="code"><pre class="code literal-block"><span class="nb">cd</span><span class="w"> </span><span class="nv">$OVRSA</span>
+./easyrsa<span class="w"> </span>sign<span class="w"> </span>server<span class="w"> </span><span class="nv">$VPNSERVER</span>
+./easyrsa<span class="w"> </span>sign<span class="w"> </span>client<span class="w"> </span><span class="nv">$VPNCLIENT</span>
+</pre></div>
+
+<p>During those commands you'll need to type the word <code>yes</code> to confirm the certificates, and then enter the passphrase for the CA that you set up a few steps ago.</p>
+<p>Finally, we'll set up some Diffe-Hellman parameters (a.k.a. DHPArams). This command will take some time.</p>
+<div class="code"><pre class="code literal-block"><span class="nb">cd</span><span class="w"> </span><span class="nv">$OVRSA</span>
+./easyrsa<span class="w"> </span>gen-dh
+</pre></div>
+
+<p>Since you'll want this VPN to be as secure as possible, use the following command to generate a tls-auth key. This step is optional, and you can read more about it when the server config file is created below.</p>
+<div class="code"><pre class="code literal-block">openvpn<span class="w"> </span>--genkey<span class="w"> </span>--secret<span class="w"> </span><span class="nv">$OVRSA</span>/pki/private/ta.key
+</pre></div>
+
+<p>With that, all of the PKI should be in place. Before we get started making config files, we'll want to protect our PKI by copying it out of the easy-rsa directory. That way if anyone happens to be playing with the <code>easyrsa</code> script, something doesn't get accidentally overwritten.</p>
+<div class="code"><pre class="code literal-block">cp<span class="w"> </span>-R<span class="w"> </span><span class="nv">$OVRSA</span>/pki<span class="w"> </span><span class="nv">$OVPATH</span>/
+</pre></div>
+
+<p>Be sure that the paths on the <code>cp</code> command don't end with <code>/</code>.</p>
+<h3>The Server config file</h3>
+<p>With the client &amp; server PKI business out of the way, it's time to configure the server. The good people at <a href="http://www.openvpn.net">OpenVPN</a> make some pretty great <a href="https://openvpn.net/index.php/open-source/documentation/howto.html#examples">sample configs</a> available to us, so it makes sense to start with them. Copy the text for the <code>server.conf</code> and paste it into <code>$OVPATH/server.conf</code> inside your jail. Or grab it with <code>fetch</code></p>
+<div class="code"><pre class="code literal-block"><span class="nb">cd</span><span class="w"> </span><span class="nv">$OVPATH</span>
+fetch<span class="w"> </span>https://raw.githubusercontent.com/OpenVPN/openvpn/master/sample/sample-config-files/server.conf
+</pre></div>
+
+<p>There is very little that will need tweaking in that file. Read through the comments, and adjust as you see fit, but you'll do well to avoid making too many changes. Here are some sections to consider.</p>
+<h4>Local IP</h4>
+<div class="code"><pre class="code literal-block"><span class="err">#</span><span class="w"> </span><span class="nx">Which</span><span class="w"> </span><span class="nx">local</span><span class="w"> </span><span class="nx">IP</span><span class="w"> </span><span class="nx">address</span><span class="w"> </span><span class="nx">should</span><span class="w"> </span><span class="nx">OpenVPN</span>
+<span class="err">#</span><span class="w"> </span><span class="nx">listen</span><span class="w"> </span><span class="nx">on</span><span class="p">?</span><span class="w"> </span><span class="p">(</span><span class="nx">optional</span><span class="p">)</span>
+<span class="nx">local</span><span class="w"> </span><span class="m m-Double">10.0.0.248</span>
+</pre></div>
+
+<p>The <code>local</code> config line should reflect the IP address of your jail. In all likelihood, this will be an RFC-1918 private IP address. This is OK.</p>
+<h4>Tracking client IPs</h4>
+<div class="code"><pre class="code literal-block"><span class="err">#</span><span class="w"> </span><span class="nx">Maintain</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">record</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">client</span><span class="w"> </span><span class="kd">virtual</span><span class="w"> </span><span class="nx">IP</span><span class="w"> </span><span class="nx">address</span>
+<span class="err">#</span><span class="w"> </span><span class="nx">associations</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nx">this</span><span class="w"> </span><span class="nx">file</span><span class="p">.</span><span class="w">  </span><span class="nx">If</span><span class="w"> </span><span class="nx">OpenVPN</span><span class="w"> </span><span class="nx">goes</span><span class="w"> </span><span class="nx">down</span><span class="w"> </span><span class="k">or</span>
+<span class="err">#</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">restarted</span><span class="p">,</span><span class="w"> </span><span class="nx">reconnecting</span><span class="w"> </span><span class="nx">clients</span><span class="w"> </span><span class="nx">can</span><span class="w"> </span><span class="nx">be</span><span class="w"> </span><span class="nx">assigned</span>
+<span class="err">#</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">same</span><span class="w"> </span><span class="kd">virtual</span><span class="w"> </span><span class="nx">IP</span><span class="w"> </span><span class="nx">address</span><span class="w"> </span><span class="nx">from</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">pool</span><span class="w"> </span><span class="nx">that</span><span class="w"> </span><span class="nx">was</span>
+<span class="err">#</span><span class="w"> </span><span class="nx">previously</span><span class="w"> </span><span class="nx">assigned</span><span class="p">.</span>
+<span class="nx">ifconfig</span><span class="o">-</span><span class="nx">pool</span><span class="o">-</span><span class="nx">persist</span><span class="w"> </span><span class="o">/</span><span class="nx">usr</span><span class="o">/</span><span class="nx">local</span><span class="o">/</span><span class="nx">etc</span><span class="o">/</span><span class="nx">openvpn</span><span class="o">/</span><span class="nx">ipp</span><span class="p">.</span><span class="nx">txt</span>
+</pre></div>
+
+<p>This one is pretty self explanatory. Since the default directory may not exist, it's probably best to keep everything contained within <code>/usr/local/etc/openvpn</code>.</p>
+<h4>Certificate location</h4>
+<p>In the end, you'll want a config that looks something like what you see below.</p>
+<div class="code"><pre class="code literal-block">#<span class="w"> </span><span class="nv">Any</span><span class="w"> </span><span class="nv">X509</span><span class="w"> </span><span class="nv">key</span><span class="w"> </span><span class="nv">management</span><span class="w"> </span><span class="nv">system</span><span class="w"> </span><span class="nv">can</span><span class="w"> </span><span class="nv">be</span><span class="w"> </span><span class="nv">used</span>.
+#<span class="w"> </span><span class="nv">OpenVPN</span><span class="w"> </span><span class="nv">can</span><span class="w"> </span><span class="nv">also</span><span class="w"> </span><span class="nv">use</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="nv">PKCS</span><span class="w"> </span><span class="sc">#12</span><span class="w"> </span><span class="nv">formatted</span><span class="w"> </span><span class="nv">key</span><span class="w"> </span><span class="nv">file</span>
+#<span class="w"> </span><span class="ss">(</span><span class="nv">see</span><span class="w"> </span><span class="s2">"pkcs12"</span><span class="w"> </span><span class="nv">directive</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">man</span><span class="w"> </span><span class="nv">page</span><span class="ss">)</span>.
+<span class="nv">ca</span><span class="w"> </span><span class="o">/</span><span class="nv">usr</span><span class="o">/</span><span class="nv">local</span><span class="o">/</span><span class="nv">etc</span><span class="o">/</span><span class="nv">openvpn</span><span class="o">/</span><span class="nv">pki</span><span class="o">/</span><span class="nv">ca</span>.<span class="nv">crt</span>
+<span class="nv">cert</span><span class="w"> </span><span class="o">/</span><span class="nv">usr</span><span class="o">/</span><span class="nv">local</span><span class="o">/</span><span class="nv">etc</span><span class="o">/</span><span class="nv">openvpn</span><span class="o">/</span><span class="nv">pki</span><span class="o">/</span><span class="nv">issued</span><span class="o">/</span><span class="nv">VPNSERVER</span>.<span class="nv">crt</span>
+<span class="nv">key</span><span class="w"> </span><span class="o">/</span><span class="nv">usr</span><span class="o">/</span><span class="nv">local</span><span class="o">/</span><span class="nv">etc</span><span class="o">/</span><span class="nv">openvpn</span><span class="o">/</span><span class="nv">pki</span><span class="o">/</span><span class="nv">private</span><span class="o">/</span><span class="nv">VPNSERVER</span>.<span class="nv">key</span><span class="w">  </span>#<span class="w"> </span><span class="nv">This</span><span class="w"> </span><span class="nv">file</span><span class="w"> </span><span class="nv">should</span><span class="w"> </span><span class="nv">be</span><span class="w"> </span><span class="nv">kept</span><span class="w"> </span><span class="nv">secret</span>
+
+#<span class="w"> </span><span class="nv">Diffie</span><span class="w"> </span><span class="nv">hellman</span><span class="w"> </span><span class="nv">parameters</span>.
+#<span class="w"> </span><span class="nv">Generate</span><span class="w"> </span><span class="nv">your</span><span class="w"> </span><span class="nv">own</span><span class="w"> </span><span class="nv">with</span>:
+#<span class="w">   </span><span class="nv">openssl</span><span class="w"> </span><span class="nv">dhparam</span><span class="w"> </span><span class="o">-</span><span class="nv">out</span><span class="w"> </span><span class="nv">dh2048</span>.<span class="nv">pem</span><span class="w"> </span><span class="mi">2048</span>
+#<span class="w"> </span><span class="nv">Substitute</span><span class="w"> </span><span class="mi">2048</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="mi">1024</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nv">you</span><span class="w"> </span><span class="nv">are</span><span class="w"> </span><span class="nv">using</span>
+#<span class="w"> </span><span class="mi">2048</span><span class="w"> </span><span class="nv">bit</span><span class="w"> </span><span class="nv">keys</span>.
+<span class="nv">dh</span><span class="w"> </span><span class="o">/</span><span class="nv">usr</span><span class="o">/</span><span class="nv">local</span><span class="o">/</span><span class="nv">etc</span><span class="o">/</span><span class="nv">openvpn</span><span class="o">/</span><span class="nv">pki</span><span class="o">/</span><span class="nv">dh</span>.<span class="nv">pem</span>
+</pre></div>
+
+<p>I used the commands to get some of the config to look like i wanted.</p>
+<div class="code"><pre class="code literal-block">sed<span class="w"> </span><span class="s1">'s|ca ca.crt|ca '</span><span class="nv">$OVPATH</span><span class="s1">'/pki/ca.crt|'</span><span class="w"> </span>server.conf<span class="w"> </span>&gt;<span class="w"> </span>/tmp/server.conf
+sed<span class="w"> </span><span class="s1">'s|cert server.crt|cert '</span><span class="nv">$OVPATH</span><span class="s1">'/pki/issued/'</span><span class="nv">$VPNSERVER</span><span class="s1">'.crt|'</span><span class="w"> </span>/tmp/server.conf<span class="w"> </span>&gt;<span class="w"> </span>server.conf
+sed<span class="w"> </span><span class="s1">'s|key server.key|key '</span><span class="nv">$OVPATH</span><span class="s1">'/pki/private/'</span><span class="nv">$VPNSERVER</span><span class="s1">'.key|'</span><span class="w"> </span>server.conf<span class="w"> </span>&gt;<span class="w"> </span>/tmp/server.conf
+sed<span class="w"> </span><span class="s1">'s|dh dh2048.pem|dh '</span><span class="nv">$OVPATH</span><span class="s1">'/pki/dh.pem|'</span><span class="w"> </span>/tmp/server.conf<span class="w"> </span>&gt;<span class="w"> </span>server.conf
+</pre></div>
+
+<p>If you've followed the steps up to this point, you will just need to swap out the name of the server in the cert and key lines.  If you put your pki directory elsewhere, then adjust the paths as necessary.</p>
+<h4>Internal Subnet</h4>
+<div class="code"><pre class="code literal-block"><span class="err">#</span><span class="w"> </span><span class="nx">Push</span><span class="w"> </span><span class="nx">routes</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">client</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">allow</span><span class="w"> </span><span class="nx">it</span>
+<span class="err">#</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">reach</span><span class="w"> </span><span class="nx">other</span><span class="w"> </span><span class="k">private</span><span class="w"> </span><span class="nx">subnets</span><span class="w"> </span><span class="nx">behind</span>
+<span class="err">#</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">server</span><span class="p">.</span><span class="w">  </span><span class="nx">Remember</span><span class="w"> </span><span class="nx">that</span><span class="w"> </span><span class="nx">these</span>
+<span class="err">#</span><span class="w"> </span><span class="k">private</span><span class="w"> </span><span class="nx">subnets</span><span class="w"> </span><span class="nx">will</span><span class="w"> </span><span class="nx">also</span><span class="w"> </span><span class="nx">need</span>
+<span class="err">#</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">know</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">route</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">OpenVPN</span><span class="w"> </span><span class="nx">client</span>
+<span class="err">#</span><span class="w"> </span><span class="nx">address</span><span class="w"> </span><span class="nx">pool</span><span class="w"> </span><span class="p">(</span><span class="m m-Double">10.8.0.0</span><span class="o">/</span><span class="m m-Double">255.255.255.0</span><span class="p">)</span>
+<span class="err">#</span><span class="w"> </span><span class="nx">back</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">OpenVPN</span><span class="w"> </span><span class="nx">server</span><span class="p">.</span>
+<span class="nx">push</span><span class="w"> </span><span class="s">"route 10.0.0.0 255.255.255.0"</span>
+</pre></div>
+
+<p>For this section, you need to know a little bit about your internal network. The IP address in the <code>push</code> line should be a representation of your local network. If you don't know what to put here, then from within your jail, run the <code>ifconfig</code> command and get your IP address and subnet mask. If you subnet mask is 255.255.255.0, then change the last octet of your IP address to a 0, and use that. Otherwise, jot down your IP address and subnet mask. With those values in hand, visit <a href="http://www.subnet-calculator.com">www.subnet-calculator.com</a>, and enter your IP address into the IP address field. Adjust the subnet mask dropdown to reflect your subnet mask. Using the values on that site, construct the <code>push</code> config line as follows:</p>
+<div class="code"><pre class="code literal-block">push "route &lt;Subnet ID&gt; &lt;Subnet Mask&gt;"
+</pre></div>
+
+<h4>TLS Auth Key</h4>
+<div class="code"><pre class="code literal-block"># The server and each client must have
+# a copy of this key.
+# The second parameter should be '0'
+# on the server and '1' on the clients.
+tls-auth /usr/local/etc/openvpn/pki/private/ta.key 0 # This file is secret
+</pre></div>
+
+<p>That one is pretty simple. Point the <code>tls-auth</code> directive to your <code>ta.key</code>.</p>
+<h4>Logging</h4>
+<div class="code"><pre class="code literal-block"><span class="c1"># Output a short status file showing</span>
+<span class="c1"># current connections, truncated</span>
+<span class="c1"># and rewritten every minute.</span>
+<span class="n">status</span><span class="w"> </span><span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="nb">log</span><span class="o">/</span><span class="n">openvpn</span><span class="o">/</span><span class="n">openvpn</span><span class="o">-</span><span class="n">status</span><span class="o">.</span><span class="n">log</span>
+</pre></div>
+
+<p>You'll need to <code>mkdir /var/log/openvpn/</code> in order for this work. You'll notice that I've stepped outside of <code>/use/local/etc/openvpn</code> for this one. You are welcome to put the log file where you want. I always start in <code>/var/log</code> when I look for log files, so this makes sense to me.</p>
+<h4>Two factor authentication</h4>
+<div class="code"><pre class="code literal-block">plugin /usr/local/lib/openvpn/plugins/openvpn-plugin-auth-pam.so login
+</pre></div>
+
+<p>You won't find this line in the sample config, and you can consider it to be optional. If you add it in, then in addition to the required certificates, you will need to provide a username and password to connect to the VPN. If you opt for this (and you probably should), there is an line that you will need to add to the client config as well.</p>
+<h3>Networking</h3>
+<p>With the server config finished, we need to deal with the networking. In order to do this, we'll be using <a href="https://www.freebsd.org/doc/en/books/handbook/firewalls-ipfw.html">ipfw</a>, which is built into FreeBSD. You'll need to start by learning the name of the NIC in your jail. You can get this from <code>ifconfig</code>. For this example, we will be using <code>epair10b</code>. Yours will probably be very similar to that.</p>
+<p>Armed with the interface name, you can create <code>/usr/local/etc/ipfw.rules</code>:</p>
+<div class="code"><pre class="code literal-block">#<span class="w"> </span><span class="o">/</span><span class="nv">usr</span><span class="o">/</span><span class="nv">local</span><span class="o">/</span><span class="nv">etc</span><span class="o">/</span><span class="nv">ipfw</span>.<span class="nv">rules</span>
+<span class="nv">ipfw</span><span class="w"> </span><span class="o">-</span><span class="nv">q</span><span class="w"> </span><span class="o">-</span><span class="nv">f</span><span class="w"> </span><span class="nv">flush</span>
+<span class="nv">ipfw</span><span class="w"> </span><span class="o">-</span><span class="nv">q</span><span class="w"> </span><span class="nv">nat</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="nv">config</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nv">epair10b</span>
+<span class="nv">ipfw</span><span class="w"> </span><span class="o">-</span><span class="nv">q</span><span class="w"> </span><span class="nv">add</span><span class="w"> </span><span class="nv">nat</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="nv">all</span><span class="w"> </span><span class="nv">from</span><span class="w"> </span><span class="mi">10</span>.<span class="mi">8</span>.<span class="mi">0</span>.<span class="mi">0</span><span class="o">/</span><span class="mi">24</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="nv">any</span><span class="w"> </span><span class="nv">out</span><span class="w"> </span><span class="nv">via</span><span class="w"> </span><span class="nv">epair10b</span>
+<span class="nv">ipfw</span><span class="w"> </span><span class="o">-</span><span class="nv">q</span><span class="w"> </span><span class="nv">add</span><span class="w"> </span><span class="nv">nat</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="nv">all</span><span class="w"> </span><span class="nv">from</span><span class="w"> </span><span class="nv">any</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="nv">any</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">via</span><span class="w"> </span><span class="nv">epair10b</span>
+</pre></div>
+
+<p>In a nutshell, that rule set does this:</p>
+<ol>
+<li>flush out all of the existing firewall rules</li>
+<li>Define a NAT (number 1) on our interface</li>
+<li>Masquerade any outbound traffic from the openvpn network (10.8.0.0) behind the ip on our interface</li>
+</ol>
+<h3>Automatic starting</h3>
+<p>Presumably you will want everything to start automatically. All of that sort of thing is controlled with <code>rc.conf</code> in FreeBSD. Add these lines to the end of <code>/etc/rc.conf</code></p>
+<div class="code"><pre class="code literal-block"><span class="gh">#</span> /etc/rc.conf
+cloned_interfaces="tun"
+gateway_enable="YES"
+firewall_enable="YES"
+firewall_script="/usr/local/etc/ipfw.rules"
+</pre></div>
+
+<p>Also, we'll create a special file for the openvpn daemon:</p>
+<div class="code"><pre class="code literal-block"><span class="gh">#</span> /etc/rc.conf.d/openvpn
+openvpn_enable="YES"
+openvpn_if="tun"
+openvpn_configfile="/usr/local/etc/openvpn/server.conf"
+openvpn_dir="/usr/local/etc/openvpn/"
+</pre></div>
+
+<p>With that in place, you can go back to the <a href="http://amzn.to/2F1TmlP">FreeNAS</a> UI and restart the jail if you want. Or you can run a couple of commands to turn everything on. If you opt to restart the jail, you need'nt execute these commands, and they would only need to be run one time, assuming that you made the changes to <code>rc.conf</code> outlined above.</p>
+<div class="code"><pre class="code literal-block">sysctl<span class="w"> </span>net.inet.ip.forwarding<span class="o">=</span><span class="m">1</span>
+service<span class="w"> </span>ipfw<span class="w"> </span>start
+service<span class="w"> </span>openvpn<span class="w"> </span>start
+</pre></div>
+
+<p>If, like me, you get an error about not being able to start openvpn, then make sure that the <code>/var/log/openvpn/</code> directory exists. If that doesn't resolve it, see if <code>grep error /var/log/messages</code> returns anything helpful.</p>
+<h3>Configuring the client</h3>
+<p>With the server up and running, the last step is going to be to get a client to connect. There are many different clients that you can use, depending upon your platform. We are going to assume that you are using a unix command line client. There are a bunch of different ways that you can get this installed:</p>
+<ul>
+<li>FreeBSD:<ul>
+<li>pkg install openvpn</li>
+</ul>
+</li>
+<li>Linux:<ul>
+<li>use your package manager to install <code>OpenVPN</code><ul>
+<li>Arch: sudo pacman -S openvpn</li>
+<li>Debian: sudo apt-get install openpvn</li>
+<li>RedHat: sudo yum install openvpn</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>OS X (You'll have to do more than just install openvpn, but homebrew should tell you what to do to get the tun/tap driver installed in OS X)<ul>
+<li>brew install openvpn</li>
+</ul>
+</li>
+<li>Windows<ul>
+<li>Sorry. No clue. I'm sure google can help you out.</li>
+</ul>
+</li>
+</ul>
+<p>Once you have the <code>openvpn</code> binary installed, your client platform of choice shouldn't be of great concern.</p>
+<h4>Get the files</h4>
+<p>In order to keep everything clean, you'll need to create a directory to hold all the stuff:</p>
+<div class="code"><pre class="code literal-block">mkdir<span class="w"> </span>~/.openvpn
+<span class="nb">cd</span><span class="w"> </span>~/.openvpn
+</pre></div>
+
+<p>There are 4 files on the server that you will need on your client. The jail isn't running ssh, so you can get creative about how you get them back to your client. One option is to copy the contents of the files off of the server and paste them into the files on the client. Or you can start ssh with <code>service sshd onestart</code>, but that's really only going to be useful if you've already added in auser in your jail.</p>
+<p>The files that you'll need from the server are:</p>
+<ul>
+<li><code>/usr/local/etc/openvpn/pki/ca.crt</code></li>
+<li><code>/usr/local/etc/openvpn/pki/private/ta.key</code></li>
+<li><code>/usr/local/etc/openvpn/pki/issued/VPNCLIENT.crt</code></li>
+<li><code>/usr/local/etc/openvpn/pki/private/VPNCLIENT.key</code></li>
+</ul>
+<h3>The client config file</h3>
+<p>With all of the certs in place, it's time to create a client-side config file. Go back to the <a href="https://openvpn.net/index.php/open-source/documentation/howto.html#examples">OpenVPN sample configs</a> and grab the client config. Paste the contents into <code>~/.openvpn/VPNSERVER.ovpn</code>.</p>
+<p>If you are still on FreeBSD, you can grab to config like this:</p>
+<div class="code"><pre class="code literal-block"><span class="nb">cd</span><span class="w"> </span>~/.openvpn
+fetch<span class="w"> </span>https://raw.githubusercontent.com/OpenVPN/openvpn/master/sample/sample-config-files/client.conf
+mv<span class="w"> </span>client.conf<span class="w"> </span><span class="nv">$VPNSERVER</span>.ovpn
+</pre></div>
+
+<p>As with the server config, there isn't much to change.</p>
+<h4>Remote endpoint</h4>
+<div class="code"><pre class="code literal-block"><span class="c1"># The hostname/IP and port of the server.</span>
+<span class="c1"># You can have multiple remote entries</span>
+<span class="c1"># to load balance between the servers.</span>
+<span class="k">remote</span><span class="w"> </span><span class="mf">10.0</span><span class="o">.</span><span class="mf">0.248</span><span class="w"> </span><span class="mi">1194</span>
+</pre></div>
+
+<p>For the initial test, you should be able to specify the local IP of the <a href="https://www.openvpn.org">OpenVPN</a> jail. We'll have to come back and change this later.</p>
+<h4>Quiet down the wifi warnings</h4>
+<div class="code"><pre class="code literal-block"># Wireless networks often produce a lot
+# of duplicate packets.  Set this flag
+# to silence duplicate packet warnings.
+mute-replay-warnings
+</pre></div>
+
+<p>Not much to say. You can keep this commented out if you want.</p>
+<h4>Where are the certs?</h4>
+<p>If you have all of the certs in the same directory as the client config file, then you can define the cert locations like this:</p>
+<div class="code"><pre class="code literal-block">#<span class="w"> </span><span class="nv">SSL</span><span class="o">/</span><span class="nv">TLS</span><span class="w"> </span><span class="nv">parms</span>.
+#<span class="w"> </span><span class="nv">See</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">server</span><span class="w"> </span><span class="nv">config</span><span class="w"> </span><span class="nv">file</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">more</span>
+#<span class="w"> </span><span class="nv">description</span>.<span class="w">  </span><span class="nv">It</span><span class="err">'s best to use</span>
+<span class="err"># a separate .crt/.key file pair</span>
+<span class="err"># for each client.  A single ca</span>
+<span class="err"># file can be used for all clients.</span>
+<span class="err">ca ca.crt</span>
+<span class="err">cert VPNCLIENT.crt</span>
+<span class="err">key VPNCLIENT.key</span>
+</pre></div>
+
+<p>If they are in a different location, you can use full paths.</p>
+<h4>The TLS auth key</h4>
+<div class="code"><pre class="code literal-block">#<span class="w"> </span><span class="k">If</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="nv">tls</span><span class="o">-</span><span class="nv">auth</span><span class="w"> </span><span class="nv">key</span><span class="w"> </span><span class="nv">is</span><span class="w"> </span><span class="nv">used</span><span class="w"> </span><span class="nv">on</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">server</span>
+#<span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="nv">every</span><span class="w"> </span><span class="nv">client</span><span class="w"> </span><span class="nv">must</span><span class="w"> </span><span class="nv">also</span><span class="w"> </span><span class="nv">have</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">key</span>.
+<span class="nv">tls</span><span class="o">-</span><span class="nv">auth</span><span class="w"> </span><span class="nv">ta</span>.<span class="nv">key</span><span class="w"> </span><span class="mi">1</span>
+</pre></div>
+
+<p>This key needs to be the same on the client and the server. The <code>1</code> parameter indicates that this is a client.</p>
+<h4>Two Factor Authentication</h4>
+<div class="code"><pre class="code literal-block">  # Force username &amp; password authenitcation
+auth-user-pass
+
+# Disable client-side password caching
+auth-nocache
+</pre></div>
+
+<p>These are the client-analogue lines to the optional config line in the server that will require a username and password to connect. If you added the optional line to the server config, then you will need to add this to the client config. If you add these lines to the client config without the server lines, then you will be prompted for a username and password that will then be ignored.
+If you added this to both configs, then you will need to add a user inside your jail.</p>
+<h4>Protecting your keys a bit</h4>
+<p>The <a href="https://www.openvpn.org">OpenVPN</a> client will complain about the default permissions on the keys (assuming you have the same umask set as I do), and it is a good practice to at least make it hard for prying eyes to get to our keys. Assuming that you've saved your keys and certs in the same place I have, a quick chmod will put us in a better position.</p>
+<div class="code"><pre class="code literal-block">chmod<span class="w"> </span><span class="m">600</span><span class="w"> </span>~/.openvpn/*.key
+</pre></div>
+
+<h3>Firing up the test</h3>
+<p>Save the config file, and fire up a test:</p>
+<div class="code"><pre class="code literal-block">  :::bash
+sudo openvpn VPNSERVER.ovpn
+</pre></div>
+
+<p>Depending upon the specific path that you followed, you may also see various prompts. For example, if you used the <code>auth-user-pass</code> option then you will be prompted for a username and password. If you omitted the <code>nopass</code> option when you created the client certificate (which is the recommended way), then you'll also be prompted for the passphrase to unlock the client key.</p>
+<p>You may see some errors about adding a route. If your test client and your server are on the same network, then the route to that network already exists on the client. If you ignore that for now, you should still get a connection -- useless, but a connection nonetheless.</p>
+<h3>Wrapping up</h3>
+<p>All in all, this didn't change too much from the previous version. The versions of OpenVPN and EasyRSA are the same, so that makes it easy.</p>
+<p>Now I have to go file some bugs with FreeNAS about their new UI.</p>
+    </div>
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+<li class="previous">
+                <a href="../running-an-openvpn-server-in-a-freenas-910-jail/" rel="prev" title="Running an OpenVPN server in a FreeNAS 9.10 jail">Previous post</a>
+            </li>
+        </ul></nav></aside><section class="comments hidden-print"><h2>Comments</h2>
+                    <div id="disqus_thread"></div>
+        <script>
+        var disqus_shortname ="kirkgnikolablog",
+            disqus_url="https://www.kirkg.us/posts/openvpn-server-in-a-freenas-11-jail/",
+        disqus_title="OpenVPN server in a FreeNAS 11 jail",
+        disqus_identifier="cache/posts/openvpn-server-in-a-freenas-11-jail.html",
+        disqus_config = function () {
+            this.language = "en";
+        };
+        (function() {
+            var dsq = document.createElement('script'); dsq.async = true;
+            dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+        </section><script>var disqus_shortname="kirkgnikolablog";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>
+Contents © 2026         <a href="mailto:kirk@kirkg.us">Kirk Gleason</a> - Powered by         <a href="http://getnikola.com" rel="nofollow">Nikola</a><br><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/2.5/ar/">
+<img alt="Creative Commons License BY-NC-SA" style="border-width:0; margin-bottom:12px;" src="https://i.creativecommons.org/l/by-nc-sa/2.5/ar/88x31.png"></a>
+
+<a title="Web Analytics" href="http://clicky.com/101017846"><img alt="Web Analytics" src="//static.getclicky.com/media/links/badge.gif" border="0"></a>
+<script src="//static.getclicky.com/js" type="text/javascript"></script><script type="text/javascript">try{ clicky.init(101017846); }catch(e){}</script><noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101017846ns.gif"></p></noscript>
+
+</p>
+            
+        </footer></article>
+</div>
+	</section><script src="../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+
+    moment.locale("en");
+    fancydates(1, "YYYY-MM-DD HH:mm");
+
+	</script><!-- end fancy dates --><script>
+
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+
+	</script><script src="../../assets/js/ToggleNav.js">
+	</script>
+</body>
+</html>

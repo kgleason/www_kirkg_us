@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html \ prefix="
+        og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+    " vocab="http://ogp.me/ns" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Setting up IPv6 with OPNSense and Comcast | kirkg.us</title>
+<link href="https://fonts.googleapis.com/css?family=Bitter:400,400i,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://www.kirkg.us/posts/setting-up-ipv6-with-opnsense-and-comcast/">
+<!--[if lt IE 9]><script src="../../assets/js/html5shiv-printshiv.min.js"></script><![endif]--><meta name="author" content="Kirk Gleason">
+<meta property="og:site_name" content="kirkg.us">
+<meta property="og:title" content="Setting up IPv6 with OPNSense and Comcast">
+<meta property="og:url" content="https://www.kirkg.us/posts/setting-up-ipv6-with-opnsense-and-comcast/">
+<meta property="og:description" content="Ten years ago, I was very much into IPv6. I had two different tunnels, and all of my home network had v6 IP addresses -- all statically assigned, with working reverse DNS. Even the Windows XP machines">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2015-08-19T19:45:48-05:00">
+<meta property="article:tag" content="IPv6">
+<meta property="article:tag" content="networking">
+<meta property="article:tag" content="OPNSense">
+<link rel="stylesheet" href="https://latest.cactus.chat/style.css" type="text/css">
+</head>
+<body>
+
+	<a href="#page-content" class="sr-only sr-only-focusable">
+		Skip to main content
+	</a>
+
+	
+
+    <section id="header"><a href="../../">
+			<div class="logo">
+					<div id="nologoimage">
+						kirkg.us
+					</div>
+    		</div>
+			</a>
+    </section><section id="socialNav"><!-- Navigation Menu - on top on small screens, down the left on larger --><div class="navlinks">
+			<a href="../../">
+				<div id="titleauth">
+    					kirkg.us<br> by Kirk Gleason
+				</div>
+			</a>
+
+            <!-- Navigation links (hidden by default) -->
+			<div id="navmenuitems">
+				            <a href="../../index.html" title="Home">
+                <span class="menuitemtext">Home</span>
+                <span class="menuitemicon"><i class="fa fa-home"></i></span>
+            </a>
+            <a href="../../archive.html" title="Archives">
+                <span class="menuitemtext">Archives</span>
+                <span class="menuitemicon"><i class="fa fa-folder-open"></i></span>
+            </a>
+            <a href="../../categories/index.html" title="Tags">
+                <span class="menuitemtext">Tags</span>
+                <span class="menuitemicon"><i class="fa fa-tags"></i></span>
+            </a>
+            <a href="../../rss.xml" title="RSS">
+                <span class="menuitemtext">RSS</span>
+                <span class="menuitemicon"><i class="fa fa-rss"></i></span>
+            </a>
+            <a href="../" title="About me">
+                <span class="menuitemtext">About me</span>
+                <span class="menuitemicon"><i class="fa fa-user"></i></span>
+            </a>
+            <a href="https://www.linkedin.com/in/kirk-gleason/" title="LinkedIn">
+                <span class="menuitemtext">LinkedIn</span>
+                <span class="menuitemicon"><i class="fab fa-linkedin"></i></span>
+            </a>
+            <a href="https://github.com/kgleason" title="Github">
+                <span class="menuitemtext">Github</span>
+                <span class="menuitemicon"><i class="fab fa-github"></i></span>
+            </a>
+            <a href="https://www.gitlab.com/kgleason" title="GitLab">
+                <span class="menuitemtext">GitLab</span>
+                <span class="menuitemicon"><i class="fab fa-gitlab"></i></span>
+            </a>
+    
+    
+
+			</div>
+
+            <!-- "Hamburger menu" / "Bar icon" to toggle the navigation links -->
+			<a href="javascript:void(0);" id="hamburger" class="icon" onclick="toggleNav()">
+				<i class="fa fa-bars">
+				</i>
+			</a>
+		</div>
+
+	</section><section class="page-content"><div class="content" rel="main">
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Setting up IPv6 with OPNSense and Comcast</a></h1>
+
+        <div class="metadata">
+            <p class="dateline"><a href="." rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2015-08-19T19:45:48-05:00" itemprop="datePublished" title="2015-08-19 19:45">2015-08-19 19:45</time></a></p>
+
+                <p class="commentline"><i class="far fa-comment"></i>        <a href="#disqus_thread" data-disqus-identifier="cache/posts/setting-up-ipv6-with-opnsense-and-comcast.html">Comments</a>
+
+
+                    </p>
+<p class="sourceline"><a href="index.md" class="sourcelink"><i class="fa fa-file-code"></i> Source</a></p>
+
+            
+                <div class="tags">
+<h3 class="metadata-title">
+<i class="fa fa-tags"></i> Tags:</h3>
+        <ul itemprop="keywords" class="tags-ul">
+<li><a class="tag p-category" href="../../categories/ipv6/" rel="tag">IPv6</a></li>
+            <li><a class="tag p-category" href="../../categories/networking/" rel="tag">networking</a></li>
+            <li><a class="tag p-category" href="../../categories/opnsense/" rel="tag">OPNSense</a></li>
+        </ul>
+</div>
+
+        </div>
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <p>Ten years ago, I was very much into <a href="https://en.wikipedia.org/wiki/IPv6">IPv6</a>. I had two different tunnels, and all of my home network had v6 IP addresses -- all statically assigned, with working reverse DNS. Even the Windows XP machines. Then I got lazy. I swapped out my hand-crafted <a href="https://openbsd.org">OpenBSD</a> router for an off-the-shelf wireless router. That old homemade router was old enough that I couldn't put a Wifi card in it, and I just wanted some wifi.</p>
+<p>For a couple of years now, I've noticed that Comcast has been giving me an IPv6 address, but I haven't really been able to figure anything out with it. When I was using an Apple AirPort Extreme,  turning on IPv6 would break everything. So I just left it off. Even when I was running <a href="https://pfsense.org">pfSense</a>, I saw it, but I spent so much time accidentally breaking <a href="https://pfsense.org">pfSense</a> that I never got to look into it any further.</p>
+<p>Since I'm a few months into <a href="https://opnsense.org">OPNSense</a> now, and things seem to be rock solid, I decided to have another go at IPv6. What follows are the steps that I took to get IPv6 up and running as expected on my home network.</p>
+<!-- TEASER_END -->
+
+<h3>My setup</h3>
+<p>Before I get into the screenshots and such, let me oultine what I've got:</p>
+<ul>
+<li>Comcast residential cable internet service -- not a business class connection, and no static IPs.</li>
+<li>
+<a href="http://www.amazon.com/ARRIS-SURFboard-SB6141-DOCSIS-Cable/dp/B00AJHDZSI/ref=sr_1_1?s=pc&amp;ie=UTF8&amp;qid=1440032565&amp;sr=1-1&amp;keywords=sb6141">ARRIS Surfboard SB6141 Cable Modem</a>.  I bought this myself, and I am very happy I did. I used the Comcast rental for a couple of years. The difference is amazing.</li>
+<li>
+<a href="https://opnsense.org">OPNsense</a> 15.7.8-amd64. My <a href="https://opnsense.org">OPNSense</a> box is built out of random old parts. Nothing amazing, but ample for what I need.</li>
+</ul>
+<p>Since I installed <a href="https://opnsense.org">OPNSense</a>, I noticed my WAN interface has had an IPv6 address. Comcast is handing it to me via DHCP6, which I think is the default setting in <a href="https://opnsense.org">OPNSense</a>. I didn't want to NAT for an IPv6 connection, since it defeats the purpose of IPv6. Honestly I didn't even try. In the end, here is what I did to get it all working, with each of my home machines assigned a public IPv6 address.</p>
+<h4>Enable IPv6</h4>
+<p>I think that IPv6 is enabled by default, but just to be sure, go to Settings -&gt; Networking, and make sure that <strong>Allow IPv6</strong> is checked. If it isn't, then check it.</p>
+<h4>WAN Settings</h4>
+<p>Start by looking at the settings for your WAN interface (Interfaces -&gt; WAN). It should be set to <em>DHCP6</em> for <strong>IPv6 Configuration Type</strong>.</p>
+<p><img alt="DHCP Setting for the WAN interface" src="../../images/WAN_DHCP_Settings.png"></p>
+<p>Scroll down a bit, and find the DHCP6 client configuration. Change the <strong>DHCPv6 Prefix Delegation</strong> size to <em>64</em>. Leave all of the other client settings at their defaults.</p>
+<p><img alt="DHCP6 Client settings for the WAN interface" src="../../images/DHCP6_Client_Settings.png"></p>
+<p>Click save, and apply the changes if prompted to do so.</p>
+<h4>LAN Settings</h4>
+<p>The next step will be to go over to the LAN settings (Interfaces -&gt; LAN), and make a couple of changes there. Start by setting the <strong>IPv6 Configuration Type</strong> to <em>Track Interface</em>.</p>
+<p><img alt="DHCP Settings for the LAN interface" src="../../images/LAN_DHCP_Settings.png"></p>
+<p>Scroll down to the <strong>Track IPv6 Interface</strong> section. Verify that <strong>IPv6 Interface</strong> is set to <em>WAN</em>, and that <strong>IPv6 Prefix ID</strong> is set to <em>0</em>.</p>
+<p><img alt="LAN Track interface Settings" src="../../images/LAN_TrackInterface_Settings.png"></p>
+<p>Click save, and apply the changes if you are prompted to.</p>
+<p>Once that is applied, you should pretty quickly see that your LAN interface has an IPv6 address. In my case, the LAN IP and the WAN IP seem to be on different subnets, specifically, the WAN address starts with <code>2001:</code> and my LAN address starts with <code>2601:</code>. In my case, this did not matter.</p>
+<h4>Adding in a firewall rule.</h4>
+<p>When I got to this point, I thought that I was golden, but none of my internal machines would grab an IPv6 address. I was able to ping <a href="http://ipv6.google.com">ipv6.google.com</a> via <a href="https://opnsense.org">OPNSense</a>'s diagnostic tools. I was missing the final piece of the puzzle, a firewall rule to allow DHCP6 traffic to pass through.</p>
+<p><img alt="Inbound DHCpv6 firewall rule" src="../../images/DHCP6_IB_Rule.png"></p>
+<p>This rule, once applied, will allow DHCP6 to come into the LAN from the outside network.  At this point, I also rebooted <a href="https://opnsense.org">OPNSense</a>, but that probably isn't necessary. Not too long after <a href="https://opnsense.org">OPNSense</a> came back up, pretty much all of my internal machines had IPv6 addresses..</p>
+<h3>Test all the things!</h3>
+<p>I ran a few tests, just to be sure. Here are a few of them:</p>
+<ul>
+<li>
+<a href="http://ipv6.google.com">Google IPv6</a>: This only works from an IPv6 connection. If I recall correctly, you will get 404 or some other error if you browse there from a v4 address.</li>
+<li>
+<a href="http://www.kame.net">The Kame Project</a>: If you browse there from a v6 connection, the turtle at the top of the page will be swimming. If it is not moving, then you have connected from a v4 connection.</li>
+<li>
+<a href="http://test-ipv6.comcast.net/">Comcast IPv6 tests</a>: This will fire off off some tests. </li>
+<li>
+<a href="http://ipv6.chappell-family.com/ipv6tcptest/">IPv6 Port Scan</a>: Every time I make a change to my firewall, I like to use Steve Gibson's <a href="https://www.grc.com/x/ne.dll?bh0bkyd2">Shields Up port scanner</a> to make sure that the changes work as I expect. It appears that GRC doesn't yet support v6. But the one I linked up there does. Because of the way IPv6 works, you'll be testing your ocal machine, but it should still be protected by <a href="https://opnsense.org">OPNSense</a>, so it should result in all greens, unless you've opened up some ports.</li>
+</ul>
+<h3>Wrapping it all up</h3>
+<p>The last thing for me was to see if my FreeBSD jails (runnning on a FreeNAS) would grab addresses. They did, which is awesome. Now it's time to migrate some stuff. But that's for another day...</p>
+    </div>
+    <aside class="postpromonav"><nav></nav></aside><section class="comments hidden-print"><h2>Comments</h2>
+                    <div id="disqus_thread"></div>
+        <script>
+        var disqus_shortname ="kirkgnikolablog",
+            disqus_url="https://www.kirkg.us/posts/setting-up-ipv6-with-opnsense-and-comcast/",
+        disqus_title="Setting up IPv6 with OPNSense and Comcast",
+        disqus_identifier="cache/posts/setting-up-ipv6-with-opnsense-and-comcast.html",
+        disqus_config = function () {
+            this.language = "en";
+        };
+        (function() {
+            var dsq = document.createElement('script'); dsq.async = true;
+            dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+        </section><script>var disqus_shortname="kirkgnikolablog";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>
+Contents © 2026         <a href="mailto:kirk@kirkg.us">Kirk Gleason</a> - Powered by         <a href="http://getnikola.com" rel="nofollow">Nikola</a><br><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/2.5/ar/">
+<img alt="Creative Commons License BY-NC-SA" style="border-width:0; margin-bottom:12px;" src="https://i.creativecommons.org/l/by-nc-sa/2.5/ar/88x31.png"></a>
+
+<a title="Web Analytics" href="http://clicky.com/101017846"><img alt="Web Analytics" src="//static.getclicky.com/media/links/badge.gif" border="0"></a>
+<script src="//static.getclicky.com/js" type="text/javascript"></script><script type="text/javascript">try{ clicky.init(101017846); }catch(e){}</script><noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101017846ns.gif"></p></noscript>
+
+</p>
+            
+        </footer></article>
+</div>
+	</section><script src="../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+
+    moment.locale("en");
+    fancydates(1, "YYYY-MM-DD HH:mm");
+
+	</script><!-- end fancy dates --><script>
+
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+
+	</script><script src="../../assets/js/ToggleNav.js">
+	</script>
+</body>
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html \ prefix="
+        og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+    " vocab="http://ogp.me/ns" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Building an OpenVPN Server with OPNSense | kirkg.us</title>
+<link href="https://fonts.googleapis.com/css?family=Bitter:400,400i,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://www.kirkg.us/posts/building-an-openvpn-server-with-opnsense/">
+<!--[if lt IE 9]><script src="../../assets/js/html5shiv-printshiv.min.js"></script><![endif]--><meta name="author" content="Kirk Gleason">
+<link rel="prev" href="../how-to-configure-a-freebsd-jail-on-a-digital-ocean-droplet/" title="How to configure a FreeBSD Jail on a Digital Ocean Droplet" type="text/html">
+<meta property="og:site_name" content="kirkg.us">
+<meta property="og:title" content="Building an OpenVPN Server with OPNSense">
+<meta property="og:url" content="https://www.kirkg.us/posts/building-an-openvpn-server-with-opnsense/">
+<meta property="og:description" content="I recently converted my home firewall from pfSense to OPNSense. The reasons for the change are pretty much all outlined in the reasons why OPNSense forked. Those are some pretty solid reasons, in my o">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2015-05-31T09:55:07-05:00">
+<meta property="article:tag" content="firewall">
+<meta property="article:tag" content="FreeBSD">
+<meta property="article:tag" content="OpenVPN">
+<meta property="article:tag" content="OPNSense">
+<meta property="article:tag" content="security">
+<meta property="article:tag" content="VPN">
+<link rel="stylesheet" href="https://latest.cactus.chat/style.css" type="text/css">
+</head>
+<body>
+
+	<a href="#page-content" class="sr-only sr-only-focusable">
+		Skip to main content
+	</a>
+
+	
+
+    <section id="header"><a href="../../">
+			<div class="logo">
+					<div id="nologoimage">
+						kirkg.us
+					</div>
+    		</div>
+			</a>
+    </section><section id="socialNav"><!-- Navigation Menu - on top on small screens, down the left on larger --><div class="navlinks">
+			<a href="../../">
+				<div id="titleauth">
+    					kirkg.us<br> by Kirk Gleason
+				</div>
+			</a>
+
+            <!-- Navigation links (hidden by default) -->
+			<div id="navmenuitems">
+				            <a href="../../index.html" title="Home">
+                <span class="menuitemtext">Home</span>
+                <span class="menuitemicon"><i class="fa fa-home"></i></span>
+            </a>
+            <a href="../../archive.html" title="Archives">
+                <span class="menuitemtext">Archives</span>
+                <span class="menuitemicon"><i class="fa fa-folder-open"></i></span>
+            </a>
+            <a href="../../categories/index.html" title="Tags">
+                <span class="menuitemtext">Tags</span>
+                <span class="menuitemicon"><i class="fa fa-tags"></i></span>
+            </a>
+            <a href="../../rss.xml" title="RSS">
+                <span class="menuitemtext">RSS</span>
+                <span class="menuitemicon"><i class="fa fa-rss"></i></span>
+            </a>
+            <a href="../" title="About me">
+                <span class="menuitemtext">About me</span>
+                <span class="menuitemicon"><i class="fa fa-user"></i></span>
+            </a>
+            <a href="https://www.linkedin.com/in/kirk-gleason/" title="LinkedIn">
+                <span class="menuitemtext">LinkedIn</span>
+                <span class="menuitemicon"><i class="fab fa-linkedin"></i></span>
+            </a>
+            <a href="https://github.com/kgleason" title="Github">
+                <span class="menuitemtext">Github</span>
+                <span class="menuitemicon"><i class="fab fa-github"></i></span>
+            </a>
+            <a href="https://www.gitlab.com/kgleason" title="GitLab">
+                <span class="menuitemtext">GitLab</span>
+                <span class="menuitemicon"><i class="fab fa-gitlab"></i></span>
+            </a>
+    
+    
+
+			</div>
+
+            <!-- "Hamburger menu" / "Bar icon" to toggle the navigation links -->
+			<a href="javascript:void(0);" id="hamburger" class="icon" onclick="toggleNav()">
+				<i class="fa fa-bars">
+				</i>
+			</a>
+		</div>
+
+	</section><section class="page-content"><div class="content" rel="main">
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Building an OpenVPN Server with OPNSense</a></h1>
+
+        <div class="metadata">
+            <p class="dateline"><a href="." rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2015-05-31T09:55:07-05:00" itemprop="datePublished" title="2015-05-31 09:55">2015-05-31 09:55</time></a></p>
+
+                <p class="commentline"><i class="far fa-comment"></i>        <a href="#disqus_thread" data-disqus-identifier="cache/posts/building-an-openvpn-server-with-opnsense.html">Comments</a>
+
+
+                    </p>
+<p class="sourceline"><a href="index.md" class="sourcelink"><i class="fa fa-file-code"></i> Source</a></p>
+
+            
+                <div class="tags">
+<h3 class="metadata-title">
+<i class="fa fa-tags"></i> Tags:</h3>
+        <ul itemprop="keywords" class="tags-ul">
+<li><a class="tag p-category" href="../../categories/firewall/" rel="tag">firewall</a></li>
+            <li><a class="tag p-category" href="../../categories/freebsd/" rel="tag">FreeBSD</a></li>
+            <li><a class="tag p-category" href="../../categories/openvpn/" rel="tag">OpenVPN</a></li>
+            <li><a class="tag p-category" href="../../categories/opnsense/" rel="tag">OPNSense</a></li>
+            <li><a class="tag p-category" href="../../categories/security/" rel="tag">security</a></li>
+            <li><a class="tag p-category" href="../../categories/vpn/" rel="tag">VPN</a></li>
+        </ul>
+</div>
+
+        </div>
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <p>I recently converted my home firewall from <a href="https://www.pfsense.org">pfSense</a> to <a href="https://opnsense.org">OPNSense</a>. The reasons for the change are pretty much all outlined in the <a href="https://opnsense.org/about/about-opnsense/#so-why-did-we-fork-pfsense">reasons why OPNSense forked</a>. Those are some pretty solid reasons, in my opinion.</p>
+<p>A VPN allows us to connect to our private home network from anywhere on the Internet. This means that if we are in a remote location, and need to retrieve a file from our FreeNAS, or want to play some music from our internal music server, we can use the VPN to make that happen. In essence, a VPN extends our private network by creating a tunnel between our private network and our client(s) out there on the internet.</p>
+<!--TEASER_END-->
+
+<p>There are lots of different VPN types, and <a href="https://opnsense.org">OPNSense</a> supports several of them: IPSec, L2TP, OpenVPN, and PPTP. We've chosen OpenVPN for our VPN solution because it is open-source and well maintained. There is a large community that offers support and assistance when needed, and it is realtively easy to use once it is all set up. OpenVPN performs well over high-latency networks, and patches vulnerabilities quickly. </p>
+<p>The good folks at <a href="https://opnsense.org">OPNSense</a> have created a wizard to help us with the set up of our VPN. In the OPNSense Web UI, go to VPN -&gt; OpenVPN. Click on the Wizards tab.</p>
+<p>The wizard starts as soon as you click on the tab. For this example, we'll be leaving the Type of Server set to Local User Access. This means that each user that wants to connect to the VPN will need to have an account in OPNSense. For a large scale VPN deployment, this is probably not a practical option. For a small home VPN, this is certainly managable.</p>
+<h3>Creating a Certificate Authority</h3>
+<p>When you click Next, you'll be presented with the Remote Access Server set up wizard. The first step to setting up the remote access server is creating a Certificate Authority. In the Descriptive name field, but something that indicates that this is your local CA, e.g. "Home CA".</p>
+<p>The default key length is 2048 bits. This is a good default option. Selecting a larger bit length will increase the security of the key, but will also add to processing time. It is recommended that you not set the key length to less than 2048 bits. </p>
+<p>The lifetime of the CA is an important value. It defaults to one year, which means that any certificates that are signed by thiss CA will become invalid after one year. This is probably not what you want. In this example, we'll be setting this to 3650, which is approximately 10 years. As long as your protect your keys appropriately, this should be perfectly fine.</p>
+<p>The next few fields are about your organization. For all of these fields, you can use whatever values you want. For home use, fake values are certainly fine. If you are setting up a VPN for your business, you will probably want to use values that accurately reflect your organization.</p>
+<h3>Creating a server certificate</h3>
+<p>When you click Save for the CA, you'll immediately be asked to create a server certificate. Once again, the descriptive name should be set to something that indicates what the cert will be used for. For example, "Home VPN Server". </p>
+<p>The same caveats about the key length and lifetime apply above. These values do not need to be the same as for the CA. It is a good practice to regenerate these certificates periodically, so leaving the default 1 year in this case makes some sense. If you want to go with a longer lifetime, it might make sense to set the server certificate to expire a bit before the CA.</p>
+<p>The rest of the fields should be filled in with the values that you enetered when you created the CA. It is perfectly fine to leave these values intact.</p>
+<h3>Configuring the server</h3>
+<p>After you create the server certificate, you'll be presented with server options. In the general section, you'llprobably want to leave everything set to WAN UDP 1194. You should enter a description that indicates what this OpenVPN server will be used for, for exaple "Remote Access to Home Network".</p>
+<h4>Crypto Settings</h4>
+<p><img alt="OpenVPN Cryptography Settings" src="../../images/OpenVPN_CryptoSettings.png"></p>
+<p>The default cryptographic settings displayed above are adequate. If your OPNSense server is adequately powerful, you can increase the DH Parameters length, and increase the Encyption Algorithm. Change the Auth Digest Algorithm to anything other than SHA1 is not recommended unless you know what you are doing. </p>
+<h4>Tunnel Setings</h4>
+<p><img alt="OpenVPN Tunnel Settings" src="../../images/OpenVPN_TunnelSettings.png"></p>
+<p>Scrolling down the page futher will reveal the tunnel settings. In order to complete this screen, you'll need to know a little bit about your network and <a href="http://www.ipaddressguide.com/cidr">CIDR Notation</a>.</p>
+<p>In the Tunnel Network, you'll need to add a subnet for the clients to use. This subnet should be different from any of your internal subnets. In the example above, we've used 192.168.100.0/24. We've defined the Local Network as 10.0.0.0/24. With this configuration, OPNSense will take care of routing the packets between the 2 different subnets. </p>
+<p>If you opt to check the "Redirect Gateway" box, then all of the client traffic, regardless of destination, will be routed via the VPN. If you wish to obscure all of your traffic behind your home network, then you'll want to check this box. It also means that if you are in a hotel, connected to your VPN and watching Netflix, then Netflix will think that you are watching from home. It also means that the same traffic will have to be routed more than normal, which may affect the quality.</p>
+<p>By default the OpenVPN server will allow an unlimited number of connections to your server. Setting this to a reasonable value is recommended, even if just for a sanity check.</p>
+<p>Be default OpenVPN will not attempt to compress the traffic between your client and your server. If your server is not terribly powerful, leaving the traffic unencrypted is probably the way to go. If you do turn on compression, consider using the adaptive compression. This will allow OpenVPN to disable the compression if it finds that it is unable to compress your traffic efficiently.</p>
+<p>If you do not want your clients to be able to communicate with each other, then you should uncheck the box next to "Allow communication between clients connected to this server".</p>
+<h4>Client Settings</h4>
+<p><img alt="OpenVPN Client Settings" src="../../images/OpenVPN_ClientSettings.png"></p>
+<p>The last section deals with how your client will interact with your network once they have connected. </p>
+<p>By default the Dynamic IP setting is enabled. This will allow an already connected client to change it's IP adress without having to reconnect. </p>
+<p>If you specify a Default DNS Domain, then your clients will receive this value as their DNS suffix. This can be handy if your clients want to look up your internal hostnames without using an FQDN. For example, this would allow a client to browse to "http://freenas" rather than having to type out "http://freenas.domain.local". If you don't need this sort of thing, you should consider leaving this value empty. It may save you from some DNS oddities down the road.</p>
+<p>Hand in hand with this is the DNS Server values. If you specify values in here, then these will be added to your clients DNS search list. If you run an internal DNS server, then you should put a value in here. If you are a nerd (like me), then you can leave this empty, but it will mean that you will need to use IP addresses to navigate your home network.</p>
+<p>If you run an internal NTP server, you can also push this out to your clients with the NTP Server settings. </p>
+<p>The final options are about NetBIOS. If you are a Windows user, then these settings may apply to you. For our purposes, we are going to leave them all empty.</p>
+<h3>Firewall rules</h3>
+<p><img alt="OpenVPN Firewall Rules" src="../../images/OpenVPN_FirewallRules.png"></p>
+<p>With the server all configured, the last step is to open up the firewall to allow the connections. The first checkbox allows the traffic from the clients to connect to the server. Without this box checked, your server will not be listening on your public IP, and your clients won't be able to connect.</p>
+<p>The second checkbox allows your clients to get around your network. If you do not want your clients to have unfettered access to your internal network, then you will want to not check this box, and define the rules on your own. Checking the box is recommended unless you know what you are doing.</p>
+<h3>Finishing the server configuration</h3>
+<p>When you click Next on the firewall rules screen, you will be told that you are finished. It will instruct you to go to a place to enable the OpenVPN client exporter. This message is a legacy message, and is not required. We'll proceed directly to the client creation pieces.</p>
+<h3>Client Creation</h3>
+<p>As of the date of this publication, there is not a wizard for setting up a client, so we'll have to do it manually. Don't fret, it isn't terribly difficult.</p>
+<h4>Add a user</h4>
+<p>Browse to System -&gt; User Manager and click the + sign to add a new user. This should be the user that you will be using to authenticate to the VPN.</p>
+<h4>Adding a user Cert.</h4>
+<p>Ideally each user that connects to your VPN will have it's own cert. To that end, we need to create a new certificate.</p>
+<p>Inside the OPNSense web configurator, go to System -&gt; Certificates. In the Certificates tab, press the button to add or import a certificate.</p>
+<p><img alt="OpenVPN User Certificate" src="../../images/OpenVPN_UserCert.png"></p>
+<p>We've covered most of these settings previously, so we need'nt rehash all of the settings. I've changed a couple of the defaults. You may not want to.</p>
+<p>Once the cert is created, we need to associate with the user in question. Go back to the User Manager, and edit the user that you've recently created. Near the bottom of the edit screen, there is a "User Certificates" section. Click the + sign in there. Change the method to "Choose an existing certificate" and select the certificate that you just created.</p>
+<h4>Exporting the OpenVPN config</h4>
+<p>Now that you've associated the certificate with a user, go to VPN -&gt; OpenVPN. Click on the Client Export tab. Leave all of the defaults and scroll down to the bottom of the page. If you look closely, you'll see a section called "Client Install Packages". The UI in this version isn't great, but I'm sure that they will make it better.</p>
+<p><img alt="OpenVPN client export" src="../../images/OpenVPN_ClientExporter.png"></p>
+<p>In the image above, you'll see various type of exports. Choose the type of export based on what client you are using. I'm a command line Linux user, so I use the Archive option. The archive downloader is a zip file with the .ovpn config file, and all of the certs the client will need. </p>
+<p>At this point you should have a functioning OpenVPN server, and client config that you can export and install in your client of choice. Hopefully you found this tutorial to be helpful.</p>
+    </div>
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+<li class="previous">
+                <a href="../how-to-configure-a-freebsd-jail-on-a-digital-ocean-droplet/" rel="prev" title="How to configure a FreeBSD Jail on a Digital Ocean Droplet">Previous post</a>
+            </li>
+        </ul></nav></aside><section class="comments hidden-print"><h2>Comments</h2>
+                    <div id="disqus_thread"></div>
+        <script>
+        var disqus_shortname ="kirkgnikolablog",
+            disqus_url="https://www.kirkg.us/posts/building-an-openvpn-server-with-opnsense/",
+        disqus_title="Building an OpenVPN Server with OPNSense",
+        disqus_identifier="cache/posts/building-an-openvpn-server-with-opnsense.html",
+        disqus_config = function () {
+            this.language = "en";
+        };
+        (function() {
+            var dsq = document.createElement('script'); dsq.async = true;
+            dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+        </section><script>var disqus_shortname="kirkgnikolablog";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>
+Contents © 2026         <a href="mailto:kirk@kirkg.us">Kirk Gleason</a> - Powered by         <a href="http://getnikola.com" rel="nofollow">Nikola</a><br><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/2.5/ar/">
+<img alt="Creative Commons License BY-NC-SA" style="border-width:0; margin-bottom:12px;" src="https://i.creativecommons.org/l/by-nc-sa/2.5/ar/88x31.png"></a>
+
+<a title="Web Analytics" href="http://clicky.com/101017846"><img alt="Web Analytics" src="//static.getclicky.com/media/links/badge.gif" border="0"></a>
+<script src="//static.getclicky.com/js" type="text/javascript"></script><script type="text/javascript">try{ clicky.init(101017846); }catch(e){}</script><noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101017846ns.gif"></p></noscript>
+
+</p>
+            
+        </footer></article>
+</div>
+	</section><script src="../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+
+    moment.locale("en");
+    fancydates(1, "YYYY-MM-DD HH:mm");
+
+	</script><!-- end fancy dates --><script>
+
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+
+	</script><script src="../../assets/js/ToggleNav.js">
+	</script>
+</body>
+</html>

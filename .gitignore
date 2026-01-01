@@ -62,7 +62,6 @@ include
 config.py
 .vagrant
 pyvenv.cfg
-output
 cache
 GhostData.json
 pip-selfcheck.json

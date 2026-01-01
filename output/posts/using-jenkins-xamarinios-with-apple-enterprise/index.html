@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html \ prefix="
+        og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+    " vocab="http://ogp.me/ns" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Using Jenkins &amp; Xamarin.iOS with Apple Enterprise | kirkg.us</title>
+<link href="https://fonts.googleapis.com/css?family=Bitter:400,400i,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://www.kirkg.us/posts/using-jenkins-xamarinios-with-apple-enterprise/">
+<!--[if lt IE 9]><script src="../../assets/js/html5shiv-printshiv.min.js"></script><![endif]--><meta name="author" content="Kirk Gleason">
+<link rel="prev" href="../super-mega-pimped-git-bash/" title="Super Mega-pimped Git-Bash" type="text/html">
+<link rel="next" href="../new-blog/" title="New Blog" type="text/html">
+<meta property="og:site_name" content="kirkg.us">
+<meta property="og:title" content="Using Jenkins &amp; Xamarin.iOS with Apple Enterprise">
+<meta property="og:url" content="https://www.kirkg.us/posts/using-jenkins-xamarinios-with-apple-enterprise/">
+<meta property="og:description" content="Xamarin released some documentation recently that talks about using Jenkins
+in a continuous integration set up. Bravo. I read through with rapt anticipation,
+only to be let down. Again.
+I've written a">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2014-03-03T12:22:45-05:00">
+<meta property="article:tag" content="continuous-integration">
+<meta property="article:tag" content="jenkins">
+<meta property="article:tag" content="monotouch">
+<meta property="article:tag" content="programming">
+<meta property="article:tag" content="technology">
+<meta property="article:tag" content="xamarin">
+<link rel="stylesheet" href="https://latest.cactus.chat/style.css" type="text/css">
+</head>
+<body>
+
+	<a href="#page-content" class="sr-only sr-only-focusable">
+		Skip to main content
+	</a>
+
+	
+
+    <section id="header"><a href="../../">
+			<div class="logo">
+					<div id="nologoimage">
+						kirkg.us
+					</div>
+    		</div>
+			</a>
+    </section><section id="socialNav"><!-- Navigation Menu - on top on small screens, down the left on larger --><div class="navlinks">
+			<a href="../../">
+				<div id="titleauth">
+    					kirkg.us<br> by Kirk Gleason
+				</div>
+			</a>
+
+            <!-- Navigation links (hidden by default) -->
+			<div id="navmenuitems">
+				            <a href="../../index.html" title="Home">
+                <span class="menuitemtext">Home</span>
+                <span class="menuitemicon"><i class="fa fa-home"></i></span>
+            </a>
+            <a href="../../archive.html" title="Archives">
+                <span class="menuitemtext">Archives</span>
+                <span class="menuitemicon"><i class="fa fa-folder-open"></i></span>
+            </a>
+            <a href="../../categories/index.html" title="Tags">
+                <span class="menuitemtext">Tags</span>
+                <span class="menuitemicon"><i class="fa fa-tags"></i></span>
+            </a>
+            <a href="../../rss.xml" title="RSS">
+                <span class="menuitemtext">RSS</span>
+                <span class="menuitemicon"><i class="fa fa-rss"></i></span>
+            </a>
+            <a href="../" title="About me">
+                <span class="menuitemtext">About me</span>
+                <span class="menuitemicon"><i class="fa fa-user"></i></span>
+            </a>
+            <a href="https://www.linkedin.com/in/kirk-gleason/" title="LinkedIn">
+                <span class="menuitemtext">LinkedIn</span>
+                <span class="menuitemicon"><i class="fab fa-linkedin"></i></span>
+            </a>
+            <a href="https://github.com/kgleason" title="Github">
+                <span class="menuitemtext">Github</span>
+                <span class="menuitemicon"><i class="fab fa-github"></i></span>
+            </a>
+            <a href="https://www.gitlab.com/kgleason" title="GitLab">
+                <span class="menuitemtext">GitLab</span>
+                <span class="menuitemicon"><i class="fab fa-gitlab"></i></span>
+            </a>
+    
+    
+
+			</div>
+
+            <!-- "Hamburger menu" / "Bar icon" to toggle the navigation links -->
+			<a href="javascript:void(0);" id="hamburger" class="icon" onclick="toggleNav()">
+				<i class="fa fa-bars">
+				</i>
+			</a>
+		</div>
+
+	</section><section class="page-content"><div class="content" rel="main">
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Using Jenkins &amp; Xamarin.iOS with Apple Enterprise</a></h1>
+
+        <div class="metadata">
+            <p class="dateline"><a href="." rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2014-03-03T12:22:45-05:00" itemprop="datePublished" title="2014-03-03 12:22">2014-03-03 12:22</time></a></p>
+
+                <p class="commentline"><i class="far fa-comment"></i>        <a href="#disqus_thread" data-disqus-identifier="cache/posts/using-jenkins-xamarinios-with-apple-enterprise.html">Comments</a>
+
+
+                    </p>
+<p class="sourceline"><a href="index.rst" class="sourcelink"><i class="fa fa-file-code"></i> Source</a></p>
+
+            
+                <div class="tags">
+<h3 class="metadata-title">
+<i class="fa fa-tags"></i> Tags:</h3>
+        <ul itemprop="keywords" class="tags-ul">
+<li><a class="tag p-category" href="../../categories/continuous-integration/" rel="tag">continuous-integration</a></li>
+            <li><a class="tag p-category" href="../../categories/jenkins/" rel="tag">jenkins</a></li>
+            <li><a class="tag p-category" href="../../categories/monotouch/" rel="tag">monotouch</a></li>
+            <li><a class="tag p-category" href="../../categories/programming/" rel="tag">programming</a></li>
+            <li><a class="tag p-category" href="../../categories/technology/" rel="tag">technology</a></li>
+            <li><a class="tag p-category" href="../../categories/xamarin/" rel="tag">xamarin</a></li>
+        </ul>
+</div>
+
+        </div>
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <p>Xamarin released <a class="reference external" href="http://docs.xamarin.com/guides/cross-platform/ci/jenkins_walkthrough">some documentation</a> recently that talks about using <a class="reference external" href="http://www.jenkins-ci.org">Jenkins</a>
+in a continuous integration set up. Bravo. I read through with rapt anticipation,
+only to be let down. Again.</p>
+<p>I've written <a class="reference external" href="http://www.kirkg.us/2013/04/09/continuous-integration-with-monotouch-and-jenkins/">an other blog post</a> about being an Apple Enterprise developer and
+the particular challenges that ensue therefrom. In a nutshell, when you are an
+enterprise developer developing apps for other people, you have to work closely
+with your clients to get the provisioning working correctly. Then the hard part
+starts: you need to figure out how to make it all work in Xamarin Studio.</p>
+<!-- TEASER_END -->
+<p>It probably isn't as complicated as I make it sound. It was probably more of a
+chore for me because I don't necessarily consider myself a developer yet -- my
+background is in systems administration; and that will probably come through as I
+go through how I have Jenkins set up, and some of the crazy hacks that we have in
+place. Don't get me wrong, it all works; but not all of the development staff
+understands (or cares to understand) what is going on with all of this.</p>
+<p>Before I dive into the goodies, a description of our set up is in order. Our
+bleeding edge software is deployed to the development environment. We send builds
+to staging when we think we are ready for release. Once we have everything set
+up and ready to go, we deploy to 3 different production-level environments. One
+is called "demo" (for the sales team), the next is called "training" (for the
+training team), and "production" (where the real stuff happens). Each of these
+environments, aside from production, gets it's own build of our application. In
+production, the number of builds = number of clients + #. The plus one is for our
+internal use.</p>
+<p>In order to comply with Apple's rules, each client specific-build get it's own
+App ID (to match the provided provisioning profile). Also each environmental
+build has a unique application id so that we can have them all installed on our
+devices. It took quite a while to come up with a workable soltuion to all of this,
+and it has been through quite a few iterations. Over the course of time, I've
+learned a lot about solution and project files (remember when I said I wasn't
+really a developer), and picked up some pretty decent awk one-liners as well.
+Without further ado, here is a step by step of how I've automated this at work to
+make it all build the same, every time. I'll start inside Xamarin Studio.</p>
+<section id="build-configs"><h2>Build Configs</h2>
+<p>Here are the requirements:</p>
+<ul class="simple">
+<li><p>a specific build per client, each with their own provisioning profile.</p></li>
+<li><p>a specific build per environment, for our own internal use.</p></li>
+</ul>
+<p>In order to accomplish this, I started out by standardizing a few things. If you
+look inside my solution file, you'll see build configs that looks like this:
+CompanyEnvironment, where Company can represent either the name of a client, or
+the name of our company:</p>
+<ul class="simple">
+<li><p>BloomDebug</p></li>
+<li><p>BloomStaging</p></li>
+<li><p>BloomTraining</p></li>
+<li><p>BloomDemo</p></li>
+<li><p>BloomProduction</p></li>
+<li><p>Client1Production</p></li>
+<li><p>Client2Production</p></li>
+</ul>
+<p>You get the idea. For each of the build configs, I have configured custom signing
+and provisioning profile settings. I don't rely on the BundleID matching that is
+built into Xamarin Studio, since it has caused me some headaches in the past.
+For each build, I pair up the key, provisioning profile specifically. This ensures
+that if the provisioning profile is not present on the build server (or expired),
+that the job will fail. Setting up a new client is somewhat involved, since it
+involves something along the lines of the following:</p>
+<ol class="arabic simple">
+<li><p>Open the solution</p></li>
+<li><p>Go into the project options, and set the bundle id to be the one that was assigned to the clients provisioning profile</p></li>
+<li><p>Close the project options (to make it save)</p></li>
+<li><p>Go back into the project options, and set up the signing cert and provisioning profile for the client.</p></li>
+<li><p>close the projection options (to make it save)</p></li>
+<li><p>Go back in and set the bundle id to what it needs to be for development purposes</p></li>
+</ol>
+<p>Speaking of bundle ids, there is also a standard as to how those are chosen:
+com.ourawesomeapp.client1 for production builds, and com.ourawesomeapp.environment.bloom
+for non-production builds. The reason for all of the rigid standardization will
+become obvious as we start looking at what is going on in Jenkins.</p>
+</section><section id="jenkins-1"><h2>Jenkins</h2>
+<p>There are 5 primary build jobs. There are a couple of variations between them,
+all for some pretty specific reasons. The various build jobs are:</p>
+<ul class="simple">
+<li><p>Dev</p></li>
+<li><p>Staging</p></li>
+<li><p>Demo</p></li>
+<li><p>Training</p></li>
+<li><p>Production</p></li>
+</ul>
+<p>From a Jenkins perspective, some of the differences are significant.</p>
+<section id="dev"><h3>Dev</h3>
+<p>The dev job is the one that is the most cutting edge. It is the one that builds
+the bleeding edge of our development, and it is also the one where I test out
+changes to Jenkins. This job monitors our source control for changes, and builds
+automatically. Since these dev builds are outside our normal deployment and
+versioning process, this build is quite a bit different from the rest. This is
+also my favorite one, since it is the least user dependent. Here are the build steps:</p>
+<section id="versioning"><h4>Versioning</h4>
+<p>In general, we version our software YYYY.Q.MM.RR where</p>
+<ul class="simple">
+<li><p>YYYY is the 4 digit year</p></li>
+<li><p>Q is the 1 digit quarter of the release</p></li>
+<li><p>MM is the 2 digit month of the release</p></li>
+<li><p>RR is the release number</p></li>
+</ul>
+<p>However for dev, which is continuously built, this doesn't work. Instead we use
+the Jenkins build number for the RR portion. Thus the build starts by setting
+calculating the version and setting it in a Jenkins variable. The following are
+executed in a Jenkins "Execute Shell" build step</p>
+<div class="code"><pre class="code bash"><a id="rest_code_c9cdc5cb5a4040328f6f8c54da487026-1" name="rest_code_c9cdc5cb5a4040328f6f8c54da487026-1" href="#rest_code_c9cdc5cb5a4040328f6f8c54da487026-1"></a><span class="nb">echo</span><span class="w"> </span><span class="nv">APP_VERSION</span><span class="o">=</span><span class="k">$(</span>date<span class="w"> </span>+%Y.<span class="k">$((</span><span class="o">((</span><span class="k">$(</span>date<span class="w"> </span>+%-m<span class="k">)</span><span class="o">-</span><span class="m">1</span><span class="o">)/</span><span class="m">3</span><span class="o">)+</span><span class="m">1</span><span class="k">))</span>.%m.<span class="si">${</span><span class="nv">BUILD_NUMBER</span><span class="si">}</span><span class="k">)</span><span class="w"> </span>&gt;<span class="w"> </span>propsfile
+<a id="rest_code_c9cdc5cb5a4040328f6f8c54da487026-2" name="rest_code_c9cdc5cb5a4040328f6f8c54da487026-2" href="#rest_code_c9cdc5cb5a4040328f6f8c54da487026-2"></a><span class="nb">echo</span><span class="w"> </span><span class="nv">CLIENT</span><span class="o">=</span>dev<span class="w"> </span>&gt;&gt;<span class="w"> </span>propsfile
+</pre></div>
+<p>Aside from creating the version, we also set a client name, which is dev in this case.</p>
+<p>Once we have the values in the newly created "propsfile", we use a Jenkins
+"Inject Environment Variables" step to read in the newly set values.</p>
+<p>Once we have the Jenkins environment set to use, we take a look at the
+Info.plist changes.</p>
+</section><section id="info-plist"><h4>Info.plist</h4>
+<p>In the past, and in the other build jobs, we had multiple versions of Info.Plist,
+and we simply delete the one from git, and copy in the appropriate one. However
+I've recently discovered the PlistBuddy command, and I have been playing around
+with it in the dev Jenkins build. It will probably get moved up the chain before
+too long, because it is much cleaner.</p>
+<p>In another Jenkins "Execute Shell" step, the following commands are issued:</p>
+<div class="code"><pre class="code bash"><a id="rest_code_99ab7180fbcc4719a6bf8f87749e721c-1" name="rest_code_99ab7180fbcc4719a6bf8f87749e721c-1" href="#rest_code_99ab7180fbcc4719a6bf8f87749e721c-1"></a>/usr/libexec/PlistBuddy<span class="w"> </span>-c<span class="w"> </span><span class="s2">"Set CFBundleVersion </span><span class="si">${</span><span class="nv">APP_VERSION</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span>Info.plist
+<a id="rest_code_99ab7180fbcc4719a6bf8f87749e721c-2" name="rest_code_99ab7180fbcc4719a6bf8f87749e721c-2" href="#rest_code_99ab7180fbcc4719a6bf8f87749e721c-2"></a>/usr/libexec/PlistBuddy<span class="w"> </span>-c<span class="w"> </span><span class="s2">"Set CFBundleIdentifier com.ourawesomeapp.</span><span class="si">${</span><span class="nv">CLIENT</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span>Info.plist
+<a id="rest_code_99ab7180fbcc4719a6bf8f87749e721c-3" name="rest_code_99ab7180fbcc4719a6bf8f87749e721c-3" href="#rest_code_99ab7180fbcc4719a6bf8f87749e721c-3"></a>/usr/libexec/PlistBuddy<span class="w"> </span>-c<span class="w"> </span><span class="s2">"Set CFBundleURLTypes:0:CFBundleURLName com.ourawesomeapp.</span><span class="si">${</span><span class="nv">CLIENT</span><span class="si">}</span><span class="s2">-handler"</span><span class="w"> </span>Info.plist
+<a id="rest_code_99ab7180fbcc4719a6bf8f87749e721c-4" name="rest_code_99ab7180fbcc4719a6bf8f87749e721c-4" href="#rest_code_99ab7180fbcc4719a6bf8f87749e721c-4"></a>/usr/libexec/PlistBuddy<span class="w"> </span>-c<span class="w"> </span><span class="s2">"Set CFBundleURLTypes:0:CFBundleURLSchemes:0 ourawesomeapp-</span><span class="si">${</span><span class="nv">CLIENT</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span>Info.plist
+</pre></div>
+<p>Breaking down the first command, we can see that PlistBuddy is basically being
+told "set" the value of "CFBundleVersion" to the value of the Jenkins variable
+"APP_VERSION" in "Info.plist". There are 4 lines that need to be edited along
+the same lines.</p>
+</section><section id="prebuild-cleaning"><h4>Prebuild cleaning</h4>
+<p>You can color me old fashioned, but I do like to clean before build. So with
+another "Execute Shell" step, I fire off the following command:</p>
+<div class="code"><pre class="code bash"><a id="rest_code_3bdee14b61d3429b8d46df269147adbd-1" name="rest_code_3bdee14b61d3429b8d46df269147adbd-1" href="#rest_code_3bdee14b61d3429b8d46df269147adbd-1"></a>/Applications/Xamarin<span class="se">\ </span>Studio.app/Contents/MacOS/mdtool<span class="w"> </span>build<span class="w"> </span>-c:<span class="s2">"BloomDev|iPhone"</span><span class="w"> </span>-t:Clean<span class="w"> </span>OurAwesomeApp.sln
+</pre></div>
+</section><section id="building"><h4>Building</h4>
+<p>The final build step is another "Execute Shell" step:</p>
+<div class="code"><pre class="code bash"><a id="rest_code_5cf6fbce291f4ed4ab649de4e85985dc-1" name="rest_code_5cf6fbce291f4ed4ab649de4e85985dc-1" href="#rest_code_5cf6fbce291f4ed4ab649de4e85985dc-1"></a>/Applications/Xamarin<span class="se">\ </span>Studio.app/Contents/MacOS/mdtool<span class="w"> </span>build<span class="w"> </span>-t:Build<span class="w"> </span>-c:<span class="s2">"BloomDev|iPhone"</span><span class="w"> </span>OurAwesomeApp.sln
+</pre></div>
+<p>The the app build, and bundled into a handy IPA, Jenkins deploys it to our
+internal deployment server.</p>
+</section></section><section id="staging-demo-training"><h3>Staging, Demo &amp; Training</h3>
+<p>We use the same versioning scheme, but like to keep the revision number (RR)
+predictiable for our clients. As such the formula used in dev can't be used. In
+addition, the Jenkins jobs haven't all yet been migrated to using the PlistBuddy
+transformations. So we deal with the verisoning a different way.</p>
+<section id="info-plist-1"><h4>Info.plist</h4>
+<div class="code"><pre class="code bash"><a id="rest_code_beab45a186fd4d8db048d4b2a8c97fd6-1" name="rest_code_beab45a186fd4d8db048d4b2a8c97fd6-1" href="#rest_code_beab45a186fd4d8db048d4b2a8c97fd6-1"></a>rm<span class="w"> </span>-f<span class="w"> </span>Info.plist<span class="p">;</span><span class="w"> </span>cp<span class="w"> </span>InfoPlistFiles/Info.plist.staging<span class="w"> </span>Info.plist
+</pre></div>
+<p>Essentially we keep a static Info.plist in the code for every different build
+that needs to be made. This technique has worked pretty well, but we have to be
+careful about changes to the Info.plist file. For example, we recently added
+some entitlements, so that change needs to be merged into all of the static
+Info.plist files.</p>
+</section><section id="version-manipulations"><h4>Version manipulations</h4>
+<p>For this, we use a bash script that is an evolution of what we used to use for
+the entire build process. It takes a few different parameters.</p>
+<div class="code"><pre class="code bash"><a id="rest_code_a5d9997d50a84388928fd9ba3f64ed2c-1" name="rest_code_a5d9997d50a84388928fd9ba3f64ed2c-1" href="#rest_code_a5d9997d50a84388928fd9ba3f64ed2c-1"></a>/bin/bash<span class="w"> </span>ShellScripts/Version_Environment_Settings.sh<span class="w"> </span>-b<span class="w"> </span><span class="si">${</span><span class="nv">GIT_TAG</span><span class="si">}</span><span class="w"> </span>-e<span class="w"> </span>STAGING
+</pre></div>
+<p>The ${GIT_TAG} is a Jenkins parameter that is used to specify both the version to
+build and the tag to checkout. I'll put the script at the end of this post, if
+anyone wants to look at it. Essentially what it does is checks to make sure that
+it knows everything that it needs to know, and then it does some find and replace
+on the overall solution file (.sln), the Project files (.csproj) and the Info.plist.</p>
+<p>I've been wondering for a while if some of this isn't overkill. I just haven't
+really tested -- afterall if it isn't broken, then it probably doesn't need to
+be fixed.</p>
+</section><section id="building-1"><h4>Building</h4>
+<p>The pre-build clean and actual build commands look exactly the same.</p>
+<p>All of these Jenkins jobs (staging, demo, training) are run as individual jobs
+so that we can make a build for any of them relatively quickly.</p>
+</section></section><section id="production"><h3>Production</h3>
+<p>The production build job looks almost identical to the Staging, Demo, &amp; Training
+jobs. The primary difference is that it is a Matrix job in Jenkins. The Matrix
+variables look like this:</p>
+<img alt="../../images/Screen_Shot_2014_03_11_at_9_51_39_PM.png" src="../../images/Screen_Shot_2014_03_11_at_9_51_39_PM.png"><p>The effect here is that when this job is called, we restrict the builds to the
+OS X Build Server (no point in trying to build in Windows or Linux). It creates
+a build for Bloom (us), CLient1, Client2, Client3, &amp; Client4.</p>
+<p>When you look at the Version_Environment_Settings script below, you probably
+will deduce that I pass the ${CLIENT} variable from Jenkins to the script so
+that everything gets transformed for the specific client.</p>
+</section></section><section id="wish-list"><h2>Wish List</h2>
+<p>This article represents a couple of years of figuring things out -- Apple's
+provisioning restrictions, Jenkins, Xamarin, etc. When I started this entire
+adventure, I really didn't know what I was doing. I just know that I needed a
+way for someone other than me to create a build and have it be done in the same
+way.</p>
+<p>After a couple of years of figuring this all out, there really is only thing
+left that really bugs me about the entire process. It would be most excellent if
+the AppID in the Xamarin Project options were able to be tied to a specific
+Build Config. With that one change, I could elminate a lot of the extra work
+just by setting up the build config the way I need.</p>
+<p>Aside from that, with a little experimentation, it is possible to figure out how
+to use Jenkins to build client specific apps as an Apple Enterprise Developer.</p>
+</section><section id="version-environment-settings-sh"><h2>Version\_Environment_Settings.sh</h2>
+<p>Here is the script that was referenced above.</p>
+<div class="code"><table class="codetable">
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-1"><code data-line-number="  1"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-1" name="rest_code_e80d4da5a7564b9fb692a547a091e557-1"></a><span class="ch">#!/bin/bash</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-2"><code data-line-number="  2"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-2" name="rest_code_e80d4da5a7564b9fb692a547a091e557-2"></a>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-3"><code data-line-number="  3"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-3" name="rest_code_e80d4da5a7564b9fb692a547a091e557-3"></a><span class="c1">#Define a function to output the usage</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-4"><code data-line-number="  4"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-4" name="rest_code_e80d4da5a7564b9fb692a547a091e557-4"></a><span class="k">function</span><span class="w"> </span>usage<span class="w"> </span><span class="o">{</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-5"><code data-line-number="  5"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-5" name="rest_code_e80d4da5a7564b9fb692a547a091e557-5"></a><span class="w">            </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"Usage: </span><span class="si">${</span><span class="nv">0</span><span class="si">}</span><span class="s2"> -b BUILDNUM -e DEBUG|STAGING|PRODUCTION|DEMO|TRAINING [-c CARRIERNAME]"</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-6"><code data-line-number="  6"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-6" name="rest_code_e80d4da5a7564b9fb692a547a091e557-6"></a><span class="w">            </span><span class="nb">exit</span><span class="w"> </span><span class="nv">$1</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-7"><code data-line-number="  7"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-7" name="rest_code_e80d4da5a7564b9fb692a547a091e557-7"></a><span class="o">}</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-8"><code data-line-number="  8"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-8" name="rest_code_e80d4da5a7564b9fb692a547a091e557-8"></a>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-9"><code data-line-number="  9"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-9" name="rest_code_e80d4da5a7564b9fb692a547a091e557-9"></a><span class="c1">#Process the command line arguments</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-10"><code data-line-number=" 10"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-10" name="rest_code_e80d4da5a7564b9fb692a547a091e557-10"></a><span class="k">while</span><span class="w"> </span><span class="nb">getopts</span><span class="w"> </span><span class="s2">"b:e:c:"</span><span class="w"> </span>Option
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-11"><code data-line-number=" 11"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-11" name="rest_code_e80d4da5a7564b9fb692a547a091e557-11"></a><span class="k">do</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-12"><code data-line-number=" 12"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-12" name="rest_code_e80d4da5a7564b9fb692a547a091e557-12"></a><span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="nv">$Option</span><span class="w"> </span><span class="k">in</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-13"><code data-line-number=" 13"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-13" name="rest_code_e80d4da5a7564b9fb692a547a091e557-13"></a><span class="w">            </span>b<span class="o">)</span><span class="w"> </span><span class="nv">BUILDNUM</span><span class="o">=</span><span class="si">${</span><span class="nv">OPTARG</span><span class="si">}</span><span class="p">;;</span><span class="w">   </span><span class="c1"># the version number</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-14"><code data-line-number=" 14"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-14" name="rest_code_e80d4da5a7564b9fb692a547a091e557-14"></a><span class="w">            </span>e<span class="o">)</span><span class="w"> </span><span class="nv">TARGETENVIRONMENT</span><span class="o">=</span><span class="si">${</span><span class="nv">OPTARG</span><span class="si">}</span><span class="p">;;</span><span class="w">   </span><span class="c1"># the environment where this build will be deployed</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-15"><code data-line-number=" 15"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-15" name="rest_code_e80d4da5a7564b9fb692a547a091e557-15"></a><span class="w">            </span>c<span class="o">)</span><span class="w"> </span><span class="nv">CLIENT</span><span class="o">=</span><span class="si">${</span><span class="nv">OPTARG</span><span class="si">}</span><span class="p">;;</span><span class="w">   </span><span class="c1"># The client this build is for</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-16"><code data-line-number=" 16"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-16" name="rest_code_e80d4da5a7564b9fb692a547a091e557-16"></a><span class="w">    </span><span class="k">esac</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-17"><code data-line-number=" 17"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-17" name="rest_code_e80d4da5a7564b9fb692a547a091e557-17"></a><span class="k">done</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-18"><code data-line-number=" 18"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-18" name="rest_code_e80d4da5a7564b9fb692a547a091e557-18"></a>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-19"><code data-line-number=" 19"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-19" name="rest_code_e80d4da5a7564b9fb692a547a091e557-19"></a><span class="c1">#Check that we have everything we need</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-20"><code data-line-number=" 20"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-20" name="rest_code_e80d4da5a7564b9fb692a547a091e557-20"></a><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-z<span class="w"> </span><span class="si">${</span><span class="nv">BUILDNUM</span><span class="si">}</span><span class="w"> </span>-o<span class="w"> </span>-z<span class="w"> </span><span class="si">${</span><span class="nv">TARGETENVIRONMENT</span><span class="si">}</span><span class="w"> </span><span class="o">]</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-21"><code data-line-number=" 21"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-21" name="rest_code_e80d4da5a7564b9fb692a547a091e557-21"></a><span class="k">then</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-22"><code data-line-number=" 22"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-22" name="rest_code_e80d4da5a7564b9fb692a547a091e557-22"></a><span class="w">    </span>usage<span class="w"> </span><span class="m">1</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-23"><code data-line-number=" 23"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-23" name="rest_code_e80d4da5a7564b9fb692a547a091e557-23"></a><span class="k">else</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-24"><code data-line-number=" 24"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-24" name="rest_code_e80d4da5a7564b9fb692a547a091e557-24"></a><span class="w">    </span><span class="nv">GOODENV</span><span class="o">=</span><span class="m">0</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-25"><code data-line-number=" 25"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-25" name="rest_code_e80d4da5a7564b9fb692a547a091e557-25"></a><span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="si">${</span><span class="nv">TARGETENVIRONMENT</span><span class="si">}</span><span class="w"> </span><span class="k">in</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-26"><code data-line-number=" 26"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-26" name="rest_code_e80d4da5a7564b9fb692a547a091e557-26"></a><span class="w">            </span>DEBUG<span class="o">)</span><span class="w">          </span><span class="nv">GOODENV</span><span class="o">=</span><span class="m">1</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-27"><code data-line-number=" 27"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-27" name="rest_code_e80d4da5a7564b9fb692a547a091e557-27"></a><span class="w">                                    </span><span class="nv">BLOOMENV</span><span class="o">=</span><span class="s2">"dev"</span><span class="p">;;</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-28"><code data-line-number=" 28"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-28" name="rest_code_e80d4da5a7564b9fb692a547a091e557-28"></a><span class="w">            </span>STAGING<span class="o">)</span><span class="w">        </span><span class="nv">GOODENV</span><span class="o">=</span><span class="m">1</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-29"><code data-line-number=" 29"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-29" name="rest_code_e80d4da5a7564b9fb692a547a091e557-29"></a><span class="w">                                    </span><span class="nv">BLOOMENV</span><span class="o">=</span><span class="s2">"staging"</span><span class="p">;;</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-30"><code data-line-number=" 30"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-30" name="rest_code_e80d4da5a7564b9fb692a547a091e557-30"></a><span class="w">            </span>PRODUCTION<span class="o">)</span><span class="w">     </span><span class="nv">GOODENV</span><span class="o">=</span><span class="m">1</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-31"><code data-line-number=" 31"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-31" name="rest_code_e80d4da5a7564b9fb692a547a091e557-31"></a><span class="w">                                    </span><span class="nv">BLOOMENV</span><span class="o">=</span><span class="s2">"production"</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-32"><code data-line-number=" 32"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-32" name="rest_code_e80d4da5a7564b9fb692a547a091e557-32"></a><span class="w">                                    </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">"X</span><span class="si">${</span><span class="nv">CLIENT</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"X"</span><span class="w"> </span><span class="o">]</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-33"><code data-line-number=" 33"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-33" name="rest_code_e80d4da5a7564b9fb692a547a091e557-33"></a><span class="w">                                    </span><span class="k">then</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-34"><code data-line-number=" 34"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-34" name="rest_code_e80d4da5a7564b9fb692a547a091e557-34"></a><span class="w">                                            </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"CLIENTNAME (-c) parameter is required for production builds"</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-35"><code data-line-number=" 35"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-35" name="rest_code_e80d4da5a7564b9fb692a547a091e557-35"></a><span class="w">                                            </span><span class="nb">exit</span><span class="w"> </span><span class="m">4</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-36"><code data-line-number=" 36"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-36" name="rest_code_e80d4da5a7564b9fb692a547a091e557-36"></a><span class="w">                                    </span><span class="k">fi</span><span class="p">;;</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-37"><code data-line-number=" 37"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-37" name="rest_code_e80d4da5a7564b9fb692a547a091e557-37"></a><span class="w">            </span>DEMO<span class="o">)</span><span class="w">           </span><span class="nv">GOODENV</span><span class="o">=</span><span class="m">1</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-38"><code data-line-number=" 38"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-38" name="rest_code_e80d4da5a7564b9fb692a547a091e557-38"></a><span class="w">                                    </span><span class="nv">BLOOMENV</span><span class="o">=</span><span class="s2">"demo"</span><span class="p">;;</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-39"><code data-line-number=" 39"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-39" name="rest_code_e80d4da5a7564b9fb692a547a091e557-39"></a><span class="w">            </span>TRAINING<span class="o">)</span><span class="w">       </span><span class="nv">GOODENV</span><span class="o">=</span><span class="m">1</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-40"><code data-line-number=" 40"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-40" name="rest_code_e80d4da5a7564b9fb692a547a091e557-40"></a><span class="w">                                    </span><span class="nv">BLOOMENV</span><span class="o">=</span><span class="s2">"training"</span><span class="p">;;</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-41"><code data-line-number=" 41"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-41" name="rest_code_e80d4da5a7564b9fb692a547a091e557-41"></a><span class="w">    </span><span class="k">esac</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-42"><code data-line-number=" 42"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-42" name="rest_code_e80d4da5a7564b9fb692a547a091e557-42"></a>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-43"><code data-line-number=" 43"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-43" name="rest_code_e80d4da5a7564b9fb692a547a091e557-43"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="si">${</span><span class="nv">GOODENV</span><span class="si">}</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">]</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-44"><code data-line-number=" 44"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-44" name="rest_code_e80d4da5a7564b9fb692a547a091e557-44"></a><span class="w">    </span><span class="k">then</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-45"><code data-line-number=" 45"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-45" name="rest_code_e80d4da5a7564b9fb692a547a091e557-45"></a><span class="w">            </span>usage<span class="w"> </span><span class="m">2</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-46"><code data-line-number=" 46"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-46" name="rest_code_e80d4da5a7564b9fb692a547a091e557-46"></a><span class="w">    </span><span class="k">fi</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-47"><code data-line-number=" 47"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-47" name="rest_code_e80d4da5a7564b9fb692a547a091e557-47"></a>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-48"><code data-line-number=" 48"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-48" name="rest_code_e80d4da5a7564b9fb692a547a091e557-48"></a><span class="k">fi</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-49"><code data-line-number=" 49"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-49" name="rest_code_e80d4da5a7564b9fb692a547a091e557-49"></a>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-50"><code data-line-number=" 50"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-50" name="rest_code_e80d4da5a7564b9fb692a547a091e557-50"></a><span class="c1"># We need some date data for building our version number: YYYY-QQ-MM-BB</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-51"><code data-line-number=" 51"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-51" name="rest_code_e80d4da5a7564b9fb692a547a091e557-51"></a><span class="nv">YEAR</span><span class="o">=</span><span class="k">$(</span>date<span class="w"> </span>+%Y<span class="k">)</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-52"><code data-line-number=" 52"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-52" name="rest_code_e80d4da5a7564b9fb692a547a091e557-52"></a><span class="nv">MONTH1</span><span class="o">=</span><span class="k">$(</span>date<span class="w"> </span>+%-m<span class="k">)</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-53"><code data-line-number=" 53"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-53" name="rest_code_e80d4da5a7564b9fb692a547a091e557-53"></a><span class="nv">MONTH</span><span class="o">=</span><span class="k">$(</span>date<span class="w"> </span>+%m<span class="k">)</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-54"><code data-line-number=" 54"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-54" name="rest_code_e80d4da5a7564b9fb692a547a091e557-54"></a><span class="nv">QUARTER</span><span class="o">=</span><span class="k">$((</span><span class="o">((</span><span class="si">${</span><span class="nv">MONTH1</span><span class="si">}</span><span class="o">-</span><span class="m">1</span><span class="o">)/</span><span class="m">3</span><span class="o">)+</span><span class="m">1</span><span class="k">))</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-55"><code data-line-number=" 55"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-55" name="rest_code_e80d4da5a7564b9fb692a547a091e557-55"></a>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-56"><code data-line-number=" 56"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-56" name="rest_code_e80d4da5a7564b9fb692a547a091e557-56"></a><span class="c1"># Check out -b parameter. If it is short, then build the VERSION, otherwise use what was passed in</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-57"><code data-line-number=" 57"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-57" name="rest_code_e80d4da5a7564b9fb692a547a091e557-57"></a><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="si">${#</span><span class="nv">BUILDNUM</span><span class="si">}</span><span class="w"> </span>-eq<span class="w"> </span><span class="m">12</span><span class="w"> </span><span class="o">]</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-58"><code data-line-number=" 58"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-58" name="rest_code_e80d4da5a7564b9fb692a547a091e557-58"></a><span class="k">then</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-59"><code data-line-number=" 59"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-59" name="rest_code_e80d4da5a7564b9fb692a547a091e557-59"></a><span class="w">    </span><span class="nv">VERSION</span><span class="o">=</span><span class="si">${</span><span class="nv">BUILDNUM</span><span class="si">}</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-60"><code data-line-number=" 60"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-60" name="rest_code_e80d4da5a7564b9fb692a547a091e557-60"></a><span class="k">else</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-61"><code data-line-number=" 61"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-61" name="rest_code_e80d4da5a7564b9fb692a547a091e557-61"></a><span class="w">    </span><span class="nv">VERSION</span><span class="o">=</span><span class="s2">"</span><span class="si">${</span><span class="nv">YEAR</span><span class="si">}</span><span class="s2">.</span><span class="si">${</span><span class="nv">QUARTER</span><span class="si">}</span><span class="s2">.</span><span class="si">${</span><span class="nv">MONTH</span><span class="si">}</span><span class="s2">.</span><span class="si">${</span><span class="nv">BUILDNUM</span><span class="si">}</span><span class="s2">"</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-62"><code data-line-number=" 62"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-62" name="rest_code_e80d4da5a7564b9fb692a547a091e557-62"></a><span class="k">fi</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-63"><code data-line-number=" 63"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-63" name="rest_code_e80d4da5a7564b9fb692a547a091e557-63"></a>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-64"><code data-line-number=" 64"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-64" name="rest_code_e80d4da5a7564b9fb692a547a091e557-64"></a><span class="c1">#Put the version in a properties file for Jenkins</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-65"><code data-line-number=" 65"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-65" name="rest_code_e80d4da5a7564b9fb692a547a091e557-65"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">"APP_VERSION=</span><span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span>&gt;<span class="w"> </span>propsfile
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-66"><code data-line-number=" 66"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-66" name="rest_code_e80d4da5a7564b9fb692a547a091e557-66"></a>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-67"><code data-line-number=" 67"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-67" name="rest_code_e80d4da5a7564b9fb692a547a091e557-67"></a><span class="c1">##############################################################################</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-68"><code data-line-number=" 68"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-68" name="rest_code_e80d4da5a7564b9fb692a547a091e557-68"></a><span class="c1"># Modify the Solution (.sln) file</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-69"><code data-line-number=" 69"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-69" name="rest_code_e80d4da5a7564b9fb692a547a091e557-69"></a><span class="c1">##############################################################################</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-70"><code data-line-number=" 70"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-70" name="rest_code_e80d4da5a7564b9fb692a547a091e557-70"></a>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-71"><code data-line-number=" 71"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-71" name="rest_code_e80d4da5a7564b9fb692a547a091e557-71"></a><span class="c1"># Put our version number into the software</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-72"><code data-line-number=" 72"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-72" name="rest_code_e80d4da5a7564b9fb692a547a091e557-72"></a>cp<span class="w"> </span>OurAwesomeApp.sln<span class="w"> </span>/tmp/sln
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-73"><code data-line-number=" 73"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-73" name="rest_code_e80d4da5a7564b9fb692a547a091e557-73"></a>awk<span class="w"> </span><span class="s2">"/version =/ {sub(\\"</span>20110628b<span class="se">\\</span><span class="s2">", \\"</span><span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span><span class="se">\\</span><span class="s2">")} {print}"</span><span class="w"> </span>/tmp/sln<span class="w"> </span>&gt;<span class="w"> </span>OurAwesomeApp.sln
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-74"><code data-line-number=" 74"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-74" name="rest_code_e80d4da5a7564b9fb692a547a091e557-74"></a>rm<span class="w"> </span>-f<span class="w"> </span>/tmp/sln
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-75"><code data-line-number=" 75"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-75" name="rest_code_e80d4da5a7564b9fb692a547a091e557-75"></a>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-76"><code data-line-number=" 76"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-76" name="rest_code_e80d4da5a7564b9fb692a547a091e557-76"></a>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-77"><code data-line-number=" 77"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-77" name="rest_code_e80d4da5a7564b9fb692a547a091e557-77"></a><span class="c1">##############################################################################</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-78"><code data-line-number=" 78"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-78" name="rest_code_e80d4da5a7564b9fb692a547a091e557-78"></a><span class="c1"># Modify AppConfig.cs</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-79"><code data-line-number=" 79"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-79" name="rest_code_e80d4da5a7564b9fb692a547a091e557-79"></a><span class="c1">##############################################################################</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-80"><code data-line-number=" 80"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-80" name="rest_code_e80d4da5a7564b9fb692a547a091e557-80"></a>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-81"><code data-line-number=" 81"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-81" name="rest_code_e80d4da5a7564b9fb692a547a091e557-81"></a><span class="c1"># Set the TargetEnvironment to the appropriate constant</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-82"><code data-line-number=" 82"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-82" name="rest_code_e80d4da5a7564b9fb692a547a091e557-82"></a>cp<span class="w"> </span>AMA/AppConfig.cs<span class="w"> </span>/tmp/AppConfig
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-83"><code data-line-number=" 83"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-83" name="rest_code_e80d4da5a7564b9fb692a547a091e557-83"></a>awk<span class="w"> </span><span class="s2">"/Environment = TargetEnvironment./ {sub(/(DEBUG|STAGING|PRODUCTION|DEMO|TRAINING)/,\\"</span><span class="si">${</span><span class="nv">TARGETENVIRONMENT</span><span class="si">}</span><span class="se">\\</span><span class="s2">")} {print}"</span><span class="w"> </span>/tmp/AppConfig<span class="w"> </span>&gt;<span class="w"> </span>AMA/AppConfig.cs
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-84"><code data-line-number=" 84"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-84" name="rest_code_e80d4da5a7564b9fb692a547a091e557-84"></a>rm<span class="w"> </span>-f<span class="w"> </span>/tmp/AppConfig
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-85"><code data-line-number=" 85"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-85" name="rest_code_e80d4da5a7564b9fb692a547a091e557-85"></a>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-86"><code data-line-number=" 86"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-86" name="rest_code_e80d4da5a7564b9fb692a547a091e557-86"></a><span class="c1">##############################################################################</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-87"><code data-line-number=" 87"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-87" name="rest_code_e80d4da5a7564b9fb692a547a091e557-87"></a><span class="c1"># Modify the Info.plist file</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-88"><code data-line-number=" 88"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-88" name="rest_code_e80d4da5a7564b9fb692a547a091e557-88"></a><span class="c1">##############################################################################</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-89"><code data-line-number=" 89"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-89" name="rest_code_e80d4da5a7564b9fb692a547a091e557-89"></a>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-90"><code data-line-number=" 90"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-90" name="rest_code_e80d4da5a7564b9fb692a547a091e557-90"></a><span class="c1"># Put our version number into the software</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-91"><code data-line-number=" 91"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-91" name="rest_code_e80d4da5a7564b9fb692a547a091e557-91"></a>cp<span class="w"> </span>Info.plist<span class="w"> </span>/tmp/plist
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-92"><code data-line-number=" 92"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-92" name="rest_code_e80d4da5a7564b9fb692a547a091e557-92"></a>awk<span class="w"> </span><span class="s2">"/\\&lt;key\\&gt;CFBundleVersion\\&lt;\\/key\\&gt;/,/\\&lt;key\\&gt;MinimumOSVersion\\&lt;\\/key\\&gt;/ {sub(/\\&lt;string\\&gt;.*\\&lt;\\/string\\&gt;/,\\"</span><span class="se">\\</span>&lt;string<span class="se">\\</span>&gt;<span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span><span class="se">\\</span>&lt;<span class="se">\\</span>/string<span class="se">\\</span>&gt;<span class="se">\\</span><span class="s2">")} {print}"</span><span class="w"> </span>/tmp/plist<span class="w"> </span>&gt;<span class="w"> </span>Info.plist
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-93"><code data-line-number=" 93"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-93" name="rest_code_e80d4da5a7564b9fb692a547a091e557-93"></a><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-z<span class="w"> </span><span class="si">${</span><span class="nv">CLIENT</span><span class="si">}</span><span class="w"> </span><span class="o">]</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-94"><code data-line-number=" 94"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-94" name="rest_code_e80d4da5a7564b9fb692a547a091e557-94"></a><span class="k">then</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-95"><code data-line-number=" 95"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-95" name="rest_code_e80d4da5a7564b9fb692a547a091e557-95"></a><span class="w">    </span><span class="c1">#This is not a production build. Just move one</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-96"><code data-line-number=" 96"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-96" name="rest_code_e80d4da5a7564b9fb692a547a091e557-96"></a><span class="w">    </span>rm<span class="w"> </span>-f<span class="w"> </span>/tmp/plist
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-97"><code data-line-number=" 97"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-97" name="rest_code_e80d4da5a7564b9fb692a547a091e557-97"></a><span class="k">else</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-98"><code data-line-number=" 98"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-98" name="rest_code_e80d4da5a7564b9fb692a547a091e557-98"></a><span class="w">    </span>sed<span class="w"> </span><span class="s2">"s/com.ourawesomeapp.Bloom/com.ourawesomeapp.</span><span class="si">${</span><span class="nv">CLIENT</span><span class="si">}</span><span class="s2">/g"</span><span class="w"> </span>Info.plist<span class="w"> </span>&gt;<span class="w"> </span>/tmp/plist
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-99"><code data-line-number=" 99"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-99" name="rest_code_e80d4da5a7564b9fb692a547a091e557-99"></a><span class="w">    </span>mv<span class="w"> </span>-f<span class="w"> </span>/tmp/plist<span class="w"> </span>Info.plist
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-100"><code data-line-number="100"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-100" name="rest_code_e80d4da5a7564b9fb692a547a091e557-100"></a><span class="k">fi</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-101"><code data-line-number="101"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-101" name="rest_code_e80d4da5a7564b9fb692a547a091e557-101"></a>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-102"><code data-line-number="102"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-102" name="rest_code_e80d4da5a7564b9fb692a547a091e557-102"></a><span class="c1">##############################################################################</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-103"><code data-line-number="103"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-103" name="rest_code_e80d4da5a7564b9fb692a547a091e557-103"></a><span class="c1"># Modify the csproj file</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-104"><code data-line-number="104"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-104" name="rest_code_e80d4da5a7564b9fb692a547a091e557-104"></a><span class="c1">##############################################################################</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-105"><code data-line-number="105"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-105" name="rest_code_e80d4da5a7564b9fb692a547a091e557-105"></a>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-106"><code data-line-number="106"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-106" name="rest_code_e80d4da5a7564b9fb692a547a091e557-106"></a><span class="c1"># Put our version number into the software</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-107"><code data-line-number="107"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-107" name="rest_code_e80d4da5a7564b9fb692a547a091e557-107"></a>cp<span class="w"> </span>OurAwesomeApp.csproj<span class="w"> </span>/tmp/csproj
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-108"><code data-line-number="108"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-108" name="rest_code_e80d4da5a7564b9fb692a547a091e557-108"></a>awk<span class="w"> </span><span class="s2">"/\\&lt;(Release|Bundle)Version\\&gt;/ {sub(\\"</span>20110628b<span class="se">\\</span><span class="s2">", \\"</span><span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span><span class="se">\\</span><span class="s2">")} {print}"</span><span class="w"> </span>/tmp/csproj<span class="w"> </span>&gt;<span class="w"> </span>OurAwesomeApp.csproj
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-109"><code data-line-number="109"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-109" name="rest_code_e80d4da5a7564b9fb692a547a091e557-109"></a>rm<span class="w"> </span>-f<span class="w"> </span>/tmp/csproj
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-110"><code data-line-number="110"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-110" name="rest_code_e80d4da5a7564b9fb692a547a091e557-110"></a>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_e80d4da5a7564b9fb692a547a091e557-111"><code data-line-number="111"></code></a></td>
+<td class="code"><code><a id="rest_code_e80d4da5a7564b9fb692a547a091e557-111" name="rest_code_e80d4da5a7564b9fb692a547a091e557-111"></a><span class="c1"># Now we should be ready to build.</span>
+</code></td>
+</tr>
+</table></div></section>
+</div>
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+<li class="previous">
+                <a href="../super-mega-pimped-git-bash/" rel="prev" title="Super Mega-pimped Git-Bash">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../new-blog/" rel="next" title="New Blog">Next post</a>
+            </li>
+        </ul></nav></aside><section class="comments hidden-print"><h2>Comments</h2>
+                    <div id="disqus_thread"></div>
+        <script>
+        var disqus_shortname ="kirkgnikolablog",
+            disqus_url="https://www.kirkg.us/posts/using-jenkins-xamarinios-with-apple-enterprise/",
+        disqus_title="Using Jenkins & Xamarin.iOS with Apple Enterprise",
+        disqus_identifier="cache/posts/using-jenkins-xamarinios-with-apple-enterprise.html",
+        disqus_config = function () {
+            this.language = "en";
+        };
+        (function() {
+            var dsq = document.createElement('script'); dsq.async = true;
+            dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+        </section><script>var disqus_shortname="kirkgnikolablog";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>
+Contents © 2026         <a href="mailto:kirk@kirkg.us">Kirk Gleason</a> - Powered by         <a href="http://getnikola.com" rel="nofollow">Nikola</a><br><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/2.5/ar/">
+<img alt="Creative Commons License BY-NC-SA" style="border-width:0; margin-bottom:12px;" src="https://i.creativecommons.org/l/by-nc-sa/2.5/ar/88x31.png"></a>
+
+<a title="Web Analytics" href="http://clicky.com/101017846"><img alt="Web Analytics" src="//static.getclicky.com/media/links/badge.gif" border="0"></a>
+<script src="//static.getclicky.com/js" type="text/javascript"></script><script type="text/javascript">try{ clicky.init(101017846); }catch(e){}</script><noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101017846ns.gif"></p></noscript>
+
+</p>
+            
+        </footer></article>
+</div>
+	</section><script src="../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+
+    moment.locale("en");
+    fancydates(1, "YYYY-MM-DD HH:mm");
+
+	</script><!-- end fancy dates --><script>
+
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+
+	</script><script src="../../assets/js/ToggleNav.js">
+	</script>
+</body>
+</html>

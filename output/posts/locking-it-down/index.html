@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html \ prefix="
+        og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+    " vocab="http://ogp.me/ns" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Locking It Down | kirkg.us</title>
+<link href="https://fonts.googleapis.com/css?family=Bitter:400,400i,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://www.kirkg.us/posts/locking-it-down/">
+<!--[if lt IE 9]><script src="../../assets/js/html5shiv-printshiv.min.js"></script><![endif]--><meta name="author" content="Kirk Gleason">
+<link rel="prev" href="../refrigerator-oatmeal/" title="Refrigerator Oatmeal" type="text/html">
+<link rel="next" href="../the-best-part-of-thanksgiving/" title="The best part of Thanksgiving" type="text/html">
+<meta property="og:site_name" content="kirkg.us">
+<meta property="og:title" content="Locking It Down">
+<meta property="og:url" content="https://www.kirkg.us/posts/locking-it-down/">
+<meta property="og:description" content="In my previous post about keeping unsavory things off of your network, I made an analogy between DNS and the Contacts database on your mobile phone. As I was explaining this to someone the other day, ">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2013-10-28T14:17:04-05:00">
+<link rel="stylesheet" href="https://latest.cactus.chat/style.css" type="text/css">
+</head>
+<body>
+
+	<a href="#page-content" class="sr-only sr-only-focusable">
+		Skip to main content
+	</a>
+
+	
+
+    <section id="header"><a href="../../">
+			<div class="logo">
+					<div id="nologoimage">
+						kirkg.us
+					</div>
+    		</div>
+			</a>
+    </section><section id="socialNav"><!-- Navigation Menu - on top on small screens, down the left on larger --><div class="navlinks">
+			<a href="../../">
+				<div id="titleauth">
+    					kirkg.us<br> by Kirk Gleason
+				</div>
+			</a>
+
+            <!-- Navigation links (hidden by default) -->
+			<div id="navmenuitems">
+				            <a href="../../index.html" title="Home">
+                <span class="menuitemtext">Home</span>
+                <span class="menuitemicon"><i class="fa fa-home"></i></span>
+            </a>
+            <a href="../../archive.html" title="Archives">
+                <span class="menuitemtext">Archives</span>
+                <span class="menuitemicon"><i class="fa fa-folder-open"></i></span>
+            </a>
+            <a href="../../categories/index.html" title="Tags">
+                <span class="menuitemtext">Tags</span>
+                <span class="menuitemicon"><i class="fa fa-tags"></i></span>
+            </a>
+            <a href="../../rss.xml" title="RSS">
+                <span class="menuitemtext">RSS</span>
+                <span class="menuitemicon"><i class="fa fa-rss"></i></span>
+            </a>
+            <a href="../" title="About me">
+                <span class="menuitemtext">About me</span>
+                <span class="menuitemicon"><i class="fa fa-user"></i></span>
+            </a>
+            <a href="https://www.linkedin.com/in/kirk-gleason/" title="LinkedIn">
+                <span class="menuitemtext">LinkedIn</span>
+                <span class="menuitemicon"><i class="fab fa-linkedin"></i></span>
+            </a>
+            <a href="https://github.com/kgleason" title="Github">
+                <span class="menuitemtext">Github</span>
+                <span class="menuitemicon"><i class="fab fa-github"></i></span>
+            </a>
+            <a href="https://www.gitlab.com/kgleason" title="GitLab">
+                <span class="menuitemtext">GitLab</span>
+                <span class="menuitemicon"><i class="fab fa-gitlab"></i></span>
+            </a>
+    
+    
+
+			</div>
+
+            <!-- "Hamburger menu" / "Bar icon" to toggle the navigation links -->
+			<a href="javascript:void(0);" id="hamburger" class="icon" onclick="toggleNav()">
+				<i class="fa fa-bars">
+				</i>
+			</a>
+		</div>
+
+	</section><section class="page-content"><div class="content" rel="main">
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Locking It Down</a></h1>
+
+        <div class="metadata">
+            <p class="dateline"><a href="." rel="bookmark"><i class="fa fa-clock"></i> <time class="published dt-published" datetime="2013-10-28T14:17:04-05:00" itemprop="datePublished" title="2013-10-28 14:17">2013-10-28 14:17</time></a></p>
+
+                <p class="commentline"><i class="far fa-comment"></i>        <a href="#disqus_thread" data-disqus-identifier="cache/posts/locking-it-down.html">Comments</a>
+
+
+                    </p>
+<p class="sourceline"><a href="index.md" class="sourcelink"><i class="fa fa-file-code"></i> Source</a></p>
+
+            
+            
+        </div>
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <p>In my <a href="../keeping-it-clean">previous post</a> about keeping unsavory things off of your network, I made an analogy between DNS and the Contacts database on your mobile phone. As I was explaining this to someone the other day, I used the analogy of a phone book. I pointed out that back in the day, if my parents didn't want a phone number to be accessible, then they could have blacked it out of the phone book with a marker. Such an act would have effectively made that number impossible to find. And that is essentially what Open DNS will do for you.</p>
+<!-- TEASER_END -->
+
+<p>However, there are some weaknesses with this methodology. Looming at a different phone book is a way around it. Or just waiting until the new phone book arrives each year. And the same goes for configuring your router to use OpenDNS. Someone with admin access to your computer can change the DNS that your computer uses, and open everything back up. Or they could hold down the factory default button on the router, which would cause the router to ask your ISP which DNS server it should use.</p>
+<p>You are probably thinking that maybe I shouldn't have written that out -- spelled out a way for your kids to get around the filters you put in place. Maybe I shouldn't have. But at the very least it will keep you honest. Your kids should not be administrators on your computers at home. They probably shouldn't even be administrators on computers that you buy specifically for them. There are lots of reasons for this, and I hopefully just gave you another one. Putting in filters in place and then giving them admin access is kind of like telling them not to drive your car, and then putting the keys under their pillow. All they have to do is look, and the temptation is there.</p>
+<p>If you are serious about protecting yourself &amp; your kids as well as teaching your kids good computing habits, do the following things, right now:</p>
+<ul>
+<li>Set up an account for you, your spouse, and your kids. Ideally everyone who uses the computer should have a separate account, and only you and your wife should have administrative access. If that's too much, then make an account for the old people to share (with admin access) and an account for the kids to share (without admin access).</li>
+<li>Move your router to someplace where it is hard to get to. If it is sitting next to the TV, then resetting it is easy.</li>
+<li>Put a password on your wifi.</li>
+</ul>
+<p>As with all things, setting a good example is the best way to encourage proper behavior. Aside from the above, there are some general best practices that you &amp; your kids should do:</p>
+<ul>
+<li>Change your passwords. Right now. I'm sure it's been too long (72 days for me right now -- about time to do it again).</li>
+<li>Continue to change your passwords. At least 2x per year. 4x would be better. Do this for your laptop, your phone, your email account, your Facebook account, your bank account. If you log into something frequently, then you should change the password frequently.</li>
+<li>Turn on multi-factor authentication. I might have to write an entire article about this. Not sure. I'll explain more below.</li>
+<li>Set your phone to auto lock. 10 minutes or less. 5 would be better. (You'll get better battery life as well).</li>
+<li>Set your computers, all of them, to have a screen saver come on after 10 minutes. 5 would be better.</li>
+<li>Set the screen saver to require a password to unlock.</li>
+</ul>
+<p>So the one in there that you probably have the most questions about are multi-factor authentication. You can do this with Gmail, Facebook, Dropbox, iTunes and lots of other services that you probably use. The reason that people don't like changing their passwords is that they don't like having to remember a new password -- mostly because they think that their password needs to be complicated. The merits of password complexity are somewhat debatable, but if you like simpler passwords, or don't like changing your password, then multi-factor authentication is great way to continue to be lazy, while getting some decent protection at the same time.</p>
+<p>In order to explain how it works, I'll walk you through what happens when I log into my Gmail account. I log to gmail.com, and type in my username &amp; password, just like normal. I get a new screen telling me that I need to enter a code to be able to log in. At this point there are a couple of things that can happen. The simplest way for this to work is for google to send you a text message with the code in it. I enter the code into the webs tie, and voilà, I'm logged into gmail. There is a box that I can check that tells google to remember the computer than I am on, so I don't have to go through this every single time. Any time I log in from an previously unknown browser, I have to have the 2nd code in order to get it. That code only lasts a few minutes, after which it is no longer valid. In essence, I could give you my password, and you could take it home, but you couldn't log into the gmail account unless you've also stolen my phone.</p>
+<p>This means that Google requires my password and that the person logging in have access to my phone. So my password for Google hasn't changed in some time (over a year), but it is less important, since no one can log in without having my phone. Or being extremely lucky.</p>
+    </div>
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+<li class="previous">
+                <a href="../refrigerator-oatmeal/" rel="prev" title="Refrigerator Oatmeal">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../the-best-part-of-thanksgiving/" rel="next" title="The best part of Thanksgiving">Next post</a>
+            </li>
+        </ul></nav></aside><section class="comments hidden-print"><h2>Comments</h2>
+                    <div id="disqus_thread"></div>
+        <script>
+        var disqus_shortname ="kirkgnikolablog",
+            disqus_url="https://www.kirkg.us/posts/locking-it-down/",
+        disqus_title="Locking It Down",
+        disqus_identifier="cache/posts/locking-it-down.html",
+        disqus_config = function () {
+            this.language = "en";
+        };
+        (function() {
+            var dsq = document.createElement('script'); dsq.async = true;
+            dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+        </section><script>var disqus_shortname="kirkgnikolablog";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p>
+Contents © 2026         <a href="mailto:kirk@kirkg.us">Kirk Gleason</a> - Powered by         <a href="http://getnikola.com" rel="nofollow">Nikola</a><br><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/2.5/ar/">
+<img alt="Creative Commons License BY-NC-SA" style="border-width:0; margin-bottom:12px;" src="https://i.creativecommons.org/l/by-nc-sa/2.5/ar/88x31.png"></a>
+
+<a title="Web Analytics" href="http://clicky.com/101017846"><img alt="Web Analytics" src="//static.getclicky.com/media/links/badge.gif" border="0"></a>
+<script src="//static.getclicky.com/js" type="text/javascript"></script><script type="text/javascript">try{ clicky.init(101017846); }catch(e){}</script><noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101017846ns.gif"></p></noscript>
+
+</p>
+            
+        </footer></article>
+</div>
+	</section><script src="../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+
+    moment.locale("en");
+    fancydates(1, "YYYY-MM-DD HH:mm");
+
+	</script><!-- end fancy dates --><script>
+
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+
+	</script><script src="../../assets/js/ToggleNav.js">
+	</script>
+</body>
+</html>

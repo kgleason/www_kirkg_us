@@ -1,9 +1,0 @@
-<h2>{{ item['title'] }}</h2>
-
-{{% media url={{ item['links'][0]['href'] }} %}}
-
-{% if 'summary_detail' in item %}
-<p>
-{{ item['summary_detail']['value'] }}
-</p>
-{% endif %}

@@ -118,19 +118,20 @@ TRANSLATIONS_PATTERN = "{path}.{lang}.{ext}"
 # }
 NAVIGATION_LINKS = {
     DEFAULT_LANG: (
-        ('/index.html', 'Home', 'icon-home'),
-        ('/archive.html', 'Archives', 'icon-folder-open-alt'),
-        ('/categories/index.html', 'Tags', 'icon-tags'),
-        ('/rss.xml', 'RSS', 'icon-rss'),
-        ('https://www.kirkg.us', 'About me', 'icon-user'),
-        ('https://twitter.com/kirk_gleason', 'Twitter', 'icon-twitter'),
-        ('https://github.com/kgleason', 'Github', 'icon-github'),
+        ('/index.html', 'Home', 'fa fa-home'),
+        ('/archive.html', 'Archives', 'fa fa-folder-open'),
+        ('/categories/index.html', 'Tags', 'fa fa-tags'),
+        ('/rss.xml', 'RSS', 'fa fa-rss'),
+        ('https://www.kirkg.us', 'About me', 'fa fa-user'),
+        ('https://www.linkedin.com/in/kirk-gleason/', 'LinkedIn', 'fab fa-linkedin' ),
+        ('https://github.com/kgleason', 'Github', 'fab fa-github'),
+        ('https://www.gitlab.com/kgleason', 'GitLab', 'fab fa-gitlab'),
     )
 }
 
 # Name of the theme to use.
-THEME = "zen-jinja"
-#THEME = "reveal"
+#THEME = "zen-jinja"
+THEME = "gruberwine"
 
 # Below this point, everything is optional
 
@@ -327,9 +328,6 @@ COMPILERS = {
 # If you don't need any of these, just set to []
 REDIRECTIONS = [
     ("CV/index.html","/stories/CV"),
-    ("luke/index.html", "/stories/luke"),
-    ("first-corinthians/index.html", "/stories/first-corinthians"),
-    ("second-corinthians/index.html", "/stories/second-corinthians"),
     ("running-journal/index.html", "/stories/running-journal")
     ]
 
@@ -366,7 +364,7 @@ DEPLOY_COMMANDS = {
 # Where the output site should be located
 # If you don't use an absolute path, it will be considered as relative
 # to the location of conf.py
-# OUTPUT_FOLDER = 'output'
+OUTPUT_FOLDER = 'output'
 
 # where the "cache" of partial generated content should be located
 # default: 'cache'
@@ -776,7 +774,7 @@ SEARCH_FORM = """
 
 # If you hate "Filenames with Capital Letters and Spaces.md", you should
 # set this to true.
-UNSLUGIFY_TITLES = True
+FILE_METADATA_UNSLUGIFY_TITLE = True
 
 # Additional metadata that is added to a post when creating a new_post
 # ADDITIONAL_METADATA = {}
@@ -873,3 +871,13 @@ GLOBAL_CONTEXT = {}
 # GLOBAL_CONTEXT as parameter when the template is about to be
 # rendered
 GLOBAL_CONTEXT_FILLER = []
+
+
+# The directory where ditaa will put images. You could put this
+# within a source controlled folder, or in the output folder
+# e.g. output/images/ditaa
+DITAA_OUTPUT_FOLDER = 'files/images/ditaa'
+
+# The final URL path that corresponds to the above folder, which will be used in
+# the generated HTML.
+DITAA_OUTPUT_URL_PATH = '/images/ditaa'

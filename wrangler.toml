@@ -1,4 +1,4 @@
-name = 'spring-mouse-bdba'"
+name = "spring-mouse-bdba"
 
 [vars]
 pages_build_output_dir = "output"

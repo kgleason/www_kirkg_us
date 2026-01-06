@@ -1,0 +1,4 @@
+name = "build-my-site"
+
+[vars]
+pages_build_output_dir = "output"

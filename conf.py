@@ -122,7 +122,7 @@ NAVIGATION_LINKS = {
         ('/archive.html', 'Archives', 'fa fa-folder-open'),
         ('/categories/index.html', 'Tags', 'fa fa-tags'),
         ('/rss.xml', 'RSS', 'fa fa-rss'),
-        ('https://www.kirkg.us/stories/kg-resume.html', 'Resumé', 'fa fa-file'),
+        #('https://www.kirkg.us/stories/kg-resume.html', 'Resumé', 'fa fa-file'),
         ('https://www.linkedin.com/in/kirk-gleason/', 'LinkedIn', 'fab fa-linkedin' ),
         ('https://github.com/kgleason', 'Github', 'fab fa-github'),
         ('https://www.gitlab.com/kgleason', 'GitLab', 'fab fa-gitlab'),

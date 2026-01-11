@@ -1,0 +1,6 @@
+Contact: mailto:security@kirkg.us
+Expires: 2026-04-01T04:01:00.000Z
+Encryption: https://www.kirkg.us/.well-known/gpg-key.txt
+Preferred-Languages: en
+Canonical: https://www.kirkg.us/.well-known/security.txt
+

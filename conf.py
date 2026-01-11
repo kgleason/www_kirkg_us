@@ -225,6 +225,7 @@ PAGES = (
 # The format is a dictionary of "source" "relative destination".
 # Default is:
 # FILES_FOLDERS = {'files': '' }
+FILES_FOLDERS = {'well-known': '.well-known' }
 # Which means copy 'files' into 'output'
 
 # A mapping of languages to file-extensions that represent that language.
